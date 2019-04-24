@@ -45,6 +45,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!--全局引入Lombok,实现对bean的优雅编码-->
         <dependency>
             <groupId>org.projectlombok</groupId>

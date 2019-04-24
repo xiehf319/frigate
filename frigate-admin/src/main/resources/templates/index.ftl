@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
+    <#include "component/head.ftl">
 </head>
 <body>
     首页
+<#include "component/menu.ftl">
 </body>
+
+<#include "component/foot.ftl">
 </html>
