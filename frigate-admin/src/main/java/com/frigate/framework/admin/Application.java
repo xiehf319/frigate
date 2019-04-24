@@ -1,21 +1,20 @@
-package com.mantis.framework.configserver;
+package com.frigate.framework.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
- * @description:
- * @createDate:2019/4/24$10:25$
+ * @description: 该服务有自己的配置文件，不纳入配置管理
+ * @createDate:2019/4/24$10:50$
  * @author: Heyfan Xie
  */
-@SpringBootApplication
 @EnableDiscoveryClient
-@EnableConfigServer
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
 }

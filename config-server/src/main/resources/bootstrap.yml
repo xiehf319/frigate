@@ -4,7 +4,7 @@ spring:
   application:
     name: config-server
   datasource:
-    url: jdbc:mysql://localhost:3306/config-server?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/frigate?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,7 +13,7 @@ spring:
       label: master
       server:
         jdbc:
-          sql: SELECT `KEY`, `VALUE` from properties where `APPLICATION`=? and `PROFILE`=? and `LABEL`=?
+          sql: SELECT `KEY`, `VALUE` from service_config where `APPLICATION`=? and `PROFILE`=? and `LABEL`=?
   profiles:
     active: jdbc
   jpa:
@@ -22,6 +22,12 @@ spring:
       ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImproveNamingStrategy
     database: MYSQL
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB53Dialect
+hibernate:
+  dialect:
+    storage_engine: innodb
 eureka:
   client:
     serviceUrl:

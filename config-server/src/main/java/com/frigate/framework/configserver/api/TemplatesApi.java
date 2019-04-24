@@ -1,7 +1,7 @@
-package com.mantis.framework.configserver.api;
+package com.frigate.framework.configserver.api;
 
-import com.mantis.framework.configserver.entity.ComponentList;
-import com.mantis.framework.configserver.jpa.TemplatesRepository;
+import com.frigate.framework.configserver.jpa.ConfigGroupDetailRepository;
+import com.frigate.framework.configserver.entity.ConfigGroupDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,31 +22,27 @@ public class TemplatesApi {
 
 
     @Autowired
-    private TemplatesRepository repository;
+    private ConfigGroupDetailRepository repository;
 
 
     @GetMapping("/api/config/server/templates/{group}")
-    public List<ComponentList> findByGroup(String group) {
+    public List<ConfigGroupDetail> findByGroup(String group) {
         return repository.findByGroup(group);
     }
 
 
     @GetMapping("/api/config/server/templates")
-    public Map<String, List<ComponentList>> findAll() {
-        return repository.findAll().stream().collect(Collectors.groupingBy(ComponentList::getComponent));
+    public Map<String, List<ConfigGroupDetail>> findAll() {
+        return repository.findAll().stream().collect(Collectors.groupingBy(ConfigGroupDetail::getGroupName));
     }
 
     @PostMapping("/api/config/server/templates/{group}")
-    public void addTemplates(@PathVariable String group, List<ComponentList> templates) {
+    public void addTemplates(@PathVariable String group, List<ConfigGroupDetail> templates) {
         repository.deleteByGroup(group);
         templates.forEach(template -> {
-            template.setComponent(group);
+            template.setGroupName(group);
             repository.save(template);
         });
     }
 
-    public static void main(String[] args) {
-
-        System.out.println("jdbc:mysql://localhost:3306/config-server?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC".length());
-    }
 }

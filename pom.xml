@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mantis.framework</groupId>
-    <artifactId>base</artifactId>
+    <artifactId>frigate</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>base</name>
+    <name>Frigate</name>
 
     <!--这是一个spring boot项目-->
     <parent>
@@ -20,7 +20,7 @@
     <modules>
         <module>config-server</module>
         <module>eureka-server</module>
-        <module>cc-mantis</module>
+        <module>frigate-admin</module>
     </modules>
 
     <properties>

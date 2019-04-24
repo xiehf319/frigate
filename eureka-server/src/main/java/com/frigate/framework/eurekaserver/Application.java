@@ -1,20 +1,19 @@
-package com.mantis.framework.cc;
+package com.frigate.framework.eurekaserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * @description:
- * @createDate:2019/4/24$10:50$
+ * @createDate:2019/4/24$10:25$
  * @author: Heyfan Xie
  */
-@EnableDiscoveryClient
 @SpringBootApplication
+@EnableEurekaServer
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 }

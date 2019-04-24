@@ -8,8 +8,8 @@
     <name>config-server</name>
 
     <parent>
+        <artifactId>frigate</artifactId>
         <groupId>com.mantis.framework</groupId>
-        <artifactId>base</artifactId>
         <version>1.0.0</version>
     </parent>
 

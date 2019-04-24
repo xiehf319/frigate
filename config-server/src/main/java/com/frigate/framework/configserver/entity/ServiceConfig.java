@@ -1,10 +1,8 @@
-package com.mantis.framework.configserver.entity;
+package com.frigate.framework.configserver.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author xiehf
@@ -12,20 +10,25 @@ import javax.persistence.Id;
  * @concat 370693739@qq.com
  **/
 @Data
-@Entity(name = "service-config")
+@Table(name = "service_config")
+@Entity
 public class ServiceConfig {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column
-    private String key;
+    private String keyName;
 
     @Column
     private String value;
 
     @Column
     private String description;
+
+    @Column
+    private String application;
 
     @Column
     private String profile;

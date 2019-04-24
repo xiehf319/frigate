@@ -1,7 +1,7 @@
-package com.mantis.framework.configserver.api;
+package com.frigate.framework.configserver.api;
 
-import com.mantis.framework.configserver.entity.ServiceConfig;
-import com.mantis.framework.configserver.jpa.PropertiesRepository;
+import com.frigate.framework.configserver.jpa.PropertiesRepository;
+import com.frigate.framework.configserver.entity.ServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class PropertiesApi {
      * @param application
      * @return
      */
-    @GetMapping("/api/config/server/properties/{application}")
+    @GetMapping("/api/configserver/server/properties/{application}")
     private List<ServiceConfig> findByApplication(@PathVariable String application) {
         return repository.findByApplication(application);
     }
@@ -37,7 +37,7 @@ public class PropertiesApi {
      * @param profile
      * @return
      */
-    @GetMapping("/api/config/server/properties/{application}/{profile}")
+    @GetMapping("/api/configserver/server/properties/{application}/{profile}")
     private List<ServiceConfig> findByApplicationAndProfile(@PathVariable String application, @PathVariable String profile) {
         return repository.findByApplicationAndProfile(application, profile);
     }
@@ -47,7 +47,7 @@ public class PropertiesApi {
      *
      * @param properties
      */
-    @PostMapping("/api/config/server/properties/replace/{application}/{profile}")
+    @PostMapping("/api/configserver/server/properties/replace/{application}/{profile}")
     private void replaceProperty(@PathVariable String application,
                                  @PathVariable String profile,
                                  @RequestBody List<ServiceConfig> properties) {
@@ -59,8 +59,8 @@ public class PropertiesApi {
 
             // 如果存在就更新
             if (optional.isPresent()) {
-                repository.updateValue(optional.get().getKey(), optional.get().getValue());
-                existsProperties.removeIf(exist -> exist.getKey().equalsIgnoreCase(optional.get().getKey()));
+                repository.updateValue(optional.get().getKeyName(), optional.get().getValue());
+                existsProperties.removeIf(exist -> exist.getKeyName().equalsIgnoreCase(optional.get().getKeyName()));
             } else {
                 repository.save(property);
             }
