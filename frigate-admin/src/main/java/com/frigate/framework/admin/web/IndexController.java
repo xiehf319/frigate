@@ -1,7 +1,11 @@
 package com.frigate.framework.admin.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @description:
@@ -12,7 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @RequestMapping("/")
-    public String index() {
-        return "index";
+    public String index(Model model) {
+        List<String> menus = new ArrayList<>();
+        menus.add("a");
+        menus.add("b");
+        menus.add("c");
+        menus.add("d");
+        model.addAttribute("menus", menus);
+        return "pages/index";
     }
 }
