@@ -26,7 +26,7 @@ import java.util.Map;
 public class ServerController {
 
 
-    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    @RequestMapping(value = "/eureka/applications", method = RequestMethod.GET)
     public Object applications() {
         EurekaServerContextHolder instance = EurekaServerContextHolder.getInstance();
         EurekaServerContext serverContext = instance.getServerContext();

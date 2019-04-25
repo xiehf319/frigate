@@ -2,10 +2,7 @@ package com.frigate.framework.configserver.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @description: 配置组件 (mysql, redis, 等可以归为一类的配置)
@@ -14,6 +11,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "config_group")
+@Entity
 public class ConfigGroup {
 
     @Id
