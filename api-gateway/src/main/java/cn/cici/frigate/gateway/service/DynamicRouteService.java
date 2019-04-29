@@ -1,5 +1,6 @@
 package cn.cici.frigate.gateway.service;
 
+import cn.cici.frigate.gateway.repository.RedisRouteDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -18,7 +19,7 @@ import reactor.core.publisher.Mono;
 public class DynamicRouteService implements ApplicationEventPublisherAware {
 
     @Autowired
-    private RouteDefinitionWriter routeDefinitionWriter;
+    private RedisRouteDefinitionRepository routeDefinitionWriter;
 
     @Autowired
     private ApplicationEventPublisher publisher;

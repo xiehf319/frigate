@@ -25,7 +25,6 @@ public class GatewayApplication {
     }
 
 
-
     @Autowired
     private AuthClient authClient;
 
