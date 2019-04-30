@@ -4,10 +4,12 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @description:
@@ -18,7 +20,7 @@ import java.util.*;
 public class FeignHeaderInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        HttpServletRequest request = getHttpServletRequest();
+        ServletWebRequest request = getHttpServletRequest();
         if (Objects.isNull(request)) {
             return;
         }
@@ -32,21 +34,22 @@ public class FeignHeaderInterceptor implements RequestInterceptor {
         }
     }
 
-    private HttpServletRequest getHttpServletRequest() {
+    private ServletWebRequest getHttpServletRequest() {
         try {
-            return ((ServletRequestAttributes)(RequestContextHolder.currentRequestAttributes())).getRequest();
+            ServletWebRequest servletWebRequest = (ServletWebRequest)(RequestContextHolder.currentRequestAttributes());
+            return servletWebRequest;
         } catch (Exception e) {
             return null;
         }
     }
 
-    private Map<String, String> getHeaders(HttpServletRequest request) {
+    private Map<String, String> getHeaders(ServletWebRequest request) {
 
-        Enumeration<String> enums = request.getHeaderNames();
+        Iterator<String> enums = request.getHeaderNames();
         Map<String, String> map = new HashMap<>();
 
-        while (enums.hasMoreElements()) {
-            String key = enums.nextElement();
+        while (enums.hasNext()) {
+            String key = enums.next();
             String value = request.getHeader(key);
             map.put(key, value);
         }

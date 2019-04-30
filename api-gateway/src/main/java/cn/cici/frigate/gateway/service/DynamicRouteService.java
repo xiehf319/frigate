@@ -4,7 +4,6 @@ import cn.cici.frigate.gateway.repository.RedisRouteDefinitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
-import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
@@ -39,7 +38,7 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
         return "success";
     }
 
-    public String upate(RouteDefinition definition) {
+    public String update(RouteDefinition definition) {
         try {
             this.routeDefinitionWriter.delete(Mono.just(definition.getId()));
         } catch (Exception e) {

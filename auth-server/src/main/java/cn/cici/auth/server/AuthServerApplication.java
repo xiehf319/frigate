@@ -16,9 +16,9 @@ import java.util.Map;
 
 @SpringBootApplication
 @RestController
-@EnableAuthorizationServer
 @EnableResourceServer
 @EnableDiscoveryClient
+@EnableAuthorizationServer
 public class AuthServerApplication {
 
     public static void main(String[] args) {

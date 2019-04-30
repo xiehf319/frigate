@@ -1,5 +1,6 @@
 package cn.cici.frigate.gateway.repository;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -26,16 +28,13 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        List<RouteDefinition> routeDefinitions = new LinkedList<>();
-        redisTemplate.opsForHash().values(GATEWAY_ROUTES);
-
-//                .forEach(routeDefinition -> routeDefinitions.add(JSON.parseObject(routeDefinition.toString(), RouteDefinition.class)));
-        return Flux.fromIterable(routeDefinitions);
+        return redisTemplate.opsForHash().values(GATEWAY_ROUTES).map(obj-> JSON.parseObject(obj.toString(), RouteDefinition.class));
     }
 
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
-        return null;
+
+        return Mono.empty();
     }
 
     @Override

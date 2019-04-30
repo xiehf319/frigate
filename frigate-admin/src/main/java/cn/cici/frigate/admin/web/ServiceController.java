@@ -19,7 +19,7 @@ public class ServiceController {
     @Value("${eureka.client.service-url.defaultZone: http://localhost:8761/eureka}")
     private String eurekaUrl;
 
-    @RequestMapping("/server")
+    @RequestMapping("/admin/server")
     public Object server() {
         String url = eurekaUrl.split(",")[0];
         URI uri = UriComponentsBuilder.fromHttpUrl(url + "/applications")

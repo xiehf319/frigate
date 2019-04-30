@@ -23,7 +23,7 @@ public class ConfigController {
     @Autowired
     ConfigCenterClient configCenterClient;
 
-    @PostMapping("/config/center/group")
+    @PostMapping("/admin/config/center/group")
     public ResponseEntity createConfigGroup(@RequestBody ConfigGroup configGroup) {
         Map<String, String> map = new HashMap<>();
         map.put("name", configGroup.getName());
