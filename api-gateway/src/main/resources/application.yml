@@ -24,6 +24,22 @@ spring:
             - name: StripPrefix
               args:
                 parts: 1
+  security:
+    oauth2:
+      client:
+        registration:
+          example:
+            client-id: client_id
+            client-secret: client_secret
+            authorization-grant-type: authorization_code
+            redirect-url-template: '{baseUrl}/login/oauth2/code/{registrationId}'
+            clientName: gateway
+        provider:
+          example:
+            authorization-url: http://localhost:4001/oauth/authorize
+            token-uri: http://localhost:4001/oauth/token
+            jwt-key-uri: http://localhost:4001/oauth/token_key
+            userNameAttribute: user_name
   redis:
     host: localhost
     port: 6379
