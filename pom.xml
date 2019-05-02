@@ -23,6 +23,7 @@
         <module>frigate-admin</module>
         <module>auth-server</module>
         <module>api-gateway</module>
+        <module>user-center</module>
     </modules>
 
     <properties>
