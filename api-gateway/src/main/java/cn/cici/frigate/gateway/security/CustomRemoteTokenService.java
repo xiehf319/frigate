@@ -9,10 +9,12 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.*;
+import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.HashMap;
@@ -113,7 +115,7 @@ public class CustomRemoteTokenService {
         if (headers.getContentType() == null) {
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         }
-        Map<String, Object> map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         try {
             map = restTemplate.exchange(path, HttpMethod.POST,
                     new HttpEntity<>(formData, headers), Map.class).getBody();

@@ -1,5 +1,9 @@
 package cn.cici.frigate.gateway.filter.global;
 
+import cn.cici.frigate.gateway.http.HeaderEnhancerFilter;
+import cn.cici.frigate.gateway.properties.PermitAllUrlProperties;
+import cn.cici.frigate.gateway.security.CustomRemoteTokenService;
+import cn.cici.frigate.gateway.security.OAuth2AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -7,8 +11,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -23,34 +25,34 @@ import java.net.URI;
  * @createDate:2019/4/30$10:30$
  * @author: Heyfan Xie
  */
-@Component
 public class AuthorizationFilter implements GlobalFilter, Ordered {
 
-    Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
 
 
-//    private final CustomRemoteTokenServices customRemoteTokenServices;
-//
-//    private final HeaderEnhanceFilter headerEnhanceFilter;
-//
-//    private PermitAllUrlProperties permitAllUrlProperties;
-//
-//    public AuthorizationFilter(CustomRemoteTokenServices customRemoteTokenServices, HeaderEnhanceFilter headerEnhanceFilter, PermitAllUrlProperties permitAllUrlProperties) {
-//        this.customRemoteTokenServices = customRemoteTokenServices;
-//        this.headerEnhanceFilter = headerEnhanceFilter;
-//        this.permitAllUrlProperties = permitAllUrlProperties;
-//    }
+    private final CustomRemoteTokenService customRemoteTokenService;
+
+    private final HeaderEnhancerFilter headerEnhanceFilter;
+
+    private PermitAllUrlProperties permitAllUrlProperties;
+
+    public AuthorizationFilter(CustomRemoteTokenService customRemoteTokenService, HeaderEnhancerFilter headerEnhanceFilter, PermitAllUrlProperties permitAllUrlProperties) {
+        this.customRemoteTokenService = customRemoteTokenService;
+        this.headerEnhanceFilter = headerEnhanceFilter;
+        this.permitAllUrlProperties = permitAllUrlProperties;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
         ServerHttpRequest request = exchange.getRequest();
         if (predicate(exchange)) {
-//            request = headerEnhanceFilter.doFilter(request);
-//            String accessToken = extractHeaderToken(request);
-//            customRemoteTokenServices.loadAuthentication(accessToken);
-            logger.info("success auth token and permission");
+            request = headerEnhanceFilter.doFilter(request);
+            String accessToken = extractHeaderToken(request);
+
+            customRemoteTokenService.loadAuthentication(accessToken);
+            LOGGER.info("success auth token and permission!");
         }
+
         return chain.filter(exchange);
     }
 
@@ -69,8 +71,7 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
     }
 
     private boolean isPermitUrl(String url) {
-//        return permitAllUrlProperties.isPermitAllUrl(url) || url.contains("/login/oauth");
-        return true;
+        return permitAllUrlProperties.isPermitAllUrl(url) || url.contains("/login/oauth");
     }
 
     protected String extractHeaderToken(ServerHttpRequest request) {
