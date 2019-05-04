@@ -24,9 +24,9 @@ public class GlobalFilterConfiguration {
         return new AuthorizationFilter();
     }
 
-    @Bean
-    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route(r -> r.path("auth", "/oauth/token").uri("lb://auth-server")).build();
-    }
+//    @Bean
+//    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+//        return builder.routes()
+//                .route(r -> r.path("frigate-admin", "/admin/**").uri("lb://frigate-admin")).build();
+//    }
 }
