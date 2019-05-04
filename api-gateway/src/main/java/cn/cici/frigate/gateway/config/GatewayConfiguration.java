@@ -42,7 +42,7 @@ public class GatewayConfiguration {
                 ServerHttpResponse response = exchange.getResponse();
                 HttpHeaders headers = response.getHeaders();
                 headers.add("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
-                headers.add("Access-Control-Allow-Mothods", ALLOWED_METHOS);
+                headers.add("Access-Control-Allow-Methods", ALLOWED_METHOS);
                 headers.add("Access-Control-Max-Aga", MAX_AGE);
                 headers.add("Access-Control-Allow-Headers", ALLOWED_HEADERS);
 

@@ -35,7 +35,6 @@ public class CustomRemoteTokenService {
 
     private String checkTokenEndpointUrl;
 
-
     private String clientId;
 
     private String clientSecret;
@@ -79,7 +78,7 @@ public class CustomRemoteTokenService {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, getAuthorizationHeader(clientId, clientSecret));
 
-        ServiceInstance serviceInstance = loadBalancerClient.choose("auth-center");
+        ServiceInstance serviceInstance = loadBalancerClient.choose("auth-server");
         if (serviceInstance == null) {
             throw new RuntimeException("Failed to choose an auth instance");
         }

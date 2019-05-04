@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 @Configuration
 public class RedisConfig {
 
-    @Bean(name = {"redisTemplate", "stringRedisTemplate"})
+    @Bean(name = "reactiveStringRedisTemplate")
     public ReactiveStringRedisTemplate stringRedisTemplate(ReactiveRedisConnectionFactory factory) {
         ReactiveStringRedisTemplate redisTemplate = new ReactiveStringRedisTemplate(factory);
         return redisTemplate;

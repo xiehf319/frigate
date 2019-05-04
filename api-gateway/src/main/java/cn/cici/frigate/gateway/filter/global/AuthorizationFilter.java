@@ -4,6 +4,7 @@ import cn.cici.frigate.gateway.http.HeaderEnhancerFilter;
 import cn.cici.frigate.gateway.properties.PermitAllUrlProperties;
 import cn.cici.frigate.gateway.security.CustomRemoteTokenService;
 import cn.cici.frigate.gateway.security.OAuth2AccessToken;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -11,7 +12,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +28,6 @@ import java.net.URI;
 public class AuthorizationFilter implements GlobalFilter, Ordered {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
-
 
     private final CustomRemoteTokenService customRemoteTokenService;
 
@@ -56,14 +55,18 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-    public Boolean predicate(ServerWebExchange serverWebExchange) {
+    private Boolean predicate(ServerWebExchange serverWebExchange) {
         URI uri = serverWebExchange.getRequest().getURI();
         String requestUri = uri.getPath();
         String authorization = serverWebExchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (isPermitUrl(requestUri) &&
-                (StringUtils.isEmpty(authorization))) {
+                (StringUtils.isEmpty(authorization) || (!StringUtils.isNoneBlank(authorization) && StringUtils.countMatches(authorization, ".") != 2))) {
+            return false;
         }
-        return false;
+        if (isLogoutUrl(requestUri)) {
+            return false;
+        }
+        return true;
     }
 
     private boolean isLogoutUrl(String url) {
@@ -74,7 +77,7 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
         return permitAllUrlProperties.isPermitAllUrl(url) || url.contains("/login/oauth");
     }
 
-    protected String extractHeaderToken(ServerHttpRequest request) {
+    private String extractHeaderToken(ServerHttpRequest request) {
         String authorization = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.isEmpty(authorization)) { // typically there is only one (most servers enforce that)
             if ((authorization.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase()))) {
@@ -93,6 +96,6 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return -100;
+        return Ordered.LOWEST_PRECEDENCE;
     }
 }

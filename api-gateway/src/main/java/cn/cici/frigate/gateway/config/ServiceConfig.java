@@ -27,7 +27,7 @@ import java.util.Objects;
  **/
 @Configuration
 @EnableConfigurationProperties
-@RibbonClient(name = "auth-center")
+@RibbonClient(name = "auth-server")
 public class ServiceConfig {
 
     @Autowired
