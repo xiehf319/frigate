@@ -1,15 +1,14 @@
 server:
   port: 8001
-
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:  # enable:true  就是gateway默认从注册中心获取服务，为每一个服务创建一个router,这个router将以服务名开头的请求路径转发到对应的服务
-          enabled: false
-          lower-case-service-id: true
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:  # enable:true  就是gateway默认从注册中心获取服务，为每一个服务创建一个router,这个router将以服务名开头的请求路径转发到对应的服务
+#          enabled: false
+#          lower-case-service-id: true
   redis:
     host: localhost
     port: 6379
@@ -27,7 +26,6 @@ security:
     resource:
       user-info-uri: /user
       token-info-uri: /oauth/check_token
-
 auth:
   permitAllUrls:
     - pattern: /login/**
@@ -41,6 +39,4 @@ gateway:
       capacity: 10000
       refill-tokens: 50
       refill-period: 5
-logging:
-  level:
-    root: debug
+

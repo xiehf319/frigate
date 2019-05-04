@@ -1,6 +1,6 @@
 package com.frigate.framework.configserver.jpa;
 
-import com.frigate.framework.configserver.entity.ConfigGroupDetail;
+import cn.cici.frigate.config.server.entity.ConfigGroupDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
