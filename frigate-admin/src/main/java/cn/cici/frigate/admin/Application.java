@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.frigate.framework.admin.clients")
+@EnableFeignClients(basePackages = "cn.cici.frigate.admin.clients")
 public class Application {
 
     public static void main(String[] args) {

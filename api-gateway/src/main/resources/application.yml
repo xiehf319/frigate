@@ -7,9 +7,14 @@ spring:
     gateway:
       discovery:
         locator:  # enable:true  就是gateway默认从注册中心获取服务，为每一个服务创建一个router,这个router将以服务名开头的请求路径转发到对应的服务
-          enabled: true
+          enabled: false
       loadbalancer:
         use404: true
+      routes:
+        - name: frigate-admin
+          uri: lb://frigate-admin
+          predicates:
+            - Path=/admin/**
   redis:
     host: localhost
     port: 6379
@@ -24,11 +29,11 @@ security:
       access-token-uri: /oauth/token
       client-id: clientId
       client-secret: clientSecret
+      grantType: password
+      scope: webclient
     resource:
       user-info-uri: /user
-      token-info-uri: /oauth/check_token
-auth:
-  permitAllUrls:
-    ## 登录的接口
-  - pattern: /oauth/token
+      check-token-uri: /oauth/check_token
+    permit-all-uri:
+      - /login/**
 

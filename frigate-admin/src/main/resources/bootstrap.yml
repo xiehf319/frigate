@@ -2,7 +2,7 @@ server:
   port: 6001
 spring:
   application:
-    name: mantis-admin
+    name: frigate-admin
 eureka:
   client:
     service-url:

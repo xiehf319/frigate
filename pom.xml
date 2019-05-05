@@ -7,7 +7,7 @@
     <artifactId>frigate</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>Frigate</name>
+    <name>frigate</name>
 
     <!--这是一个spring boot项目-->
     <parent>
@@ -99,24 +99,4 @@
         </dependencies>
     </dependencyManagement>
 
-    <!--指定依赖包的下载地址,作用跟setting.xml的镜像配置雷同-->
-    <repositories>
-        <!--这个资源文件里面的内容比阿里云的镜像更全面,但是速度会慢很多.-->
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/libs-milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>

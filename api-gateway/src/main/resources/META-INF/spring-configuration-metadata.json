@@ -1,0 +1,59 @@
+{
+  "groups": [
+    {
+      "name": "security.oauth2",
+      "type": "cn.cici.frigate.gateway.properties.ResourceServerProperties",
+      "sourceType": "cn.cici.frigate.gateway.properties.ResourceServerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "security.oauth2.client.clientId",
+      "type": "java.lang.String",
+      "description": "OAuth2 client id.",
+      "defaultValue": ""
+    },
+    {
+      "name": "security.oauth2.client.clientSecret",
+      "type": "java.lang.String",
+      "description": "OAuth2 client secret.",
+      "defaultValue": ""
+    },
+    {
+      "name": "security.oauth2.client.accessTokenUri",
+      "type": "java.lang.String",
+      "description": "OAuth2 access token uri.",
+      "defaultValue": "/oauth/token"
+    },
+    {
+      "name": "security.oauth2.client.scope",
+      "type": "java.lang.String",
+      "description": "OAuth2 scope.",
+      "defaultValue": ""
+    },
+    {
+      "name": "security.oauth2.client.grantType",
+      "type": "java.lang.String",
+      "description": "OAuth2 client grantType.",
+      "defaultValue": "password"
+    },
+    {
+      "name": "security.oauth2.resource.userInfoUri",
+      "type": "java.lang.String",
+      "description": "OAuth2 resource userInfoUri.",
+      "defaultValue": "/oauth/user"
+    },
+    {
+      "name": "security.oauth2.resource.checkTokenUri",
+      "type": "java.lang.String",
+      "description": "OAuth2 resource checkTokenUri.",
+      "defaultValue": "/oauth/check_token"
+    },
+    {
+      "name": "security.oauth2.permitAllUri",
+      "type": "java.util.Arrays",
+      "description": "OAuth2 permit all uri list.",
+      "defaultValue": ""
+    }
+  ]
+}

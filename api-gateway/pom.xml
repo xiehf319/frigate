@@ -6,7 +6,6 @@
         <groupId>cn.cici.frigate</groupId>
         <artifactId>frigate</artifactId>
         <version>1.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.cici.frigate.gateway</groupId>
     <artifactId>api-gateway</artifactId>
@@ -40,6 +39,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
