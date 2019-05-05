@@ -72,7 +72,10 @@ public class CustomRemoteTokenService {
         }
 
         Map<String, Object> map = postForMap(serviceInstance.getUri().toString() + checkTokenUri, accessToken);
-
+        if (map.containsKey(ERROR)) {
+            log.debug("check_token returned error" + map.get(ERROR));
+            throw new ServerException(HttpStatus.BAD_REQUEST, new ErrorCode(400, "", ""));
+        }
     }
 
     /***

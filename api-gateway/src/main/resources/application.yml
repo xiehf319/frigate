@@ -35,5 +35,5 @@ security:
       user-info-uri: /user
       check-token-uri: /oauth/check_token
     permit-all-uri:
-      - /login/**
+      - /oauth/**
 

@@ -8,9 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * @author xiehf
@@ -23,6 +28,8 @@ public class AuthorizationFilter implements Ordered, GlobalFilter {
     private final ResourceServerProperties resourceServerProperties;
     private final CustomRemoteTokenService customRemoteTokenService;
     private final HeaderEnhanceFilter headerEnhanceFilter;
+
+    private final PathMatcher pathMatcher = new AntPathMatcher();
 
     public AuthorizationFilter(CustomRemoteTokenService customRemoteTokenService,
                                HeaderEnhanceFilter headerEnhanceFilter,
@@ -45,7 +52,21 @@ public class AuthorizationFilter implements Ordered, GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         String rawPath = request.getURI().getRawPath();
         log.info("请求地址" + rawPath);
+        if (!permitAll(rawPath)) {
+            String authorization = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            customRemoteTokenService.loadAuthentication(authorization);
+        }
         return chain.filter(exchange);
+    }
+
+    private boolean permitAll(String rawPath) {
+        List<String> uriList = resourceServerProperties.getPermitAllUri();
+        for (String pattern : uriList) {
+            if (pathMatcher.match(pattern, rawPath)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
