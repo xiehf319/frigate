@@ -1,6 +1,5 @@
 server:
   port: 8001
-
 spring:
   application:
     name: api-gateway
@@ -18,29 +17,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-security:
-  oauth2:
-    client:
-      access-token-uri: /oauth/token
-      client-id: clientId
-      client-secret: clientSecret
-    resource:
-      user-info-uri: /user
-      token-info-uri: /oauth/check_token
-
-auth:
-  permitAllUrls:
-    - pattern: /login/**
-
-gateway:
-  limit:
-    redis-rate: # token
-      replenish-rate: 10
-      burst-capacity: 3000
-    throttle: # leaky
-      capacity: 10000
-      refill-tokens: 50
-      refill-period: 5
 logging:
   level:
     root: debug

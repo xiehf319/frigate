@@ -7,13 +7,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/oauth2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
-    password: aaaaaa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   redis:
-    lettuce:
-      pool:
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
     port: 6379
     database: 0
     host: localhost
@@ -21,7 +20,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-
 ribbon:
   ReadTimeout: 10000
