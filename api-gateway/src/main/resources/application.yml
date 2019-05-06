@@ -3,20 +3,29 @@ server:
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:  # enable:true  就是gateway默认从注册中心获取服务，为每一个服务创建一个router,这个router将以服务名开头的请求路径转发到对应的服务
-          enabled: false
-          lower-case-service-id: true
-  redis:
-    host: localhost
-    port: 6379
-    database: 0
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-logging:
-  level:
-    root: debug
+zuul:
+  routes:
+    frigate-admin:
+      path: /admin/**
+      service-id: frigate-admin
+    auth-server:
+      path: /oauth/**
+      service-id: auth-server
+  sensitive-headers: Cookie,SetCookie
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: cici
+      user-info-uri: http://localhost:4001/users/current
+      id: api-gateway
+      prefer-token-info: false
+    client:
+      client-id: clientId
+      client-secret: 123456
+      access-token-uri: http://localhost:4001/oauth/token
+      user-authorization-uri: http://localhost:4001/oauth/authorize
