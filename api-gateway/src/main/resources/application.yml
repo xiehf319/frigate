@@ -23,11 +23,11 @@ security:
     resource:
       jwt:
         key-value: cici
-      user-info-uri: http://localhost:4001/oauth/current
+      user-info-uri: http://auth-center/oauth/current
       id: api-gateway
       prefer-token-info: false
     client:
       client-id: clientId
       client-secret: 123456
-      access-token-uri: http://auth-server/oauth/token
+      access-token-uri: http://auth-center/oauth/token
       user-authorization-uri: /oauth/authorize
