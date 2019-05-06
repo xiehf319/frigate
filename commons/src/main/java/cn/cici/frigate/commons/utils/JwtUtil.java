@@ -1,4 +1,4 @@
-package cn.cici.frigate.gateway.util;
+package cn.cici.frigate.commons.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -6,13 +6,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,11 +37,11 @@ public class JwtUtil {
     /**
      * 使用JWT默认方式，生成加解密密钥
      *
-     * @param alg 加解密类型
+     * @param slg 加解密类型
      * @return
      */
-    public static SecretKey generateKey(SignatureAlgorithm alg) {
-        return MacProvider.generateKey(alg);
+    public static SecretKey generateKey(SignatureAlgorithm slg) {
+        return MacProvider.generateKey(slg);
     }
 
     /**
@@ -51,11 +50,11 @@ public class JwtUtil {
      * @param rule 密钥生成规则
      * @return
      */
-    public static SecretKey generateKey(SignatureAlgorithm alg, String rule) {
+    public static SecretKey generateKey(SignatureAlgorithm slg, String rule) {
         // 将 密钥生成键转化为字节数组
-        byte[] bytes = Base64.decodeBase64(rule);
+        byte[] bytes = Base64.getMimeDecoder().decode(rule);
         // 根据指定的加密方式，生成密钥
-        return new SecretKeySpec(bytes, alg.getJcaName());
+        return new SecretKeySpec(bytes, slg.getJcaName());
     }
 
     /**

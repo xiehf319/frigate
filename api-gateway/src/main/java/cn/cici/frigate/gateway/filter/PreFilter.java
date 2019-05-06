@@ -1,6 +1,6 @@
 package cn.cici.frigate.gateway.filter;
 
-import cn.cici.frigate.gateway.util.JwtUtil;
+import cn.cici.frigate.commons.utils.JwtUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -33,7 +33,7 @@ public class PreFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 0;
+        return 1;
     }
 
     @Override
