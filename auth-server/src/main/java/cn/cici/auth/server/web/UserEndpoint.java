@@ -13,7 +13,7 @@ import java.security.Principal;
  * @author: Heyfan Xie
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/oauth")
 @Slf4j
 public class UserEndpoint {
 
