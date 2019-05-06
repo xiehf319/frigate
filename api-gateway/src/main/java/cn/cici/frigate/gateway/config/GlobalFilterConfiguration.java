@@ -40,7 +40,7 @@ public class GlobalFilterConfiguration {
     public CustomRemoteTokenService customRemoteTokenService(RestTemplate restTemplate) {
         CustomRemoteTokenService customRemoteTokenService = new CustomRemoteTokenService(restTemplate);
         customRemoteTokenService.setLoadBalancerClient(loadBalancerClient);
-        customRemoteTokenService.setCheckTokenUri(properties.getResource().getCheckTokenUri());
+        customRemoteTokenService.setResourceServerProperties(properties);
         return customRemoteTokenService;
     }
 
