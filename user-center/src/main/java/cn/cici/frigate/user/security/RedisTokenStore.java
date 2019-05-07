@@ -4,7 +4,7 @@ import cn.cici.frigate.user.redis.JdkSerializationStrategy;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * @author xiehf
@@ -13,23 +13,34 @@ import java.util.*;
  **/
 public class RedisTokenStore {
 
+    /** user 作为key access_token 作为value的 prefix*/
+    private static final String USER_TO_ACCESS = "user_to_access:";
 
-    private static final String ACCESS = "access:";
-    private static final String AUTH_TO_ACCESS = "auth_to_access:";
-    private static final String AUTH = "auth:";
-    private static final String REFRESH_AUTH = "refresh_auth:";
+    /** access_token 作为key user 作为value的 prefix*/
+    private static final String ACCESS_TO_USER = "access_to_user:";
+
+    /** refresh_token 作为key user 作为value的 prefix*/
+    private static final String REFRESH_TO_USER = "refresh_to_user:";
+
+    /** access_token 作为key refresh_token 作为value的 prefix*/
     private static final String ACCESS_TO_REFRESH = "access_to_refresh:";
-    private static final String REFRESH = "refresh:";
+
+    /** refresh_token 作为key access_token 作为value的 prefix*/
     private static final String REFRESH_TO_ACCESS = "refresh_to_access:";
-    private static final String CLIENT_ID_TO_ACCESS = "client_id_to_access:";
-    private static final String UNAME_TO_ACCESS = "uname_to_access:";
 
     /**
      * redis连接工厂类
      */
     private final RedisConnectionFactory connectionFactory;
 
-    private AuthenticationKeyGenerator authenticationKeyGenerator = new AuthenticationKeyGenerator();
+    /**
+     * userKey 生成
+     */
+    private UserKeyGenerator userKeyGenerator = new UserKeyGenerator();
+
+    /**
+     * 序列化
+     */
     private JdkSerializationStrategy serializationStrategy = new JdkSerializationStrategy();
 
     /**
@@ -41,8 +52,8 @@ public class RedisTokenStore {
         this.connectionFactory = connectionFactory;
     }
 
-    public void setAuthenticationKeyGenerator(AuthenticationKeyGenerator authenticationKeyGenerator) {
-        this.authenticationKeyGenerator = authenticationKeyGenerator;
+    public void setUserKeyGenerator(UserKeyGenerator userKeyGenerator) {
+        this.userKeyGenerator = userKeyGenerator;
     }
 
     public void setSerializationStrategy(JdkSerializationStrategy serializationStrategy) {
@@ -65,16 +76,12 @@ public class RedisTokenStore {
         return this.serialize(this.prefix + object);
     }
 
-    private AccessToken deserializeAccessToken(byte[] bytes) {
-        return this.serializationStrategy.deserialize(bytes, AccessToken.class);
+    private SecurityToken deserializeToken(byte[] bytes) {
+        return this.serializationStrategy.deserialize(bytes, SecurityToken.class);
     }
 
-    private Authentication deserializeAuthentication(byte[] bytes) {
-        return this.serializationStrategy.deserialize(bytes, Authentication.class);
-    }
-
-    private RefreshToken deserializeRefreshToken(byte[] bytes) {
-        return this.serializationStrategy.deserialize(bytes, RefreshToken.class);
+    private SecurityUser deserializeUser(byte[] bytes) {
+        return this.serializationStrategy.deserialize(bytes, SecurityUser.class);
     }
 
     private byte[] serialize(String string) {
@@ -86,15 +93,14 @@ public class RedisTokenStore {
     }
 
     /**
-     * 获取token
+     * 根据用户 获取token
      *
-     * @param authentication
+     * @param securityUser
      * @return
      */
-
-    public AccessToken getAccessToken(Authentication authentication) {
-        String key = this.authenticationKeyGenerator.extractKey(authentication);
-        byte[] serializedKey = this.serializeKey(AUTH_TO_ACCESS + key);
+    public SecurityToken getAccessToken(SecurityUser securityUser) {
+        String key = this.userKeyGenerator.extractKey(securityUser);
+        byte[] serializedKey = this.serializeKey(USER_TO_ACCESS + key);
         byte[] bytes = null;
         RedisConnection conn = this.getConnection();
 
@@ -104,54 +110,41 @@ public class RedisTokenStore {
             conn.close();
         }
 
-        AccessToken accessToken = this.deserializeAccessToken(bytes);
-        if (accessToken != null) {
-            Authentication storedAuthentication = this.readAuthentication(accessToken.getValue());
-            if (storedAuthentication == null || !key.equals(this.authenticationKeyGenerator.extractKey(storedAuthentication))) {
-                this.storeAccessToken(accessToken, authentication);
+        SecurityToken securityToken = this.deserializeToken(bytes);
+        if (securityToken != null) {
+            SecurityUser storedSecurityUser = this.readSecurityUserByAccessToken(securityToken.getAccessToken());
+            if (storedSecurityUser == null || !key.equals(this.userKeyGenerator.extractKey(storedSecurityUser))) {
+                // 续期
+                this.storeAccessToken(securityToken, securityUser);
             }
         }
 
-        return accessToken;
+        return securityToken;
     }
 
-
-    public Authentication readAuthentication(AccessToken token) {
-        return this.readAuthentication(token.getValue());
-    }
-
-
-    public Authentication readAuthentication(String token) {
+    public SecurityUser readSecurityUserByAccessToken(String token) {
         byte[] bytes = null;
         RedisConnection conn = this.getConnection();
-
         try {
-            bytes = conn.get(this.serializeKey(AUTH + token));
+            bytes = conn.get(this.serializeKey(ACCESS_TO_USER + token));
         } finally {
             conn.close();
         }
-
-        Authentication var4 = this.deserializeAuthentication(bytes);
+        SecurityUser var4 = this.deserializeUser(bytes);
         return var4;
     }
 
-
-    public Authentication readAuthenticationForRefreshToken(RefreshToken token) {
-        return this.readAuthenticationForRefreshToken(token.getValue());
-    }
-
-    public Authentication readAuthenticationForRefreshToken(String token) {
+    public SecurityUser readUserForRefreshToken(String token) {
         RedisConnection conn = this.getConnection();
 
-        Authentication var5;
+        SecurityUser var5;
         try {
-            byte[] bytes = conn.get(this.serializeKey(REFRESH_AUTH + token));
-            Authentication auth = this.deserializeAuthentication(bytes);
+            byte[] bytes = conn.get(this.serializeKey(REFRESH_TO_USER + token));
+            SecurityUser auth = this.deserializeUser(bytes);
             var5 = auth;
         } finally {
             conn.close();
         }
-
         return var5;
     }
 
@@ -159,52 +152,53 @@ public class RedisTokenStore {
     /**
      * 保存 token
      *
-     * @param token
-     * @param authentication
+     * @param securityToken
+     * @param securityUser
      */
+    public void storeAccessToken(SecurityToken securityToken, SecurityUser securityUser) {
 
-    public void storeAccessToken(AccessToken token, Authentication authentication) {
-        byte[] serializedAccessToken = this.serialize(token);
-        byte[] serializedAuth = this.serialize(authentication);
-        byte[] accessKey = this.serializeKey(ACCESS + token.getValue());
-        byte[] authKey = this.serializeKey(AUTH + token.getValue());
-        byte[] authToAccessKey = this.serializeKey(AUTH_TO_ACCESS + this.authenticationKeyGenerator.extractKey(authentication));
-        byte[] approvalKey = this.serializeKey(UNAME_TO_ACCESS + getApprovalKey(authentication));
-        byte[] clientId = this.serializeKey(CLIENT_ID_TO_ACCESS + authentication.getRequest().getClientId());
+        // 保存user与token的关系
+        byte[] serializedAccessToken = this.serialize(securityToken);
+        byte[] serializedUser = this.serialize(securityUser);
+        byte[] accessToUserKey = this.serializeKey(ACCESS_TO_USER + securityToken.getAccessToken());
+        byte[] userToAccessKey = this.serializeKey(USER_TO_ACCESS + securityUser.getUserId());
         RedisConnection conn = this.getConnection();
 
         try {
             conn.openPipeline();
-            conn.stringCommands().set(accessKey, serializedAccessToken);
-            conn.stringCommands().set(authKey, serializedAuth);
-            conn.stringCommands().set(authToAccessKey, serializedAccessToken);
-            if (!authentication.isClientOnly()) {
-                conn.rPush(approvalKey, new byte[][]{serializedAccessToken});
+
+            // 先设置一个无限期的
+            conn.stringCommands().set(accessToUserKey, serializedUser);
+            conn.stringCommands().set(userToAccessKey, serializedAccessToken);
+
+            if (securityToken.getExpiration() != null) {
+
+                // 如果有, 设置过期时间
+                int seconds = securityToken.getExpiresIn();
+                conn.expire(accessToUserKey, (long) seconds);
+                conn.expire(userToAccessKey, (long) seconds);
             }
 
-            conn.rPush(clientId, new byte[][]{serializedAccessToken});
-            if (token.getExpiration() != null) {
-                int seconds = token.getExpiresIn();
-                conn.expire(accessKey, (long) seconds);
-                conn.expire(authKey, (long) seconds);
-                conn.expire(authToAccessKey, (long) seconds);
-                conn.expire(clientId, (long) seconds);
-                conn.expire(approvalKey, (long) seconds);
-            }
+            String refreshToken =  securityToken.getRefreshToken();
+            if (refreshToken != null && refreshToken.length() > 0) {
 
-            RefreshToken refreshToken = token.getRefreshToken();
-            if (refreshToken != null && refreshToken.getValue() != null) {
-                byte[] refresh = this.serialize(token.getRefreshToken().getValue());
-                byte[] auth = this.serialize(token.getValue());
-                byte[] refreshToAccessKey = this.serializeKey(REFRESH_TO_ACCESS + token.getRefreshToken().getValue());
-                conn.stringCommands().set(refreshToAccessKey, auth);
-                byte[] accessToRefreshKey = this.serializeKey(ACCESS_TO_REFRESH + token.getValue());
-                conn.stringCommands().set(accessToRefreshKey, refresh);
-                Date expiration = refreshToken.getExpiration();
-                if (expiration != null) {
-                    int seconds = Long.valueOf((expiration.getTime() - System.currentTimeMillis()) / 1000L).intValue();
-                    conn.expire(refreshToAccessKey, (long) seconds);
-                    conn.expire(accessToRefreshKey, (long) seconds);
+                // 序列化 refresh_token
+                byte[] serializedRefreshToken = this.serialize(refreshToken);
+
+                // refresh --> access
+                byte[] refreshToAccessKey = this.serializeKey(REFRESH_TO_ACCESS + refreshToken);
+
+                // access --> refresh
+                byte[] accessToRefreshKey = this.serializeKey(ACCESS_TO_REFRESH + securityToken.getAccessToken());
+
+                conn.stringCommands().set(refreshToAccessKey, serializedAccessToken);
+                conn.stringCommands().set(accessToRefreshKey, serializedRefreshToken);
+
+                Integer expires = securityToken.getRefreshExpiresIn();
+                if (expires != null && expires > 0) {
+                    // 存储refresh_token 和 access_token的关系
+                    conn.expire(refreshToAccessKey, (long) expires);
+                    conn.expire(accessToRefreshKey, (long) expires);
                 }
             }
 
@@ -214,219 +208,89 @@ public class RedisTokenStore {
         }
     }
 
-    private static String getApprovalKey(Authentication authentication) {
-        String userName = authentication.getUsername() == null ? "" : authentication.getUsername();
-        return getApprovalKey(authentication.getRequest().getClientId(), userName);
-    }
+    public void removeAccessToken(String accessToken) {
+        byte[] accessToUserKey = this.serializeKey(ACCESS_TO_USER + accessToken);
+        byte[] accessToRefreshKey = this.serializeKey(ACCESS_TO_REFRESH + accessToken);
 
-    private static String getApprovalKey(String clientId, String userName) {
-        return clientId + (userName == null ? "" : ":" + userName);
-    }
-
-
-    public void removeAccessToken(AccessToken accessToken) {
-        this.removeAccessToken(accessToken.getValue());
-    }
-
-
-    public AccessToken readAccessToken(String tokenValue) {
-        byte[] key = this.serializeKey(ACCESS + tokenValue);
-        byte[] bytes = null;
         RedisConnection conn = this.getConnection();
-
-        try {
-            bytes = conn.get(key);
-        } finally {
-            conn.close();
-        }
-
-        AccessToken var5 = this.deserializeAccessToken(bytes);
-        return var5;
-    }
-
-    public void removeAccessToken(String tokenValue) {
-        byte[] accessKey = this.serializeKey(ACCESS + tokenValue);
-        byte[] authKey = this.serializeKey(AUTH + tokenValue);
-        byte[] accessToRefreshKey = this.serializeKey(ACCESS_TO_REFRESH + tokenValue);
-        RedisConnection conn = this.getConnection();
-
         try {
             conn.openPipeline();
-            conn.get(accessKey);
-            conn.get(authKey);
-            conn.del(new byte[][]{accessKey});
+            conn.get(accessToUserKey);
+            conn.get(accessToRefreshKey);
+
+            // 移除 access_to_user
+            conn.del(new byte[][]{accessToUserKey});
+
+            // 移除 access_to_refresh
             conn.del(new byte[][]{accessToRefreshKey});
-            conn.del(new byte[][]{authKey});
+
             List<Object> results = conn.closePipeline();
-            byte[] access = (byte[]) results.get(0);
-            byte[] auth = (byte[]) results.get(1);
-            Authentication authentication = this.deserializeAuthentication(auth);
-            if (authentication != null) {
-                String key = this.authenticationKeyGenerator.extractKey(authentication);
-                byte[] authToAccessKey = this.serializeKey(AUTH_TO_ACCESS + key);
-                byte[] unameKey = this.serializeKey(UNAME_TO_ACCESS + getApprovalKey(authentication));
-                byte[] clientId = this.serializeKey(CLIENT_ID_TO_ACCESS + authentication.getRequest().getClientId());
+
+            // 从删除的通道中依次取出结果
+            byte[] user = (byte[]) results.get(0);
+            byte[] refresh = (byte[]) results.get(1);
+
+            SecurityUser securityUser = this.deserializeUser(user);
+            String  refreshToken = this.deserializeString(refresh);
+            if (securityUser != null) {
+                byte[] userToAccessKey = this.serializeKey(USER_TO_ACCESS + securityUser.getUserId());
                 conn.openPipeline();
-                conn.del(new byte[][]{authToAccessKey});
-                conn.lRem(unameKey, 1L, access);
-                conn.lRem(clientId, 1L, access);
-                conn.del(new byte[][]{this.serialize(ACCESS + key)});
+
+                // 移除 user_to_access
+                conn.del(new byte[][]{userToAccessKey});
+                conn.closePipeline();
+            }
+            if (refreshToken != null) {
+                byte[] refreshToAccessKey = this.serializeKey(REFRESH_TO_ACCESS + refreshToken);
+                conn.openPipeline();
+
+                // 移除 refresh_to_access
+                conn.del(new byte[][]{refreshToAccessKey});
                 conn.closePipeline();
             }
         } finally {
             conn.close();
         }
-
     }
 
-
-    public void storeRefreshToken(RefreshToken refreshToken, Authentication authentication) {
-        byte[] refreshKey = this.serializeKey(REFRESH + refreshToken.getValue());
-        byte[] refreshAuthKey = this.serializeKey(REFRESH_AUTH + refreshToken.getValue());
-        byte[] serializedRefreshToken = this.serialize(refreshToken);
-        RedisConnection conn = this.getConnection();
-
-        try {
-            conn.openPipeline();
-            conn.stringCommands().set(refreshKey, serializedRefreshToken);
-            conn.stringCommands().set(refreshAuthKey, this.serialize(authentication));
-            Date expiration = refreshToken.getExpiration();
-            if (expiration != null) {
-                int seconds = Long.valueOf((expiration.getTime() - System.currentTimeMillis()) / 1000L).intValue();
-                conn.expire(refreshKey, (long) seconds);
-                conn.expire(refreshAuthKey, (long) seconds);
-            }
-            conn.closePipeline();
-        } finally {
-            conn.close();
-        }
-
-    }
-
-
-    public RefreshToken readRefreshToken(String tokenValue) {
-        byte[] key = this.serializeKey(REFRESH + tokenValue);
+    /**
+     * 通过token 获取刷新token
+     *
+     * @param accessToken 访问token
+     * @return
+     */
+    public String readRefreshToken(String accessToken) {
+        byte[] key = this.serializeKey(ACCESS_TO_REFRESH + accessToken);
         byte[] bytes = null;
         RedisConnection conn = this.getConnection();
-
         try {
             bytes = conn.get(key);
         } finally {
             conn.close();
         }
 
-        RefreshToken var5 = this.deserializeRefreshToken(bytes);
+        String var5 = this.deserializeString(bytes);
         return var5;
     }
 
-
-    public void removeRefreshToken(RefreshToken refreshToken) {
-        this.removeRefreshToken(refreshToken.getValue());
-    }
-
-    public void removeRefreshToken(String tokenValue) {
-        byte[] refreshKey = this.serializeKey(REFRESH + tokenValue);
-        byte[] refreshAuthKey = this.serializeKey(REFRESH_AUTH + tokenValue);
-        byte[] refresh2AccessKey = this.serializeKey(REFRESH_TO_ACCESS + tokenValue);
-        byte[] access2RefreshKey = this.serializeKey(ACCESS_TO_REFRESH + tokenValue);
+    /**
+     * 移除refresh_token
+     * @param refreshToken
+     */
+    public void removeRefreshToken(String refreshToken) {
+        byte[] refresh2AuthKey = this.serializeKey(REFRESH_TO_USER + refreshToken);
+        byte[] refresh2AccessKey = this.serializeKey(REFRESH_TO_ACCESS + refreshToken);
         RedisConnection conn = this.getConnection();
 
         try {
             conn.openPipeline();
-            conn.del(new byte[][]{refreshKey});
-            conn.del(new byte[][]{refreshAuthKey});
+            conn.del(new byte[][]{refresh2AuthKey});
             conn.del(new byte[][]{refresh2AccessKey});
-            conn.del(new byte[][]{access2RefreshKey});
             conn.closePipeline();
         } finally {
             conn.close();
         }
 
-    }
-
-
-    public void removeAccessTokenUsingRefreshToken(RefreshToken refreshToken) {
-        this.removeAccessTokenUsingRefreshToken(refreshToken.getValue());
-    }
-
-    private void removeAccessTokenUsingRefreshToken(String refreshToken) {
-        byte[] key = this.serializeKey(REFRESH_TO_ACCESS + refreshToken);
-        List<Object> results = null;
-        RedisConnection conn = this.getConnection();
-
-        try {
-            conn.openPipeline();
-            conn.get(key);
-            conn.del(new byte[][]{key});
-            results = conn.closePipeline();
-        } finally {
-            conn.close();
-        }
-
-        if (results != null) {
-            byte[] bytes = (byte[]) results.get(0);
-            String accessToken = this.deserializeString(bytes);
-            if (accessToken != null) {
-                this.removeAccessToken(accessToken);
-            }
-
-        }
-    }
-
-
-    public Collection<AccessToken> findTokensByClientIdAndUserName(String clientId, String userName) {
-        byte[] approvalKey = this.serializeKey(UNAME_TO_ACCESS + getApprovalKey(clientId, userName));
-        List<byte[]> byteList = null;
-        RedisConnection conn = this.getConnection();
-
-        try {
-            byteList = conn.lRange(approvalKey, 0L, -1L);
-        } finally {
-            conn.close();
-        }
-
-        if (byteList != null && byteList.size() != 0) {
-            List<AccessToken> accessTokens = new ArrayList(byteList.size());
-            Iterator var7 = byteList.iterator();
-
-            while (var7.hasNext()) {
-                byte[] bytes = (byte[]) var7.next();
-                AccessToken accessToken = this.deserializeAccessToken(bytes);
-                accessTokens.add(accessToken);
-            }
-
-            return Collections.unmodifiableCollection(accessTokens);
-        } else {
-            return Collections.emptySet();
-        }
-    }
-
-
-    public Collection<AccessToken> findTokensByClientId(String clientId) {
-        byte[] key = this.serializeKey(CLIENT_ID_TO_ACCESS + clientId);
-        List<byte[]> byteList = null;
-        RedisConnection conn = this.getConnection();
-
-        try {
-            byteList = conn.lRange(key, 0L, -1L);
-        } finally {
-            conn.close();
-        }
-
-        if (byteList != null && byteList.size() != 0) {
-            List<AccessToken> accessTokens = new ArrayList(byteList.size());
-            Iterator var6 = byteList.iterator();
-
-            while (var6.hasNext()) {
-                byte[] bytes = (byte[]) var6.next();
-                AccessToken accessToken = this.deserializeAccessToken(bytes);
-                accessTokens.add(accessToken);
-            }
-
-            return Collections.unmodifiableCollection(accessTokens);
-        } else {
-            return Collections.emptySet();
-        }
     }
 
 }

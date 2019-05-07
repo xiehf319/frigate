@@ -3,3 +3,13 @@ server:
 spring:
   application:
     name: user-center
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+security:
+  access:
+    expires: 3600
+    enable-refresh: true
+  refresh:
+    expires: 7200

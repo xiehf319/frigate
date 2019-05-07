@@ -6,7 +6,6 @@
         <groupId>cn.cici.frigate</groupId>
         <artifactId>frigate</artifactId>
         <version>1.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.cici.frigate.gateway</groupId>
     <artifactId>api-gateway</artifactId>

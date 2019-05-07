@@ -6,33 +6,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeSet;
 
 /**
  * @author xiehf
  * @date 2019/5/7 0:33
  * @concat 370693739@qq.com
  **/
-public class AuthenticationKeyGenerator {
+public class UserKeyGenerator {
 
-    private static final String CLIENT_ID = "client_id";
-    private static final String SCOPE = "scope";
-    private static final String USERNAME = "username";
+    public UserKeyGenerator() {
 
-    public AuthenticationKeyGenerator() {
     }
 
-    public String extractKey(Authentication authentication) {
+    public String extractKey(SecurityUser securityUser) {
         Map<String, String> values = new LinkedHashMap();
-        Request request = authentication.getRequest();
-        if (!authentication.isClientOnly()) {
-            values.put("username", authentication.getName());
-        }
-        values.put("client_id", request.getClientId());
-        if (request.getScope() != null) {
-            values.put("scope", SecurityUtils.formatParameterList(new TreeSet<>(request.getScope())));
-        }
-
+        values.put("userId", securityUser.getUserId());
+        values.put("username", securityUser.getUsername());
         return this.generateKey(values);
     }
 

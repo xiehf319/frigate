@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `oauth2`.`oauth_access_token` (
   `authentication_id` VARCHAR(128) NOT NULL,
   `user_name` VARCHAR(256) NULL DEFAULT NULL,
   `client_id` VARCHAR(256) NULL DEFAULT NULL,
-  `authentication` BLOB NULL DEFAULT NULL,
+  `securityUser` BLOB NULL DEFAULT NULL,
   `refresh_token` VARCHAR(256) NULL DEFAULT NULL,
   PRIMARY KEY (`authentication_id`))
 ENGINE = InnoDB
@@ -90,7 +90,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oauth2`.`oauth_code` (
   `code` VARCHAR(256) NULL DEFAULT NULL,
-  `authentication` BLOB NULL DEFAULT NULL)
+  `securityUser` BLOB NULL DEFAULT NULL)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -101,6 +101,6 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `oauth2`.`oauth_refresh_token` (
   `token_id` VARCHAR(256) NULL DEFAULT NULL,
   `token` BLOB NULL DEFAULT NULL,
-  `authentication` BLOB NULL DEFAULT NULL)
+  `securityUser` BLOB NULL DEFAULT NULL)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
