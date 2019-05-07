@@ -9,6 +9,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 zuul:
   # 忽略所有服务，只路由以下配置的服务
+  host:
+    connect-timeout-millis: 20000
+    connection-request-timeout-millis: -1
+    socket-timeout-millis: 10000
   ignored-services: '*'
   routes:
     frigate-admin:

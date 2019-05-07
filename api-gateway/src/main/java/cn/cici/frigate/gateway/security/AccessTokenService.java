@@ -1,13 +1,13 @@
 package cn.cici.frigate.gateway.security;
 
+import cn.cici.frigate.commons.vo.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
 
 /**
  * @author xiehf
@@ -21,16 +21,11 @@ public class AccessTokenService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private LoadBalancerClient loadBalancerClient;
-
-    public void checkToken(String token) {
-        ServiceInstance instance = loadBalancerClient.choose("user-server");
-        if (instance == null) {
-
-        } else {
-            String uri = instance.getUri().toString();
-            log.info(uri);
-        }
+    public R checkToken(String authorization) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, authorization);
+        HttpEntity httpEntity = new HttpEntity(headers);
+        R r = restTemplate.postForObject("http://user-center/check/token", httpEntity, R.class);
+        return r;
     }
 }

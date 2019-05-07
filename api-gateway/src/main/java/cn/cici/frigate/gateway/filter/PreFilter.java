@@ -1,5 +1,6 @@
 package cn.cici.frigate.gateway.filter;
 
+import cn.cici.frigate.commons.vo.R;
 import cn.cici.frigate.gateway.security.AccessTokenService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -52,20 +53,21 @@ public class PreFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
 
         String requestURI = request.getRequestURI();
-        log.info("-------->>> TokenFilter {}, {}", request.getMethod(), requestURI);
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("---------------------------------");
-        log.info(authorization);
-        log.info("---------------------------------");
+
 
         if (permitAllUri(requestURI)) {
+            log.info("--------  permit uri {}  ----------", requestURI);
             return null;
         }
-
+        log.info("---------------------------------");
+        log.info("Uri:  {} ---------", requestURI);
+        log.info("---------------------------------");
+        log.info("token: {}", authorization);
+        log.info("---------------------------------");
         if (StringUtils.isNotBlank(authorization)) {
-            String token = authorization.substring(JWT_SEPARATOR.length());
-            if (StringUtils.isNotBlank(token)) {
-                accessTokenService.checkToken(token);
+            R r = accessTokenService.checkToken(authorization);
+            if (r != null && r.getCode() == HttpStatus.OK.value()) {
                 ctx.setSendZuulResponse(true);
                 ctx.setResponseStatusCode(HttpStatus.OK.value());
                 return null;

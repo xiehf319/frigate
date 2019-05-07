@@ -8,10 +8,8 @@ import cn.cici.frigate.user.properties.SecurityProperties;
 import cn.cici.frigate.user.security.RedisTokenStore;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -76,6 +74,17 @@ public class AuthController {
     public R<SecurityUser> currentUser() {
         SecurityUser securityUser = redisTokenStore.readSecurityUserByAccessToken("123456");
         return R.success(securityUser);
+    }
+
+    @RequestMapping(value = "/check/token", method = RequestMethod.POST)
+    public R checkToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+
+        String accessToken = authorization.substring("Bearer ".length());
+        SecurityUser securityUser = redisTokenStore.readSecurityUserByAccessToken(accessToken);
+        if (securityUser == null) {
+            return R.error(401, "Invalid token");
+        }
+        return R.success();
     }
 
 }
