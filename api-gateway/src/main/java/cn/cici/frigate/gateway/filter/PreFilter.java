@@ -5,8 +5,10 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,20 +58,29 @@ public class PreFilter extends ZuulFilter {
         log.info(authorization);
         log.info("---------------------------------");
 
-//        if (requestURI.equalsIgnoreCase("/admin/login")) {
-//            accessTokenService.login("aaaaaa", "bbbbbb");
-//        }
-//        if (StringUtils.isNotBlank(authorization)) {
-//            String token = authorization.substring(JWT_SEPARATOR.length());
-//            if (StringUtils.isNotBlank(token)) {
-//                ctx.setSendZuulResponse(true);
-//                ctx.setResponseStatusCode(HttpStatus.OK.value());
-//                return null;
-//            }
-//        }
-//        ctx.setSendZuulResponse(false);
-//        ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-//        ctx.setResponseBody("token must be request");
+        if (permitAllUri(requestURI)) {
+            return null;
+        }
+
+        if (StringUtils.isNotBlank(authorization)) {
+            String token = authorization.substring(JWT_SEPARATOR.length());
+            if (StringUtils.isNotBlank(token)) {
+                accessTokenService.checkToken(token);
+                ctx.setSendZuulResponse(true);
+                ctx.setResponseStatusCode(HttpStatus.OK.value());
+                return null;
+            }
+        }
+        ctx.setSendZuulResponse(false);
+        ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+        ctx.setResponseBody("token must be request");
         return null;
+    }
+
+    private boolean permitAllUri(String requestURI) {
+        if (requestURI.contains("/user/login")) {
+            return true;
+        }
+        return false;
     }
 }

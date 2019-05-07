@@ -8,14 +8,19 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 zuul:
+  # 忽略所有服务，只路由以下配置的服务
+  ignored-services: '*'
   routes:
     frigate-admin:
       path: /admin/**
       service-id: frigate-admin
+      strip-prefix: false
     auth-server:
       path: /oauth/**
       service-id: auth-server
+      strip-prefix: false
     user-center:
       path: /user/**
       service-id: user-center
+      strip-prefix: false
   sensitive-headers: '*'
