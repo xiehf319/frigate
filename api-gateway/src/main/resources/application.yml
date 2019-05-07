@@ -15,19 +15,7 @@ zuul:
     auth-server:
       path: /oauth/**
       service-id: auth-server
-  sensitive-headers: Cookie,SetCookie
-security:
-  oauth2:
-    sso:
-      login-path: /login
-    resource:
-      jwt:
-        key-value: cici
-      user-info-uri: http://auth-center/oauth/current
-      id: api-gateway
-      prefer-token-info: false
-    client:
-      client-id: clientId
-      client-secret: 123456
-      access-token-uri: http://auth-center/oauth/token
-      user-authorization-uri: /oauth/authorize
+    user-center:
+      path: /user/**
+      service-id: user-center
+  sensitive-headers: '*'

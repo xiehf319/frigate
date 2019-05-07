@@ -1,4 +1,4 @@
-package cn.cici.frigate.user.security;
+package cn.cici.frigate.commons.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

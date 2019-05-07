@@ -1,8 +1,11 @@
 package cn.cici.frigate.user.controller;
 
+import cn.cici.frigate.commons.security.SecurityToken;
+import cn.cici.frigate.commons.security.SecurityUser;
 import cn.cici.frigate.commons.vo.R;
+import cn.cici.frigate.user.dao.entity.User;
 import cn.cici.frigate.user.properties.SecurityProperties;
-import cn.cici.frigate.user.security.*;
+import cn.cici.frigate.user.security.RedisTokenStore;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +29,13 @@ public class AuthController {
     @Autowired
     private SecurityProperties properties;
 
-    @RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+    /**
+     * 登陆
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public R<SecurityToken> login(@RequestBody Map<String, String> map) {
 
         SecurityToken securityToken = new SecurityToken();
@@ -38,17 +47,35 @@ public class AuthController {
         securityToken.setRefreshToken("111111");
         securityToken.setRefreshExpiresIn(properties.getRefresh().getExpires());
 
-        SecurityUser securityUser = new SecurityUser();
-        securityUser.setUserId("654321");
-        securityUser.setUsername("aaaaaa");
+        User securityUser = new User();
+        securityUser.setRecordId("aaaaaa");
+        securityUser.setUsername("bbbbbbbbb");
         redisTokenStore.storeAccessToken(securityToken, securityUser);
         return R.success(securityToken);
     }
 
 
-    @RequestMapping(value = "/admin/logout", method = RequestMethod.POST)
+    /**
+     * 登出
+     *
+     * @return
+     */
+    @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public R  logout() {
         redisTokenStore.removeAccessToken("123456");
         return R.success();
     }
+
+
+    /**
+     * 当前登陆用户信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/user/current", method = RequestMethod.GET)
+    public R<SecurityUser> currentUser() {
+        SecurityUser securityUser = redisTokenStore.readSecurityUserByAccessToken("123456");
+        return R.success(securityUser);
+    }
+
 }

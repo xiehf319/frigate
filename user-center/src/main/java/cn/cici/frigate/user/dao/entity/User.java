@@ -1,6 +1,9 @@
 package cn.cici.frigate.user.dao.entity;
 
+import cn.cici.frigate.commons.security.SecurityUser;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @description:
@@ -8,9 +11,14 @@ import lombok.Data;
  * @author: Heyfan Xie
  */
 @Data
-public class User {
+public class User implements SecurityUser, Serializable {
 
     private String recordId;
 
     private String username;
+
+    @Override
+    public String getUserId() {
+        return recordId;
+    }
 }

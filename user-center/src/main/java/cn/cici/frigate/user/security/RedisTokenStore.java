@@ -1,5 +1,7 @@
 package cn.cici.frigate.user.security;
 
+import cn.cici.frigate.commons.security.SecurityToken;
+import cn.cici.frigate.commons.security.SecurityUser;
 import cn.cici.frigate.user.redis.JdkSerializationStrategy;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -52,9 +54,6 @@ public class RedisTokenStore {
         this.connectionFactory = connectionFactory;
     }
 
-    public void setUserKeyGenerator(UserKeyGenerator userKeyGenerator) {
-        this.userKeyGenerator = userKeyGenerator;
-    }
 
     public void setSerializationStrategy(JdkSerializationStrategy serializationStrategy) {
         this.serializationStrategy = serializationStrategy;
@@ -100,7 +99,7 @@ public class RedisTokenStore {
      */
     public SecurityToken getAccessToken(SecurityUser securityUser) {
         String key = this.userKeyGenerator.extractKey(securityUser);
-        byte[] serializedKey = this.serializeKey(USER_TO_ACCESS + key);
+        byte[] serializedKey = this.serializeKey(USER_TO_ACCESS + securityUser.getUserId());
         byte[] bytes = null;
         RedisConnection conn = this.getConnection();
 
