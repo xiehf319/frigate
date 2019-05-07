@@ -24,7 +24,7 @@ public class AuthConfig {
     @Bean
     public RedisTokenStore redisTokenStore(RedisConnectionFactory redisConnectionFactory) {
         RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
-        redisTokenStore.setPrefix("ADMIN:");
+        redisTokenStore.setPrefix("AUTH:");
         return redisTokenStore;
     }
 
