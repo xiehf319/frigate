@@ -18,9 +18,10 @@
     </parent>
 
     <modules>
-        <module>commons</module>
-        <module>framework</module>
-        <module>business</module>
+        <module>business-service</module>
+        <module>common-service</module>
+        <module>system-framework</module>
+        <module>component</module>
     </modules>
 
     <properties>
