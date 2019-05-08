@@ -13,7 +13,6 @@
 
     <modules>
         <module>user-center</module>
-        <module>frigate-admin</module>
         <module>logistics-service</module>
     </modules>
 </project>
