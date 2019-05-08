@@ -1,4 +1,4 @@
-package cn.cici.resource.server;
+package cn.cici.frigate.resource.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

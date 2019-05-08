@@ -18,13 +18,9 @@
     </parent>
 
     <modules>
-        <module>config-server</module>
-        <module>eureka-server</module>
-        <module>frigate-admin</module>
-        <module>auth-server</module>
-        <module>api-gateway</module>
-        <module>user-center</module>
         <module>commons</module>
+        <module>framework</module>
+        <module>business</module>
     </modules>
 
     <properties>
