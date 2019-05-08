@@ -3,21 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>frigate</artifactId>
+        <artifactId>common-service</artifactId>
         <groupId>cn.cici.frigate</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <artifactId>common-service</artifactId>
 
-    <modules>
-        <module>logging-service</module>
-        <module>sso-service</module>
-        <module>mail-service</module>
-        <module>message-service</module>
-        <module>auth-service</module>
-        <module>job-service</module>
-        <module>oss-service</module>
-    </modules>
+    <artifactId>job-service</artifactId>
+
+
 </project>
