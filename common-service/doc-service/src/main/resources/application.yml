@@ -1,0 +1,9 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: doc-service
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/

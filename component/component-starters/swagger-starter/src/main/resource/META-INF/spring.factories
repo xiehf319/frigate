@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cici.frigate.swagger.config.Swagger2Config
+  cn.cici.frigate.swagger.config.Swagger2Config,\
+  cn.cici.frigate.swagger.config.SwaggerWebConfig

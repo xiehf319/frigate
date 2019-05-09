@@ -19,5 +19,6 @@
         <module>auth-service</module>
         <module>job-service</module>
         <module>oss-service</module>
+        <module>doc-service</module>
     </modules>
 </project>
