@@ -4,6 +4,20 @@ spring:
   application:
     name: doc-service
 eureka:
+
   client:
     serviceUrl:
       defaultZone: http://localhost:9000/eureka/
+security:
+  oauth2:
+    client:
+      client-id: code
+      client-secret: 123456
+      user-authorization-uri: http://localhost:6000/oauth/authorize
+      grant-type: authorization_code
+      scope: all
+      access-token-uri: http://localhost:6000/oauth/token
+    resource:
+      user-info-uri: http://localhost:6000/user/current
+    authorization:
+      check-token-access: http://localhost:6000/oauth/check_token
