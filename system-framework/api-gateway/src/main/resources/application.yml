@@ -1,12 +1,12 @@
 server:
-  port: 8001
+  port: 9002
 spring:
   application:
     name: api-gateway
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:9000/eureka/
 zuul:
   # 忽略所有服务，只路由以下配置的服务
   host:
@@ -24,7 +24,7 @@ zuul:
       service-id: auth-server
       strip-prefix: false
     user-center:
-      path: /user/**
-      service-id: user-center
+      path: /rbac/**
+      service-id: rbac-center
       strip-prefix: false
   sensitive-headers: '*'

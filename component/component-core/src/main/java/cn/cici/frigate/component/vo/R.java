@@ -2,13 +2,15 @@ package cn.cici.frigate.component.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author xiehf
  * @date 2019/5/6 23:42
  * @concat 370693739@qq.com
  **/
 @Data
-public class R<T> {
+public class R<T> implements Serializable {
 
     private int code;
 

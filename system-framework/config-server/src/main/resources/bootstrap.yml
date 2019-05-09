@@ -1,5 +1,5 @@
 server:
-  port: 7001
+  port: 9001
 spring:
   application:
     name: config-server
@@ -31,4 +31,4 @@ hibernate:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:9000/eureka/

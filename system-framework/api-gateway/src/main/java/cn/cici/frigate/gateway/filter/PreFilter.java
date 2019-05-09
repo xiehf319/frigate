@@ -80,7 +80,7 @@ public class PreFilter extends ZuulFilter {
     }
 
     private boolean permitAllUri(String requestURI) {
-        if (requestURI.contains("/user/login")) {
+        if (requestURI.contains("/rbac/login")) {
             return true;
         }
         return false;

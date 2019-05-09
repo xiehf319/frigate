@@ -18,8 +18,9 @@
     |   |-- component-starters      // 自动配置jar
     |   |   |-- swagger-starter         // 支持swagger的jar
     |-- system-framework        // 基础服务
-        |-- config-server           // 配置中心
-        |-- eureka-server           // 注册中心
+        |-- eureka-server[9000]         // 注册中心
+        |-- config-server[9001]         // 配置中心
+        |-- api-gateway[9002]           // 网关
         |-- monitor                 // admin监控
         |-- zipkin                  // zipkin链路跟踪
 ```

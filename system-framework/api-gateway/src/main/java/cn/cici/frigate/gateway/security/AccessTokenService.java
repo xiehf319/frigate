@@ -24,7 +24,7 @@ public class AccessTokenService {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, authorization);
         HttpEntity httpEntity = new HttpEntity(headers);
-        R r = restTemplate.postForObject("http://user-center/check/token", httpEntity, R.class);
+        R r = restTemplate.postForObject("http://rbac-center/check/token", httpEntity, R.class);
         return r;
     }
 }

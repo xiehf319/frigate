@@ -30,7 +30,6 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
         <spring.boot.mybatis.version>1.3.2</spring.boot.mybatis.version>
-        <swagger2.version>2.9.2</swagger2.version>
         <lombok.version>1.16.10</lombok.version>
     </properties>
 
@@ -83,16 +82,15 @@
                 <version>${mysql.version}</version>
             </dependency>
 
-            <!-- swagger2 -->
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger2.version}</version>
+                <groupId>cn.cici.frigate</groupId>
+                <artifactId>swagger-starter</artifactId>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger2.version}</version>
+                <groupId>cn.cici.frigate</groupId>
+                <artifactId>component-core</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
