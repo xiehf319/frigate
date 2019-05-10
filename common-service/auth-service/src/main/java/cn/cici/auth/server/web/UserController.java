@@ -15,7 +15,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-public class UserEndpoint {
+public class UserController {
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public Principal getUser(Principal principal) {

@@ -1,23 +1,25 @@
 server:
-  port: 6001
+  port: 4001
 spring:
   application:
     name: doc-service
 eureka:
-
   client:
     serviceUrl:
       defaultZone: http://localhost:9000/eureka/
+  instance:
+    prefer-ip-address: true
 security:
   oauth2:
     client:
       client-id: code
+      user-authorization-uri: http://localhost:4000/oauth/authorize
+      access-token-uri: http://localhost:4000/oauth/token
       client-secret: 123456
-      user-authorization-uri: http://localhost:6000/oauth/authorize
       grant-type: authorization_code
-      scope: all
-      access-token-uri: http://localhost:6000/oauth/token
     resource:
-      user-info-uri: http://localhost:6000/user/current
-    authorization:
-      check-token-access: http://localhost:6000/oauth/check_token
+      user-info-uri: http://localhost:4000/user/current
+      prefer-token-info: false
+swagger:
+  doc:
+    services: rbac-service

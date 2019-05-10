@@ -1,8 +1,8 @@
 package cn.cici.frigate.doc.config;
 
-import com.netflix.discovery.converters.Auto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
 import org.springframework.context.annotation.Primary;
@@ -11,8 +11,8 @@ import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @description:
@@ -27,12 +27,15 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
     @Autowired
     RouteLocator routeLocator;
 
+    @Value("${swagger.doc.services}")
+    private Set<String> services;
+
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = new ArrayList<>();
         List<Route> routes = routeLocator.getRoutes();
         log.info("route size: {}", routes.size());
-        routes.forEach(route -> resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"))));
+        routes.stream().filter(route -> services.contains(route.getId())).forEach(route -> resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"))));
         return resources;
     }
 

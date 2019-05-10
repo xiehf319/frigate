@@ -18,12 +18,14 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +36,14 @@ import java.util.concurrent.TimeUnit;
  * 2.配置token存储方式
  * 3.配置表单控制
  * 4.配置申请token支持的请求方法
+ *
+ * AuthorizationServer相关地址
+ * [/oauth/authorize]
+ * [/oauth/token]
+ * [/oauth/check_token]
+ * [/oauth/confirm_access]
+ * [/oauth/token_key]
+ * [/oauth/error]
  *
  * @description:
  * @createDate:2019/4/29$10:57$
@@ -53,6 +63,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private RedisConnectionFactory factory;
+
+    @Autowired
+    private AuthorizationEndpoint authorizationEndpoint;
+
+    @PostConstruct
+    public void init() {
+        authorizationEndpoint.setUserApprovalPage("forward:/oauth/custom_approval");
+        authorizationEndpoint.setErrorPage("forward:/oauth/custom_error");
+    }
 
     @Bean
     public TokenStore tokenStore() {
@@ -78,18 +97,32 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return converter;
     }
 
+
+    /**
+     * 配置客户端的详情信息 也就是 oauth_client_details 表存储的信息
+     *
+     * @param clients
+     * @throws Exception
+     */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource);
     }
 
+    /**
+     * 配置token的生成方式和存储方式
+     * 以及可以配置授权码模式下存储方式
+     *
+     * @param endpoints
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 // 授权存储方式
                 .approvalStore(approvalStore())
-                // 授权码模式code存储方式
-                .authorizationCodeServices(authorizationCodeServices())
+                // 授权码模式code存储方式，线上使用数据库存储
+                // .authorizationCodeServices(authorizationCodeServices())
                 // token存储方式
                 .tokenStore(tokenStore())
                 // 使用jwt增强
@@ -106,10 +139,24 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints.tokenServices(tokenServices);
     }
 
+    /**
+     * 配置token endpoint的安全与权限访问
+     *
+     * 		String tokenKeyPath = handlerMapping.getServletPath("/oauth/token_key");
+     * 		String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
+     *
+     * @param security
+     * @throws Exception
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        // 允许表单认证
-        security.allowFormAuthenticationForClients().tokenKeyAccess("permitAll()")
+
+        security
+                // 允许表单认证
+                .allowFormAuthenticationForClients()
+                // /oauth/token_key 不需要鉴权
+                .tokenKeyAccess("permitAll()")
+                // /oauth/check_token 需要鉴权
                 .checkTokenAccess("isAuthenticated()");
     }
 }

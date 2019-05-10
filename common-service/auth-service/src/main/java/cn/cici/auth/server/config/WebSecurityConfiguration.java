@@ -15,6 +15,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ *
+ * 支持表单登陆的方式
+ *
  * @description:
  * @createDate:2019/4/29$11:00$
  * @author: Heyfan Xie
@@ -23,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Order(10)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,11 +56,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .and()
                 .authorizeRequests()
+                //.antMatchers("/", "/oauth/**", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
                 .logout()
+                // 待自定义
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
                 .permitAll()
