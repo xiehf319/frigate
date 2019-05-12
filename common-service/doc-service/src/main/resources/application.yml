@@ -9,6 +9,8 @@ eureka:
       defaultZone: http://localhost:9000/eureka/
   instance:
     prefer-ip-address: true
+zuul:
+  add-proxy-headers: true
 security:
   oauth2:
     client:
@@ -16,10 +18,9 @@ security:
       user-authorization-uri: http://localhost:4000/oauth/authorize
       access-token-uri: http://localhost:4000/oauth/token
       client-secret: 123456
-      grant-type: authorization_code
     resource:
       user-info-uri: http://localhost:4000/user/current
-      prefer-token-info: false
+      prefer-token-info: true
 swagger:
   doc:
     services: rbac-service
