@@ -16,7 +16,7 @@ import java.io.IOException;
 @Controller
 public class LogoutController {
 
-    @RequestMapping("/oauth/invoke")
+    @RequestMapping("/user/invoke")
     public void exit(HttpServletRequest request, HttpServletResponse response) {
 
         new SecurityContextLogoutHandler().logout(request, null, null);

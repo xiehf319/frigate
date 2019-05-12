@@ -2,6 +2,7 @@ package cn.cici.auth.server.config;
 
 import cn.cici.auth.server.support.UserServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @Order(10)
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -55,17 +55,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .rememberMe()
                 .and()
-                .authorizeRequests()
-//                .antMatchers("/", "/oauth/**", "/login").permitAll()
-                .anyRequest().authenticated()
+                    .formLogin().permitAll()
                 .and()
-                .formLogin().permitAll()
+                    .logout().logoutUrl("/logout").logoutSuccessUrl("/backReferer")
                 .and()
-                .logout()
-                // 待自定义
-                .invalidateHttpSession(true)
-                .permitAll()
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
                 .and()
-                .csrf().disable();
+                    .csrf().disable();
     }
 }
