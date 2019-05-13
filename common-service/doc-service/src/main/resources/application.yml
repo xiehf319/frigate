@@ -14,13 +14,9 @@ zuul:
 security:
   oauth2:
     client:
-      client-id: code
-      user-authorization-uri: http://localhost:4000/oauth/authorize
+      client-id: client
       access-token-uri: http://localhost:4000/oauth/token
       client-secret: 123456
-    resource:
-      user-info-uri: http://localhost:4000/user/current
-      prefer-token-info: true
 swagger:
   doc:
     services: rbac-service

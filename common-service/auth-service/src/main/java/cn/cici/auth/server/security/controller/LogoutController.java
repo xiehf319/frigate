@@ -1,4 +1,4 @@
-package cn.cici.auth.server.web;
+package cn.cici.auth.server.security.controller;
 
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;

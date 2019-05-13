@@ -1,5 +1,6 @@
-package cn.cici.auth.server.support;
+package cn.cici.auth.server.security.service;
 
+import cn.cici.auth.server.support.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

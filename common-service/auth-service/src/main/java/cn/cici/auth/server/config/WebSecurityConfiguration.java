@@ -1,8 +1,9 @@
 package cn.cici.auth.server.config;
 
-import cn.cici.auth.server.support.UserServiceDetail;
+import cn.cici.auth.server.security.handler.LoginFailureHandler;
+import cn.cici.auth.server.security.handler.LoginSuccessHandler;
+import cn.cici.auth.server.security.service.UserServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -14,9 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsUtils;
 
 /**
- *
  * 支持表单登陆的方式
  *
  * @description:
@@ -26,7 +27,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @Order(10)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+
+    @Autowired
+    private UserServiceDetail userServiceDetail;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,8 +50,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Autowired
-    private UserServiceDetail userServiceDetail;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -53,15 +63,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .rememberMe()
+                .authorizeRequests()
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin().permitAll()
+                .formLogin().permitAll()
                 .and()
-                    .logout().logoutUrl("/logout").logoutSuccessUrl("/backReferer")
-                .and()
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                .and()
-                    .csrf().disable();
+                .csrf().disable();
     }
 }

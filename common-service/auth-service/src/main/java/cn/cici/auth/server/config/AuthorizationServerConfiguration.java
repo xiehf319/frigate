@@ -67,11 +67,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private AuthorizationEndpoint authorizationEndpoint;
 
-    @PostConstruct
-    public void init() {
-        authorizationEndpoint.setUserApprovalPage("forward:/oauth/custom_approval");
-        authorizationEndpoint.setErrorPage("forward:/oauth/custom_error");
-    }
+//    @PostConstruct
+//    public void init() {
+//        authorizationEndpoint.setUserApprovalPage("forward:/oauth/custom_approval");
+//        authorizationEndpoint.setErrorPage("forward:/oauth/custom_error");
+//    }
 
     @Bean
     public TokenStore tokenStore() {

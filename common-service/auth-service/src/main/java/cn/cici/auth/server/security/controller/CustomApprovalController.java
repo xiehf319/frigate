@@ -1,4 +1,4 @@
-package cn.cici.auth.server.web;
+package cn.cici.auth.server.security.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
