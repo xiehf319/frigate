@@ -1,5 +1,6 @@
 package cn.cici.auth.server.config;
 
+import cn.cici.auth.server.security.service.UserServiceDetail;
 import cn.cici.auth.server.support.CustomRedisTokenStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -45,6 +48,9 @@ import java.util.concurrent.TimeUnit;
  * [/oauth/token_key]
  * [/oauth/error]
  *
+ *
+ * https://www.cnblogs.com/toov5/p/10327138.html
+ *
  * @description:
  * @createDate:2019/4/29$10:57$
  * @author: Heyfan Xie
@@ -66,6 +72,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private AuthorizationEndpoint authorizationEndpoint;
+
 
 //    @PostConstruct
 //    public void init() {

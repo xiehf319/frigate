@@ -1,7 +1,5 @@
 package cn.cici.auth.server.config;
 
-import cn.cici.auth.server.security.handler.LoginFailureHandler;
-import cn.cici.auth.server.security.handler.LoginSuccessHandler;
 import cn.cici.auth.server.security.service.UserServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsUtils;
 
 /**
  * 支持表单登陆的方式
@@ -29,12 +26,6 @@ import org.springframework.web.cors.CorsUtils;
 @Order(10)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
-
-    @Autowired
-    private LoginFailureHandler loginFailureHandler;
 
     @Autowired
     private UserServiceDetail userServiceDetail;
@@ -51,7 +42,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -62,12 +52,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll()
-                .and()
-                .csrf().disable();
+        http.authorizeRequests().antMatchers("/**").fullyAuthenticated().and().httpBasic();
     }
 }
