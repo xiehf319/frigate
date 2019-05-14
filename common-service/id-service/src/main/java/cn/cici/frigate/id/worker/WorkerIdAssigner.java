@@ -16,14 +16,14 @@
 package cn.cici.frigate.id.worker;
 
 /**
- * Represents a worker id assigner for {@link com.baidu.fsg.uid.impl.DefaultUidGenerator}
+ * Represents a worker id assigner for {@link cn.cici.frigate.id.impl.DefaultUidGenerator}
  * 
  * @author yutianbao
  */
 public interface WorkerIdAssigner {
 
     /**
-     * Assign worker id for {@link com.baidu.fsg.uid.impl.DefaultUidGenerator}
+     * Assign worker id for {@link cn.cici.frigate.id.impl.DefaultUidGenerator}
      * 
      * @return assigned worker id
      */

@@ -81,4 +81,14 @@ public abstract class NetUtils {
         return localAddress.getHostAddress();
     }
 
+
+    /**
+     * Retrieve local mac address
+     *
+     * @return
+     */
+    public static String getMacAddr() {
+        return "";
+    }
+
 }
