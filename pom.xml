@@ -53,6 +53,12 @@
             <version>${lombok.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${spring.boot.mybatis.version}</version>
+        </dependency>
+
     </dependencies>
 
     <!--全局版本依赖管理,声明依赖,如果子pom有用到这些组件,需声明groupId和artifactId,然后才会实际依赖-->

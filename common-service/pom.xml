@@ -20,5 +20,6 @@
         <module>job-service</module>
         <module>oss-service</module>
         <module>doc-service</module>
+        <module>id-service</module>
     </modules>
 </project>
