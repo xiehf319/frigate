@@ -23,13 +23,14 @@ public class Trans2Service {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void add() {
         addUser();
         addRole();
     }
 
-    private void addUser() {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addUser() {
         User user5 = new User();
         user5.setUsername("user5");
         user5.setPassword("pwd5");
@@ -43,7 +44,8 @@ public class Trans2Service {
         userRepository.save(user6);
     }
 
-    private void addRole() {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addRole() {
         Role role5 = new Role();
         role5.setName("role5");
         roleRepository.save(role5);

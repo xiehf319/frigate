@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class Trans4Service implements ITrans4Service {
 
     @Autowired
-    private ITrans4Service trans1Service;
+    private ITrans4Service trans4Service;
 
     @Autowired
     private UserRepository userRepository;
@@ -28,8 +28,8 @@ public class Trans4Service implements ITrans4Service {
     @Override
     public void add() {
         System.out.println(this);
-        trans1Service.addUser();
-        trans1Service.addRole();
+        trans4Service.addUser();
+        trans4Service.addRole();
     }
 
     @Override
