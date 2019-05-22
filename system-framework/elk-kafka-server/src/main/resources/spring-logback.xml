@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true"
+               scanPeriod="1 seconds">
+    <include
+            resource="org/springframework/boot/logging/logback/base.xml" />
+    <!-- <jmxConfigurator/> -->
+    <contextName>logback</contextName>
+
+    <property name="log.path" value="\logs\logback.log" />
+
+    <property name="log.pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID} --- traceId:[%X{mdc_trace_id}] [%15.15t] %-40.40logger{39} : %m%n" />
+
+    <appender name="file"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}</file>
+
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>info-%d{yyyy-MM-dd}-%i.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+
+    </appender>
+
+    <appender name="KafkaAppender"
+              class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder
+                class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+            <layout class="net.logstash.logback.layout.LogstashLayout">
+                <includeContext>true</includeContext>
+                <includeCallerData>true</includeCallerData>
+                <customFields>{"system":"kafka"}</customFields>
+                <fieldNames
+                        class="net.logstash.logback.fieldnames.ShortenedFieldNames" />
+            </layout>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--kafka topic 需要与配置文件里面的topic一致 否则kafka会沉默并鄙视你 -->
+        <topic>applog</topic>
+        <keyingStrategy
+                class="com.github.danielwegener.logback.kafka.keying.HostNameKeyingStrategy" />
+        <deliveryStrategy
+                class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+        <producerConfig>bootstrap.servers=114.115.131.208:9092</producerConfig>
+    </appender>
+
+    <!-- <logger name="Application_ERROR">
+        <appender-ref ref="KafkaAppender" />
+    </logger> -->
+
+    <root level="info">
+        <appender-ref ref="KafkaAppender" />
+    </root>
+
+</configuration>

@@ -6,9 +6,12 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
+ *
+ *
  * @description:
  * @createDate:2019/5/9$16:07$
  * @author: Heyfan Xie
@@ -26,7 +29,7 @@ public class DocApplication extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/doc.html")
+                .antMatchers("/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -34,4 +37,5 @@ public class DocApplication extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable();
     }
+
 }

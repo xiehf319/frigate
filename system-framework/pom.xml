@@ -16,5 +16,6 @@
         <module>api-gateway</module>
         <module>monitor</module>
         <module>zipkin</module>
+        <module>elk-kafka-server</module>
     </modules>
 </project>
