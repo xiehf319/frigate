@@ -23,7 +23,7 @@ zuul:
       path: /oauth/**
       service-id: auth-service
       strip-prefix: false
-    user-service:
+    rbac-service:
       path: /rbac/**
       service-id: rbac-service
       strip-prefix: false

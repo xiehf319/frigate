@@ -10,7 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,7 +46,7 @@ public class PreFilter extends ZuulFilter {
     }
 
     @Autowired
-    private AccessTokenService accessTokenService;
+    private OAuth2RestTemplate restTemplate;
 
     @Override
     public Object run() throws ZuulException {
@@ -66,12 +68,6 @@ public class PreFilter extends ZuulFilter {
         log.info("token: {}", authorization);
         log.info("---------------------------------");
         if (StringUtils.isNotBlank(authorization)) {
-            R r = accessTokenService.checkToken(authorization);
-            if (r != null && r.getCode() == HttpStatus.OK.value()) {
-                ctx.setSendZuulResponse(true);
-                ctx.setResponseStatusCode(HttpStatus.OK.value());
-                return null;
-            }
         }
         ctx.setSendZuulResponse(false);
         ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
