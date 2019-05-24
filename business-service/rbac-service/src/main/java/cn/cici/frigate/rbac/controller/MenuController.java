@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MenuController {
 
     @ApiOperation("测试查询一下")
-    @GetMapping("/menu")
+    @GetMapping("/rbac/menu")
     public R<String> getMenu() {
         return R.success("test");
     }
