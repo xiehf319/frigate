@@ -32,7 +32,7 @@ public class JwtUtil {
     /**
      * JWT 对称加密的密码
      */
-    private static final String JWT_KEY_VALUE = "cici";
+    private static final String JWT_KEY_VALUE = "cicici";
 
     /**
      * 使用JWT默认方式，生成加解密密钥

@@ -15,23 +15,17 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
-import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import javax.sql.DataSource;
 
 /**
- *
  * 作为认证服务的配置
  * 1.配置支持的授权类型
  * 2.配置token存储方式
  * 3.配置表单控制
  * 4.配置申请token支持的请求方法
- *
+ * <p>
  * AuthorizationServer相关地址
  * [/oauth/authorize]
  * [/oauth/token]
@@ -39,8 +33,8 @@ import javax.sql.DataSource;
  * [/oauth/confirm_access]
  * [/oauth/token_key]
  * [/oauth/error]
- *
- *
+ * <p>
+ * <p>
  * https://www.cnblogs.com/toov5/p/10327138.html
  *
  * @description:
@@ -64,13 +58,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private CustomUserDetailService userServiceDetail;
-
-
-//    @PostConstruct
-//    public void init() {
-//        authorizationEndpoint.setUserApprovalPage("forward:/oauth/custom_approval");
-//        authorizationEndpoint.setErrorPage("forward:/oauth/custom_error");
-//    }
 
     @Bean
     public TokenStore tokenStore() {
@@ -99,17 +86,18 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-         endpoints.tokenStore(tokenStore())
-                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-                 .userDetailsService(userServiceDetail)
-                 .authenticationManager(authenticationManager);
+        endpoints.pathMapping("/oauth/token", "/oauth/login");
+        endpoints.tokenStore(tokenStore())
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                .userDetailsService(userServiceDetail)
+                .authenticationManager(authenticationManager);
     }
 
     /**
      * 配置token endpoint的安全与权限访问
-     *
-     * 		String tokenKeyPath = handlerMapping.getServletPath("/oauth/token_key");
-     * 		String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
+     * <p>
+     * String tokenKeyPath = handlerMapping.getServletPath("/oauth/token_key");
+     * String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
      *
      * @param security
      * @throws Exception

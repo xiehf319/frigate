@@ -4,22 +4,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 
 /**
- * @description:
- * @createDate:2019/5/22$14:50$
- * @author: Heyfan Xie
+ * resource server to use user info
+ *
+ * @author Wang.ch
+ * @date 2019-03-20 18:26:47
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .requestMatchers().anyRequest()
-                .and()
-                .authorizeRequests().antMatchers("/api/**").authenticated();
-    }
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests().antMatchers("/user/current").authenticated();
+  }
 }

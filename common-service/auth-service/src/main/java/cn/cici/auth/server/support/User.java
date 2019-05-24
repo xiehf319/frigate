@@ -25,29 +25,16 @@ public class User implements UserDetails, Serializable {
 
     @Column
     private String password;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<Role> authorities;
 
     public Long getId() {
         return id;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"))
-    private List<Role> authorities;
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAuthorities(List<Role> authorities) {
-        this.authorities = authorities;
     }
 
     @Override
@@ -55,14 +42,26 @@ public class User implements UserDetails, Serializable {
         return authorities;
     }
 
+    public void setAuthorities(List<Role> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

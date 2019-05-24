@@ -48,6 +48,15 @@ public class CustomRedisTokenStore implements TokenStore {
         this.connectionFactory = connectionFactory;
     }
 
+    private static String getApprovalKey(OAuth2Authentication authentication) {
+        String userName = authentication.getUserAuthentication() == null ? "" : authentication.getUserAuthentication().getName();
+        return getApprovalKey(authentication.getOAuth2Request().getClientId(), userName);
+    }
+
+    private static String getApprovalKey(String clientId, String userName) {
+        return clientId + (userName == null ? "" : ":" + userName);
+    }
+
     public void setAuthenticationKeyGenerator(AuthenticationKeyGenerator authenticationKeyGenerator) {
         this.authenticationKeyGenerator = authenticationKeyGenerator;
     }
@@ -162,7 +171,6 @@ public class CustomRedisTokenStore implements TokenStore {
         return var5;
     }
 
-
     /**
      * 保存 token
      *
@@ -222,15 +230,6 @@ public class CustomRedisTokenStore implements TokenStore {
         } finally {
             conn.close();
         }
-    }
-
-    private static String getApprovalKey(OAuth2Authentication authentication) {
-        String userName = authentication.getUserAuthentication() == null ? "" : authentication.getUserAuthentication().getName();
-        return getApprovalKey(authentication.getOAuth2Request().getClientId(), userName);
-    }
-
-    private static String getApprovalKey(String clientId, String userName) {
-        return clientId + (userName == null ? "" : ":" + userName);
     }
 
     @Override

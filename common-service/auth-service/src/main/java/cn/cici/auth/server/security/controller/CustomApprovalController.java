@@ -16,14 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * 由于oauth2没有提供好看的错误页面，这里需要自定义一个
- * @see org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint
- *
  *
  * @description:
  * @createDate:2019/5/10$11:07$
  * @author: Heyfan Xie
+ * @see org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint
  */
 @Controller
 @SessionAttributes({"authorizationRequest"})

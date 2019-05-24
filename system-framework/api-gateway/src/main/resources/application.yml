@@ -19,12 +19,12 @@ zuul:
       path: /admin/**
       service-id: frigate-admin
       strip-prefix: false
-    auth-server:
+    auth-service:
       path: /oauth/**
-      service-id: auth-server
+      service-id: auth-service
       strip-prefix: false
-    user-center:
+    user-service:
       path: /rbac/**
-      service-id: rbac-center
+      service-id: rbac-service
       strip-prefix: false
   sensitive-headers: '*'
