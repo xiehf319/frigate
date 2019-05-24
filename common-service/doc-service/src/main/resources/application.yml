@@ -12,16 +12,16 @@ eureka:
 zuul:
   add-proxy-headers: true
   sensitive-headers: '*'
-  routes:
-    auth-service:
-      path: /oauth/**
-      serviceId: auth-service
-      stripPrefix: false
-    rbac-service:
-      path: /rbac/**
-      serviceId: rbac-service
-      stripPrefix: false
-  ignored-patterns: '*'
+#  routes:
+#    auth-service:
+#      path: /oauth/**
+#      serviceId: auth-service
+#      stripPrefix: false
+#    rbac-service:
+#      path: /rbac/**
+#      serviceId: rbac-service
+#      stripPrefix: false
+#  ignored-services: '*'
 security:
   oauth2:
     client:
@@ -42,6 +42,8 @@ swagger:
 proxy:
   auth:
     routes:
-      auth-service: oauth2
-      rbac-service: rbac
+      auth-service:
+        scheme: auth
+      rbac-service:
+        scheme: rbac
 spring.main.allow-bean-definition-overriding: true

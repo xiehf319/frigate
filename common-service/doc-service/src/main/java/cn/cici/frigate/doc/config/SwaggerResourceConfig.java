@@ -35,7 +35,7 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
         List<SwaggerResource> resources = new ArrayList<>();
         List<Route> routes = routeLocator.getRoutes();
         log.info("route size: {}", routes.size());
-        routes.stream().filter(route -> services.contains(route.getId())).forEach(route -> resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"))));
+        routes.stream().filter(route -> services.contains(route.getId())).distinct().forEach(route -> resources.add(swaggerResource(route.getId(), route.getFullPath().replace(route.getPrefix() + "/**", route.getId() + "/v2/api-docs"))));
         return resources;
     }
 
