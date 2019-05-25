@@ -28,3 +28,16 @@ zuul:
       service-id: rbac-service
       strip-prefix: false
   sensitive-headers: '*'
+security:
+  oauth2:
+    client:
+      client-id: password
+      client-secret: 123456
+    resource:
+      user-info-uri: http://auth-service/oauth/user/current
+      prefer-token-info: false
+      token-info-uri: http://auth-service/oauth/check_token
+spring.main.allow-bean-definition-overriding: true
+logging:
+  level:
+    org.springframework: debug

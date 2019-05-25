@@ -24,3 +24,6 @@ eureka:
     prefer-ip-address: true
 ribbon:
   ReadTimeout: 10000
+logging:
+  level:
+    org.springframework: debug

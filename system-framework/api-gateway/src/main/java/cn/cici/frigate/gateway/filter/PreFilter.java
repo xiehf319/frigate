@@ -1,17 +1,23 @@
 package cn.cici.frigate.gateway.filter;
 
-import cn.cici.frigate.component.vo.R;
-import cn.cici.frigate.gateway.security.AccessTokenService;
+import cn.cici.frigate.gateway.http.HttpConverter;
+import cn.cici.frigate.gateway.http.LoginModel;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +31,16 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class PreFilter extends ZuulFilter {
 
-    /**
-     * JWT 添加到头部的前缀
-     */
-    private static final String JWT_SEPARATOR = "Bearer ";
+    private static final String LOGIN_PATH = "/oauth/login";
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private HttpConverter httpConverter;
+
+    @Autowired
+    private OAuth2ProtectedResourceDetails resourceDetails;
 
     @Override
     public String filterType() {
@@ -37,48 +49,37 @@ public class PreFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 1;
+        return FilterConstants.PRE_DECORATION_FILTER_ORDER + 1;
     }
 
     @Override
     public boolean shouldFilter() {
-        return true;
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+        String requestURI = request.getRequestURI();
+        return requestURI.contains(LOGIN_PATH);
     }
-
-    @Autowired
-    private OAuth2RestTemplate restTemplate;
 
     @Override
     public Object run() throws ZuulException {
-
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-
-        String requestURI = request.getRequestURI();
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-
-        if (permitAllUri(requestURI)) {
-            log.info("--------  permit uri {}  ----------", requestURI);
-            return null;
-        }
-        log.info("---------------------------------");
-        log.info("Uri:  {} ---------", requestURI);
-        log.info("---------------------------------");
-        log.info("token: {}", authorization);
-        log.info("---------------------------------");
-        if (StringUtils.isNotBlank(authorization)) {
-        }
-        ctx.setSendZuulResponse(false);
-        ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        ctx.setResponseBody("token must be request");
+        String clientId = resourceDetails.getClientId();
+        String clientSecret = resourceDetails.getClientSecret();
+        String auth = "Basic " + Base64Utils.encodeToString((clientId + ":" + clientSecret).getBytes());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, auth);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        LoginModel userVo = httpConverter.readyBody(request, LoginModel.class);
+        params.add("username", userVo.getUsername());
+        params.add("password", userVo.getPassword());
+        params.add("grant_type", "password");
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+        ResponseEntity<OAuth2AccessToken> responseEntity =
+                restTemplate.exchange("http://auth-service/oauth/login", HttpMethod.POST, requestEntity, OAuth2AccessToken.class);
+        ctx.setResponseBody(httpConverter.object2Str(responseEntity.getBody()));
         return null;
     }
 
-    private boolean permitAllUri(String requestURI) {
-        if (requestURI.contains("/rbac/login")) {
-            return true;
-        }
-        return false;
-    }
+
 }
