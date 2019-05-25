@@ -39,4 +39,8 @@ public class R<T> implements Serializable {
         return new R<>(code, message, null);
     }
 
+    public static <T> R<T> error(int code) {
+        return new R<>(code, null, null);
+    }
+
 }

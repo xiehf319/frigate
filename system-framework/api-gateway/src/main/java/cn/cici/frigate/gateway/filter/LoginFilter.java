@@ -1,19 +1,16 @@
 package cn.cici.frigate.gateway.filter;
 
+import cn.cici.frigate.component.vo.R;
 import cn.cici.frigate.gateway.http.HttpConverter;
 import cn.cici.frigate.gateway.http.LoginModel;
+import cn.cici.frigate.gateway.properties.ClientResourceProperties;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 @Slf4j
-public class PreFilter extends ZuulFilter {
+public class LoginFilter extends ZuulFilter {
 
     private static final String LOGIN_PATH = "/oauth/login";
 
@@ -40,7 +37,7 @@ public class PreFilter extends ZuulFilter {
     private HttpConverter httpConverter;
 
     @Autowired
-    private OAuth2ProtectedResourceDetails resourceDetails;
+    private ClientResourceProperties properties;
 
     @Override
     public String filterType() {
@@ -64,8 +61,8 @@ public class PreFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String clientId = resourceDetails.getClientId();
-        String clientSecret = resourceDetails.getClientSecret();
+        String clientId = properties.getClient().getClientId();
+        String clientSecret = properties.getClient().getClientSecret();
         String auth = "Basic " + Base64Utils.encodeToString((clientId + ":" + clientSecret).getBytes());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, auth);
@@ -75,11 +72,19 @@ public class PreFilter extends ZuulFilter {
         params.add("password", userVo.getPassword());
         params.add("grant_type", "password");
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
-        ResponseEntity<OAuth2AccessToken> responseEntity =
-                restTemplate.exchange("http://auth-service/oauth/login", HttpMethod.POST, requestEntity, OAuth2AccessToken.class);
-        ctx.setResponseBody(httpConverter.object2Str(responseEntity.getBody()));
+        try {
+            ctx.setSendZuulResponse(false);
+            ResponseEntity<Object> responseEntity =
+                    restTemplate.exchange("http://auth-service/oauth/login", HttpMethod.POST, requestEntity, Object.class);
+            ctx.setResponseStatusCode(responseEntity.getStatusCode().value());
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                ctx.setResponseBody(httpConverter.object2Str(R.success(responseEntity.getBody())));
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
         return null;
     }
-
 
 }
