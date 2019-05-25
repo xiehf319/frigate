@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.util.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * @description:
@@ -31,6 +30,9 @@ public class AuthFilter extends ZuulFilter {
     @Autowired
     private ClientResourceProperties properties;
 
+    @Autowired
+    private PathMatcher pathMatcher;
+
     @Override
     public String filterType() {
         return "pre";
@@ -43,6 +45,16 @@ public class AuthFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+        String requestURI = request.getRequestURI();
+
+        Set<String> ignorePatterns = properties.getClient().getIgnorePatterns();
+        for (String ignorePattern : ignorePatterns) {
+            if (pathMatcher.match(ignorePattern, requestURI)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -50,7 +62,7 @@ public class AuthFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        log.info(request.getRequestURI());
+        log.info("请求地址： {}", request.getRequestURI());
         return null;
     }
 

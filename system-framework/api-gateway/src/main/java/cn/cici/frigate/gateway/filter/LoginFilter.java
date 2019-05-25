@@ -68,6 +68,7 @@ public class LoginFilter extends ZuulFilter {
         headers.add(HttpHeaders.AUTHORIZATION, auth);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         LoginModel userVo = httpConverter.readyBody(request, LoginModel.class);
+        log.info("登陆: {}", userVo);
         params.add("username", userVo.getUsername());
         params.add("password", userVo.getPassword());
         params.add("grant_type", "password");
@@ -75,14 +76,14 @@ public class LoginFilter extends ZuulFilter {
         try {
             ctx.setSendZuulResponse(false);
             ResponseEntity<Object> responseEntity =
-                    restTemplate.exchange("http://auth-service/oauth/login", HttpMethod.POST, requestEntity, Object.class);
+                    restTemplate.exchange(properties.getClient().getOauthTokenUri(), HttpMethod.POST, requestEntity, Object.class);
             ctx.setResponseStatusCode(responseEntity.getStatusCode().value());
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 ctx.setResponseBody(httpConverter.object2Str(R.success(responseEntity.getBody())));
             }
         } catch (Exception e) {
+            ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
             log.error(e.getMessage());
-            throw e;
         }
         return null;
     }

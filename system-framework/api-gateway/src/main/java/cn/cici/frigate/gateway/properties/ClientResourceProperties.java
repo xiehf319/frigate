@@ -3,6 +3,8 @@ package cn.cici.frigate.gateway.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 /**
  * @description:
  * @createDate:2019/5/25$15:09$
@@ -39,6 +41,26 @@ public class ClientResourceProperties {
 
         private String clientSecret;
 
+        private String oauthTokenUri;
+
+        private Set<String> ignorePatterns;
+
+        public Set<String> getIgnorePatterns() {
+            return ignorePatterns;
+        }
+
+        public void setIgnorePatterns(Set<String> ignorePatterns) {
+            this.ignorePatterns = ignorePatterns;
+        }
+
+        public String getOauthTokenUri() {
+            return oauthTokenUri;
+        }
+
+        public void setOauthTokenUri(String oauthTokenUri) {
+            this.oauthTokenUri = oauthTokenUri;
+        }
+
         public String getClientId() {
             return clientId;
         }
@@ -58,24 +80,24 @@ public class ClientResourceProperties {
 
     public static class Resource {
 
-        private String checkTokenUrl;
+        private String checkTokenUri;
 
-        private String userInfoUrl;
+        private String userInfoUri;
 
-        public String getCheckTokenUrl() {
-            return checkTokenUrl;
+        public String getCheckTokenUri() {
+            return checkTokenUri;
         }
 
-        public void setCheckTokenUrl(String checkTokenUrl) {
-            this.checkTokenUrl = checkTokenUrl;
+        public void setCheckTokenUri(String checkTokenUri) {
+            this.checkTokenUri = checkTokenUri;
         }
 
-        public String getUserInfoUrl() {
-            return userInfoUrl;
+        public String getUserInfoUri() {
+            return userInfoUri;
         }
 
-        public void setUserInfoUrl(String userInfoUrl) {
-            this.userInfoUrl = userInfoUrl;
+        public void setUserInfoUri(String userInfoUri) {
+            this.userInfoUri = userInfoUri;
         }
     }
 }
