@@ -12,16 +12,16 @@ eureka:
 zuul:
   add-proxy-headers: true
   sensitive-headers: '*'
-#  routes:
-#    auth-service:
-#      path: /oauth/**
-#      serviceId: auth-service
-#      stripPrefix: false
-#    rbac-service:
-#      path: /rbac/**
-#      serviceId: rbac-service
-#      stripPrefix: false
-#  ignored-services: '*'
+  routes:
+    auth-service:
+      path: /oauth/**
+      serviceId: auth-service
+      stripPrefix: false
+    rbac-service:
+      path: /rbac/**
+      serviceId: rbac-service
+      stripPrefix: false
+  ignored-services: '*'
 security:
   oauth2:
     client:

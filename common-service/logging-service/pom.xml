@@ -12,4 +12,7 @@
     <artifactId>logging-service</artifactId>
 
 
+    <dependencies>
+
+    </dependencies>
 </project>
