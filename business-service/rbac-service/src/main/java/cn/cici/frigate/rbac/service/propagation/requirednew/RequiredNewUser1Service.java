@@ -19,7 +19,7 @@ public class RequiredNewUser1Service {
     private User1Repository user1Repository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequried() {
+    public void addRequriedNew() {
         User1 user = new User1();
         user.setName("张三");
         user1Repository.save(user);

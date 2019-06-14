@@ -20,7 +20,7 @@ public class RequiredNewUser2Service {
     private User2Repository user2Repository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequried() {
+    public void addRequriedNew() {
         User2 user = new User2();
         user.setName("李四");
         user2Repository.save(user);
@@ -28,7 +28,7 @@ public class RequiredNewUser2Service {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequriedException() {
+    public void addRequriedNewException() {
         User2 user = new User2();
         user.setName("王五");
         user2Repository.save(user);

@@ -1,6 +1,5 @@
 package cn.cici.frigate.rbac.service.propagation.requirednew;
 
-import cn.cici.frigate.rbac.service.propagation.required.RequiredUser1Service;
 import cn.cici.frigate.rbac.service.propagation.required.RequiredUser2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，
  * 只要一个方法回滚，整个事务均回滚。
  *
+ * https://juejin.im/entry/5a8fe57e5188255de201062b
+ *
  * @createDate:2019/6/14$14:02$
  * @author: Heyfan Xie
  */
@@ -33,29 +34,23 @@ public class RequiredNewService {
     @Autowired
     private RequiredUser2Service user2Service;
 
-    /**
-     * 外围方法没有开启事务
-     */
-    public void notransactionExceptionRequiredRequried() {
-        user1Service.addRequried();
+
+    public void notransactionExceptionRequiredNewRequriedNew() {
+        user1Service.addRequriedNew();
         user2Service.addRequried();
         throw new RuntimeException();
     }
 
-    /**
-     * 外围方法没有开启事务
-     */
+
     public void notransactionequiredRequriedException() {
-        user1Service.addRequried();
+        user1Service.addRequriedNew();
         user2Service.addRequriedException();
     }
 
-    /**
-     * 外围方法开启事务
-     */
+
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionExceptionRequiredRequired(){
-        user1Service.addRequried();
+        user1Service.addRequriedNew();
         user2Service.addRequried();
         throw new RuntimeException();
     }
@@ -65,13 +60,13 @@ public class RequiredNewService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredException(){
-        user1Service.addRequried();
+        user1Service.addRequriedNew();
         user2Service.addRequriedException();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredExceptionTry(){
-        user1Service.addRequried();
+        user1Service.addRequriedNew();
         try {
             user2Service.addRequriedException();
         } catch (Exception e) {
