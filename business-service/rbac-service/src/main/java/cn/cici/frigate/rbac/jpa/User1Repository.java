@@ -1,6 +1,6 @@
 package cn.cici.frigate.rbac.jpa;
 
-import cn.cici.frigate.rbac.dao.entity.User;
+import cn.cici.frigate.rbac.dao.entity.User1;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @createDate:2019/5/9$13:38$
  * @author: Heyfan Xie
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface User1Repository extends JpaRepository<User1, Long> {
 
 }

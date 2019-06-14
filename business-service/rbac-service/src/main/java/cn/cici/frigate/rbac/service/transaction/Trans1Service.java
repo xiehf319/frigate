@@ -1,9 +1,10 @@
-package cn.cici.frigate.rbac.service;
+package cn.cici.frigate.rbac.service.transaction;
 
 import cn.cici.frigate.rbac.dao.entity.Role;
-import cn.cici.frigate.rbac.dao.entity.User;
+import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.jpa.RoleRepository;
-import cn.cici.frigate.rbac.jpa.UserRepository;
+import cn.cici.frigate.rbac.jpa.User1Repository;
+import cn.cici.frigate.rbac.jpa.User2Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,41 +15,36 @@ import org.springframework.transaction.annotation.Transactional;
  * @author: Heyfan Xie
  */
 @Service
-public class Trans4Service implements ITrans4Service {
+public class Trans1Service{
 
     @Autowired
-    private ITrans4Service trans4Service;
+    private Trans1Service trans1Service;
 
     @Autowired
-    private UserRepository userRepository;
+    private User1Repository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
 
-    @Override
     public void add() {
         System.out.println(this);
-        trans4Service.addUser();
-        trans4Service.addRole();
+        trans1Service.addUser();
+        trans1Service.addRole();
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public void addUser() {
-        User user3 = new User();
-        user3.setUsername("user3");
-        user3.setPassword("pwd3");
+        User1 user3 = new User1();
+        user3.setName("user3");
 
         userRepository.save(user3);
 
-        User user4 = new User();
-        user4.setUsername("user4");
-        user4.setPassword("pwd4");
+        User1 user4 = new User1();
+        user4.setName("user4");
 
         userRepository.save(user4);
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public void addRole() {
         Role role2 = new Role();

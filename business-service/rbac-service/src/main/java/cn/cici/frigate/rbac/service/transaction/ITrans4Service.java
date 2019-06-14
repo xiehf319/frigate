@@ -1,4 +1,4 @@
-package cn.cici.frigate.rbac.service;
+package cn.cici.frigate.rbac.service.transaction;
 
 import org.springframework.transaction.annotation.Transactional;
 

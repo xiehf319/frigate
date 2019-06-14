@@ -1,13 +1,7 @@
-package cn.cici.frigate.rbac.service;
+package cn.cici.frigate.rbac.service.transaction;
 
-import cn.cici.frigate.rbac.dao.entity.Role;
-import cn.cici.frigate.rbac.dao.entity.User;
-import cn.cici.frigate.rbac.jpa.RoleRepository;
-import cn.cici.frigate.rbac.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @description:

@@ -1,9 +1,10 @@
-package cn.cici.frigate.rbac.service;
+package cn.cici.frigate.rbac.service.transaction;
 
 import cn.cici.frigate.rbac.dao.entity.Role;
-import cn.cici.frigate.rbac.dao.entity.User;
+import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.jpa.RoleRepository;
-import cn.cici.frigate.rbac.jpa.UserRepository;
+import cn.cici.frigate.rbac.jpa.User1Repository;
+import cn.cici.frigate.rbac.jpa.User2Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class Trans2Service {
 
     @Autowired
-    private UserRepository userRepository;
+    private User1Repository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -31,15 +32,13 @@ public class Trans2Service {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addUser() {
-        User user5 = new User();
-        user5.setUsername("user5");
-        user5.setPassword("pwd5");
+        User1 user5 = new User1();
+        user5.setName("user5");
 
         userRepository.save(user5);
 
-        User user6 = new User();
-        user6.setUsername("user6");
-        user6.setPassword("pwd6");
+        User1 user6 = new User1();
+        user6.setName("user6");
 
         userRepository.save(user6);
     }

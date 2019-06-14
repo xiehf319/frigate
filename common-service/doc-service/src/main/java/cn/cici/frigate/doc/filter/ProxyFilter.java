@@ -59,6 +59,10 @@ public class ProxyFilter extends ZuulFilter {
     @Override
     public boolean shouldFilter() {
         RequestContext ctx = RequestContext.getCurrentContext();
+        Object requestURL = ctx.get("requestURI");
+        if (requestURL.toString().contains("/v2/api-docs")) {
+            return false;
+        }
         if (ctx.containsKey("proxy")) {
             String id = (String) ctx.get("proxy");
             if (!zuulRoutes.contains(id)) {

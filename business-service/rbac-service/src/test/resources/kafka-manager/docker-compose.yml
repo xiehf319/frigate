@@ -1,26 +1,21 @@
-zookeeper:
-  image: zookeeper
-  ports:
-  - "2181:2181"
-  - "2888:2888"
-  - "3888:3888"
-  - "5000:5000"
-
-kafka:
-  image: wurstmeister/kafka
-  ports:
-  - "9092:9092"
-  links:
-  - zookeeper:zookeeper
-
-kafka-manager:
-  image: sheepkiller/kafka-manager
-  environment:
-  - ZK_HOSTS=zookeeper:2181
-  ports:
-  - "9000:9000"
-  links:
-  - zookeeper:zookeeper
-  - kafka:kafka
-  volumes:
-  - ./image/conf:/opt/kafka-manager-1.2.7/conf
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+    - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    volumes:
+    - /etc/localtime:/etc/localtime
+    ports:
+    - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 10.30.2.212
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  kafka-manager:
+    image: sheepkiller/kafka-manager
+    environment:
+      ZK_HOSTS: 10.30.2.212
+    ports:
+    - "9000:9000"

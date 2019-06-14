@@ -14,12 +14,12 @@ zuul:
   sensitive-headers: '*'
   routes:
     auth-service:
-      path: /oauth/**
+      path: /auth-service/**
       serviceId: auth-service
-      stripPrefix: false
+      stripPrefix: true
     rbac-service:
-      path: /rbac/**
-      serviceId: rbac-service
+      path: /rbac-service/**
+      serviceId: true
       stripPrefix: false
   ignored-services: '*'
 security:

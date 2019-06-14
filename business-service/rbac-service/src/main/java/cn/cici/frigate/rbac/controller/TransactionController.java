@@ -1,6 +1,6 @@
 package cn.cici.frigate.rbac.controller;
 
-import cn.cici.frigate.rbac.service.*;
+import cn.cici.frigate.rbac.service.transaction.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
