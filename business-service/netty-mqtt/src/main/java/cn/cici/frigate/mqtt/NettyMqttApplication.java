@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * https://github.com/daoshenzzg/socket-mqtt
+ * http://www.tongxinmao.com/txm/webmqtt.php
  */
 @SpringBootApplication
 public class NettyMqttApplication {
