@@ -14,5 +14,6 @@
     <modules>
         <module>rbac-service</module>
         <module>logistics-service</module>
+        <module>netty-mqtt</module>
     </modules>
 </project>
