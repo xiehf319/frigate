@@ -20,17 +20,17 @@ public class RequiredNewUser2Service {
     private User2Repository user2Repository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequriedNew() {
+    public void addRequriedNew(String method) {
         User2 user = new User2();
-        user.setName("李四");
+        user.setName(method + "李四");
         user2Repository.save(user);
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequriedNewException() {
+    public void addRequriedNewException(String method) {
         User2 user = new User2();
-        user.setName("王五");
+        user.setName(method + "王五");
         user2Repository.save(user);
         throw new RuntimeException();
     }

@@ -1,4 +1,4 @@
-package cn.cici.frigate.rbac.service.propagation.required;
+package cn.cici.frigate.rbac.service.propagation.mandatory;
 
 import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.jpa.User1Repository;
@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @author: Heyfan Xie
  */
 @Service
-public class RequiredUser1Service {
+public class MandatoryUser1Service {
 
     @Autowired
     private User1Repository user1Repository;
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void addRequried(String method) {
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void addMandatory(String method) {
         User1 user = new User1();
         user.setName(method + "张三");
         user1Repository.save(user);

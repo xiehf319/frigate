@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RequiredService {
 
+    private static final String TYPE = "required";
+
     @Autowired
     private RequiredUser1Service user1Service;
 
@@ -41,8 +43,8 @@ public class RequiredService {
      * 方法2执行成功
      */
     public void notransactionExceptionRequiredRequried() {
-        user1Service.addRequried();
-        user2Service.addRequried();
+        user1Service.addRequried(TYPE + 1);
+        user2Service.addRequried(TYPE + 1);
         throw new RuntimeException();
     }
 
@@ -57,8 +59,8 @@ public class RequiredService {
      * 方法2执行回滚
      */
     public void notransactionequiredRequriedException() {
-        user1Service.addRequried();
-        user2Service.addRequriedException();
+        user1Service.addRequried(TYPE + 2);
+        user2Service.addRequriedException(TYPE + 2);
     }
 
     /**
@@ -72,8 +74,8 @@ public class RequiredService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionExceptionRequiredRequired(){
-        user1Service.addRequried();
-        user2Service.addRequried();
+        user1Service.addRequried(TYPE + 3);
+        user2Service.addRequried(TYPE + 3);
         throw new RuntimeException();
     }
 
@@ -88,8 +90,8 @@ public class RequiredService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredException(){
-        user1Service.addRequried();
-        user2Service.addRequriedException();
+        user1Service.addRequried(TYPE + 4);
+        user2Service.addRequriedException(TYPE + 4);
     }
 
 
@@ -106,9 +108,9 @@ public class RequiredService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredExceptionTry(){
-        user1Service.addRequried();
+        user1Service.addRequried(TYPE + 5);
         try {
-            user2Service.addRequriedException();
+            user2Service.addRequriedException(TYPE + 5);
         } catch (Exception e) {
             System.out.println("方法回滚");
         }

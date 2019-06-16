@@ -19,9 +19,9 @@ public class RequiredNewUser1Service {
     private User1Repository user1Repository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addRequriedNew() {
+    public void addRequriedNew(String method) {
         User1 user = new User1();
-        user.setName("张三");
+        user.setName(method + "张三");
         user1Repository.save(user);
     }
 }

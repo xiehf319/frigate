@@ -28,30 +28,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RequiredNewService {
 
+    private static final String TYPE = "required_new";
+
     @Autowired
     private RequiredNewUser1Service user1Service;
 
     @Autowired
-    private RequiredUser2Service user2Service;
+    private RequiredNewUser2Service user2Service;
+
 
 
     public void notransactionExceptionRequiredNewRequriedNew() {
-        user1Service.addRequriedNew();
-        user2Service.addRequried();
+        user1Service.addRequriedNew(TYPE + 1);
+        user2Service.addRequriedNew(TYPE + 1);
         throw new RuntimeException();
     }
 
 
     public void notransactionequiredRequriedException() {
-        user1Service.addRequriedNew();
-        user2Service.addRequriedException();
+        user1Service.addRequriedNew(TYPE + 2);
+        user2Service.addRequriedNewException(TYPE + 2);
     }
 
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionExceptionRequiredRequired(){
-        user1Service.addRequriedNew();
-        user2Service.addRequried();
+        user1Service.addRequriedNew(TYPE + 3);
+        user2Service.addRequriedNew(TYPE + 3);
         throw new RuntimeException();
     }
 
@@ -60,15 +63,15 @@ public class RequiredNewService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredException(){
-        user1Service.addRequriedNew();
-        user2Service.addRequriedException();
+        user1Service.addRequriedNew(TYPE + 4);
+        user2Service.addRequriedNewException(TYPE + 4);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void transactionRequiredRequiredExceptionTry(){
-        user1Service.addRequriedNew();
+        user1Service.addRequriedNew(TYPE + 5);
         try {
-            user2Service.addRequriedException();
+            user2Service.addRequriedNewException(TYPE + 5);
         } catch (Exception e) {
             System.out.println("方法回滚");
         }

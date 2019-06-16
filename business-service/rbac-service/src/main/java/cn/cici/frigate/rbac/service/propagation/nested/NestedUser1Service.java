@@ -1,6 +1,7 @@
-package cn.cici.frigate.rbac.service.propagation.required;
+package cn.cici.frigate.rbac.service.propagation.nested;
 
 import cn.cici.frigate.rbac.dao.entity.User1;
+import cn.cici.frigate.rbac.jpa.User1JdbcTemplate;
 import cn.cici.frigate.rbac.jpa.User1Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @author: Heyfan Xie
  */
 @Service
-public class RequiredUser1Service {
+public class NestedUser1Service {
 
     @Autowired
-    private User1Repository user1Repository;
+    private User1JdbcTemplate user1JdbcTemplate;
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void addRequried(String method) {
-        User1 user = new User1();
-        user.setName(method + "张三");
-        user1Repository.save(user);
+    @Transactional(propagation = Propagation.NESTED)
+    public void addNested(String method) {
+        user1JdbcTemplate.save(method);
     }
 }
