@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: nett-mqtt-server
+server:
+  port: 40002

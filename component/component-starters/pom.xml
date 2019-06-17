@@ -14,7 +14,7 @@
     <modules>
         <module>swagger-starter</module>
         <module>redis-starter</module>
+        <module>netty-mqtt-starter</module>
     </modules>
-
 
 </project>
