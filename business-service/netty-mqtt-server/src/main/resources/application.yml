@@ -3,3 +3,13 @@ spring:
     name: nett-mqtt-server
 server:
   port: 40003
+mqtt:
+  server:
+    zk:
+      zk-root: /route
+      zk-switch: true
+      server-port: 8002
+      clear-route-url: http://localhost:8083/offLine
+      zk-addr: 10.30.2.68:2181
+      heartbeatTime: 30
+      zkConnectTimeout: 15000

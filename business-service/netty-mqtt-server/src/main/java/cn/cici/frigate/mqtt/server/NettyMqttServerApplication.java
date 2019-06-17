@@ -32,7 +32,7 @@ public class NettyMqttServerApplication implements CommandLineRunner {
         server.setOpenStatus(true);
         server.setStatusPort(8003);
         server.setServiceName("mqtt-server");
-//        server.setCenterAddr("localhost:40002");
+        server.setCenterAddr("127.0.0.1:9010");
         server.addEventListener(new EchoMessageEventListener());
         server.setSocketType(SocketType.MQTT);
         server.bind();

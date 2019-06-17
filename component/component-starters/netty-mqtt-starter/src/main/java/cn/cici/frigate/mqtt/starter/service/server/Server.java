@@ -301,7 +301,7 @@ public class Server extends Service {
 
         SocketAddress[] centers = AddressUtil.parseAddress(centerAddr);
         if (centers == null || centers.length < 1) {
-            log.warn("Server '{}' can not get center server list from 'centerAddr' property, no need " + "to step forward.", this.serviceName);
+            log.warn("Server '{}' can not get center server list from 'centerAddr' property, no need to step forward.", this.serviceName);
             return;
         }
 

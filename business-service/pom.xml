@@ -17,5 +17,6 @@
         <module>netty-mqtt-client</module>
         <module>netty-mqtt-server</module>
         <module>netty-mqtt-route</module>
+        <module>netty-mqtt-center</module>
     </modules>
 </project>
