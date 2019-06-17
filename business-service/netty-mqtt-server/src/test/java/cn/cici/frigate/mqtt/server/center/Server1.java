@@ -1,7 +1,7 @@
-package cn.cici.frigate.mqtt.starter.center;
+package cn.cici.frigate.mqtt.server.center;
 
 import cn.cici.frigate.mqtt.server.service.normal.JsonEchoMessageEventListener;
-import cn.cici.frigate.mqtt.server.service.server.Server;
+import cn.cici.frigate.mqtt.starter.service.server.Server;
 
 /**
  *

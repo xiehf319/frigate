@@ -13,9 +13,3 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 10.30.2.212
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  kafka-manager:
-    image: sheepkiller/kafka-manager
-    environment:
-      ZK_HOSTS: 10.30.2.212
-    ports:
-    - "9000:9000"

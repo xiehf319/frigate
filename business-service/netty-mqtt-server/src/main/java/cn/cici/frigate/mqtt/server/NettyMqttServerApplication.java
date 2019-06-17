@@ -26,10 +26,13 @@ public class NettyMqttServerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Server server = new Server();
-        server.setPort(8000);
+        server.setPort(8002);
         server.setOpenCount(true);
         server.setCheckHeartbeat(true);
         server.setOpenStatus(true);
+        server.setStatusPort(8003);
+        server.setServiceName("mqtt-server");
+//        server.setCenterAddr("localhost:40002");
         server.addEventListener(new EchoMessageEventListener());
         server.setSocketType(SocketType.MQTT);
         server.bind();
@@ -39,7 +42,7 @@ public class NettyMqttServerApplication implements CommandLineRunner {
         message.put("action", "echo");
         message.put("message", "this is yb push message!");
 
-        MqttRequest mqttRequest = new MqttRequest((message.toString().getBytes()));
+        MqttRequest mqttRequest = new MqttRequest(message.toString().getBytes());
         while (true) {
             if (server.getChannels().size() > 0) {
                 log.info("模拟推送消息");

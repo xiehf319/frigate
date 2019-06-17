@@ -1,8 +1,8 @@
-package cn.cici.frigate.mqtt.starter.center;
+package cn.cici.frigate.mqtt.server.center;
 
-import cn.cici.frigate.mqtt.codec.JsonDecoder;
-import cn.cici.frigate.mqtt.codec.JsonEncoder;
-import cn.cici.frigate.mqtt.server.service.server.Server;
+import cn.cici.frigate.mqtt.starter.codec.JsonDecoder;
+import cn.cici.frigate.mqtt.starter.codec.JsonEncoder;
+import cn.cici.frigate.mqtt.starter.service.server.Server;
 
 /**
  *
@@ -17,7 +17,7 @@ public class CenterMock2 {
         server.setCheckHeartbeat(false);
         server.addChannelHandler("decoder", new JsonDecoder());
         server.addChannelHandler("encoder", new JsonEncoder());
-        server.addEventListener(new cn.cici.frigate.mqtt.server.center.CenterMockMessageEventListener());
+        server.addEventListener(new CenterMockMessageEventListener());
         server.bind();
     }
 }

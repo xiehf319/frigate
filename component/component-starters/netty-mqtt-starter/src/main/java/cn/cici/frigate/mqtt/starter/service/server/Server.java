@@ -40,10 +40,7 @@ import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -308,10 +305,7 @@ public class Server extends Service {
             return;
         }
 
-        List<SocketAddress> serverList = new ArrayList<>();
-        for (int i = 0; i < centers.length; i++) {
-            serverList.add(centers[i]);
-        }
+        List<SocketAddress> serverList = new ArrayList<>(Arrays.asList(centers));
 
         client.setServerList(serverList);
 
