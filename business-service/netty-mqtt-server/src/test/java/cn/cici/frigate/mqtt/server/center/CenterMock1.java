@@ -16,7 +16,7 @@ public class CenterMock1 {
         server.setCheckHeartbeat(false);
         server.addChannelHandler("decoder", new JsonDecoder());
         server.addChannelHandler("encoder", new JsonEncoder());
-        server.addEventListener(new cn.cici.frigate.mqtt.server.center.CenterMockMessageEventListener());
+        server.addEventListener(new CenterMockMessageEventListener());
         server.bind();
     }
 }

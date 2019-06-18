@@ -105,7 +105,7 @@ public class Server extends Service {
     /**
      * 重连注册中心时的时间间隔
      */
-    protected int centerReConnectTimerInterval = 10000;
+    protected int centerReConnectTimerInterval = 200000;
 
     /**
      * 重连注册中心的Timer
@@ -163,7 +163,7 @@ public class Server extends Service {
 
                 @Override
                 public Thread newThread(Runnable r) {
-                    return new Thread(r, "LINUX_BOSS_" + index.incrementAndGet());
+                    return new Thread(r, "WINDOWS_BOSS_" + index.incrementAndGet());
                 }
             }));
             workerGroup = new NioEventLoopGroup(workerCount, new ScheduledThreadPoolExecutor(workerCount, new ThreadFactory() {
@@ -171,7 +171,7 @@ public class Server extends Service {
 
                 @Override
                 public Thread newThread(Runnable r) {
-                    return new Thread(r, "LINUX_WORK_" + index.incrementAndGet());
+                    return new Thread(r, "WINDOWS_WORK_" + index.incrementAndGet());
                 }
             }));
         }

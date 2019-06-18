@@ -55,7 +55,8 @@ public class ServerStateReportJob implements Runnable {
                                 new Object[] { server.getServiceName(), client.getCurServer(), request.getSequence() });
                     }
                 } else {
-                    logger.warn("Server '{}' has not registered to center, no need to report server state now, just " + "try later.", server.getServiceName());
+                    logger.warn("Server '{}' has not registered to center, no need to report server state now, just "
+                            + "try later.", server.getServiceName());
                 }
             } catch (Throwable ex) {
                 logger.error("Server '{}' failed to report server state to register center.", server.getServiceName(), ex);

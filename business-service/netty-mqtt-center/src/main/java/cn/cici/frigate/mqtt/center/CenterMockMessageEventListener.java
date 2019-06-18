@@ -8,10 +8,18 @@ import cn.cici.frigate.mqtt.starter.service.WrappedChannel;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @date 2019/6/16 14:48
@@ -19,6 +27,8 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class CenterMockMessageEventListener implements MessageEventListener {
     private static final Logger logger = LoggerFactory.getLogger(CenterMockMessageEventListener.class);
+
+    ConcurrentHashMap<String, Channel> channelMap = new ConcurrentHashMap<>();
 
     @Override
     public EventBehavior channelRead(ChannelHandlerContext ctx, WrappedChannel channel, Object msg) {
@@ -37,23 +47,21 @@ public class CenterMockMessageEventListener implements MessageEventListener {
                 JSONObject jsonObject = JSON.parseObject(request.getMessage().toString());
                 String action = jsonObject.getString("action");
                 if (action.equalsIgnoreCase("getServerInfo")) {
-                    JSONObject json = new JSONObject();
-                    JSONArray ret = new JSONArray();
-                    JSONObject row1 = new JSONObject();
-                    row1.put("ip", "127.0.0.1");
-                    row1.put("port", 8000);
-                    JSONObject row2 = new JSONObject();
-                    row2.put("ip", "127.0.0.1");
-                    row2.put("port", 8010);
-                    ret.add(row1);
-                    ret.add(row2);
-                    json.put("server_list", ret);
-                    response.setResult(json.toString());
+                    List<Map<String, Object>> list = new ArrayList<>();
+                    channelMap.forEach((key, value) -> {
+                        Map<String, Object> map = new HashMap<>(4);
+                        map.put("channelId", key);
+                        map.put("clientId", channel.getChannel().attr(AttributeKey.valueOf("clientId")));
+                        map.put("address", channel.remoteAddress());
+                        list.add(map);
+                    });
+                    response.setResult(list);
                 } else if (action.equalsIgnoreCase("updateConnects")) {
                    log.info("update connects from ip {}, port {}", jsonObject.getString("ip"), jsonObject.getString("port"));
                 } else if (action.equalsIgnoreCase("register")) {
 
                 }
+                channelMap.put(channel.id().asLongText(), channel);
             }
             channel.writeAndFlush(response);
         }

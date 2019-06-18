@@ -40,6 +40,7 @@ public class ServerDispatchHandler extends ChannelHandlerAdapter {
         if (logger.isDebugEnabled()) {
             logger.debug("Connected on channel '{}'.", channelId);
         }
+        logger.info("有新连接接入: {}, address: {}", channelId, channel.remoteAddress().toString());
         ((Server) eventDispatcher.getService()).getChannels().put(channelId, channel);
         eventDispatcher.dispatchChannelEvent(ctx, channel);
         super.channelActive(ctx);

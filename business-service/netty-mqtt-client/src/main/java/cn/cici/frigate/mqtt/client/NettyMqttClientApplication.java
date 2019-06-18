@@ -1,11 +1,20 @@
 package cn.cici.frigate.mqtt.client;
 
+import cn.cici.frigate.mqtt.starter.codec.JsonDecoder;
+import cn.cici.frigate.mqtt.starter.codec.JsonEncoder;
+import cn.cici.frigate.mqtt.starter.pojo.Request;
+import cn.cici.frigate.mqtt.starter.service.SocketType;
+import cn.cici.frigate.mqtt.starter.service.client.Client;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
 /**
  * https://github.com/daoshenzzg/socket-mqtt
@@ -21,7 +30,7 @@ public class NettyMqttClientApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        final String broker = "tcp://127.0.0.1:8000";
+        final String broker = "tcp://127.0.0.1:8002";
         final String clientId = "88888888";
         final String topic = "yb/notice/";
         MemoryPersistence persistence = new MemoryPersistence();
@@ -43,11 +52,12 @@ public class NettyMqttClientApplication implements CommandLineRunner {
                     //连接成功，需要上传客户端所有的订阅关系
 
                     try {
-                        sampleClient.subscribe(topic,0);
+                        sampleClient.subscribe(topic, 0);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
+
                 @Override
                 public void connectionLost(Throwable throwable) {
                     log.error("server connection lost.", throwable);

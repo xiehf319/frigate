@@ -19,21 +19,51 @@ public class DefaultMqttMessageEventListener implements MessageEventListener {
             MqttMessage message = (MqttMessage) msg;
             MqttMessageType messageType = message.fixedHeader().messageType();
             switch (messageType) {
+                // 客户端--服务端  客户端连接服务端
                 case CONNECT:
                     this.connect(channel, (MqttConnectMessage) message);
                     break;
+                // 服务端--客户端  连接报文确认
+                case CONNACK:
+                    break;
+                // 双向   发布消息
                 case PUBLISH:
                     this.publish(channel, (MqttPublishMessage) message);
                     break;
+                // 双向   Qos1消息发布收到确认
+                case PUBACK:
+                    break;
+                // 双向   发布收到(保证交付第一步)
+                case PUBREC:
+                    break;
+                // 双向   发布释放(保证交付第二步)
+                case PUBREL:
+                    break;
+                // 双向   QoS2消息发布完成(保证交互第三步)
+                case PUBCOMP:
+                    break;
+                    // 客户端--服务端  客户端订阅请求
                 case SUBSCRIBE:
                     this.subscribe(channel, (MqttSubscribeMessage) message);
                     break;
+                    // 服务端--客户端  订阅报文确认
+                case SUBACK:
+                    break;
+                    // 客户端--服务端  客户端取消订阅请求
                 case UNSUBSCRIBE:
                     this.unSubscribe(channel, (MqttUnsubscribeMessage) message);
                     break;
+                    // 服务端--客户端  取消订阅报文确认
+                case UNSUBACK:
+                    break;
+                    // 客户端--服务端 心跳请求
                 case PINGREQ:
                     this.pingReq(channel, message);
                     break;
+                    // 服务端--客户端 心跳响应
+                case PINGRESP:
+                    break;
+                    // 客户端--服务端 客户端断开连接
                 case DISCONNECT:
                     this.disConnect(channel, message);
                     break;
@@ -66,7 +96,7 @@ public class DefaultMqttMessageEventListener implements MessageEventListener {
         }
 
         Server server = ServerContext.getContext().getServer();
-        if(server != null) {
+        if (server != null) {
             server.getCountInfo().getHeartbeatNum().incrementAndGet();
         }
 

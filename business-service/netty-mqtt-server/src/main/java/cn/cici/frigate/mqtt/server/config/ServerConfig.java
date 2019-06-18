@@ -1,5 +1,6 @@
 package cn.cici.frigate.mqtt.server.config;
 
+import cn.cici.frigate.mqtt.starter.service.SocketType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -11,20 +12,42 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
-@ConfigurationProperties("mqtt.server.zk")
+@ConfigurationProperties("mqtt.server")
 public class ServerConfig {
 
-    private String zkRoot;
 
-    private String zkAddr;
+    /**
+     * 服务名
+     */
+    private String serviceName;
 
-    private boolean zkSwitch;
+    /**
+     * 服务端端口
+     */
+    private int port;
 
-    private int serverPort;
+    /**
+     * 服务状态端口
+     */
+    private int statusPort;
 
-    private String clearRouteUrl;
+    /**
+     * 注册中心地址
+     */
+    private String centerAddr;
 
-    private long heartbeatTime;
+    /**
+     * 心跳时间
+     */
+    private int heartbeatTime;
 
-    private int zkConnectTimeout;
+    /**
+     * 超时时间
+     */
+    private int connectTimeout;
+
+    /**
+     * socketType
+     */
+    private SocketType socketType;
 }
