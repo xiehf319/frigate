@@ -12,7 +12,7 @@
     <artifactId>business-service</artifactId>
 
     <modules>
-        <module>rbac-service</module>
+        <module>transaction-test-service</module>
         <module>logistics-service</module>
         <module>netty-mqtt-client</module>
         <module>netty-mqtt-server</module>
