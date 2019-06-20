@@ -12,7 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @description:
@@ -78,7 +79,7 @@ public class TaskService {
         try {
             if (checkExists(jobName, jobGroup)) {
                 log.info("==> AddJob failure, job already exist, jobGroup: {} , jobName: {}", jobGroup, jobName);
-                throw new ServiceException("4000", String.format("Job 已经存在了, jobGroup: {%s} JobName: {%s}", jobGroup, jobName));
+                throw new ServiceException("4000", new Object[]{jobGroup, jobName});
             }
             final TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
             final CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression)
@@ -96,9 +97,9 @@ public class TaskService {
                     .build();
             scheduler.scheduleJob(jobDetail, cronTrigger);
         } catch (SchedulerException e) {
-            throw new ServiceException("4001", "已经存在或者，执行表达式错误", e);
+            throw new ServiceException("4001", new Object[]{"什么玩意"}, e);
         } catch (ClassNotFoundException e) {
-            throw new ServiceException("4005", "类名不存在", e);
+            throw new ServiceException("4005", new Object[]{"什么玩意"}, "默认值", e);
         }
     }
 
@@ -114,7 +115,7 @@ public class TaskService {
             if (!checkExists(jobGroup, jobName)) {
                 log.info("===> EditJob failure, job already exist. JobGroup: {}, jobName: {}", jobGroup, jobName);
                 throw new ServiceException("4002",
-                        String.format("Job不存在, jobGroup: {%s} jobName: {%s}", jobGroup, jobName));
+                        new Object[]{jobGroup, jobName});
             }
             final TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
             final CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression)
@@ -172,7 +173,7 @@ public class TaskService {
     }
 
 
-    private boolean checkExists(String jobGroup, String jobName) throws SchedulerException{
+    private boolean checkExists(String jobGroup, String jobName) throws SchedulerException {
         TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
         return scheduler.checkExists(triggerKey);
     }

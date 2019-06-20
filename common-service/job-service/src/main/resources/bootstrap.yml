@@ -8,6 +8,10 @@ spring:
     url: jdbc:mysql://114.115.131.208:3306/quartz_job?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: 123456
+  messages:
+    cache-duration: 3600s
+    basename: i18n/message
+    encoding: UTF-8
 eureka:
   client:
     service-url:

@@ -1,2 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cici.frigate.component.context.SpringBeanContext
+  cn.cici.frigate.component.context.SpringBeanContext,\
+    cn.cici.frigate.component.config.LocaleConfig, \
+    cn.cici.frigate.component.exception.GlobalExceptionHandler
+

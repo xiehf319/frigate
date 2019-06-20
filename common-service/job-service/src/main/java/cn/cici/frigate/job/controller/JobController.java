@@ -1,5 +1,6 @@
 package cn.cici.frigate.job.controller;
 
+import cn.cici.frigate.component.exception.ServiceException;
 import cn.cici.frigate.component.vo.R;
 import cn.cici.frigate.job.pojo.TaskInfo;
 import cn.cici.frigate.job.service.TaskService;
@@ -32,5 +33,15 @@ public class JobController {
     public R createJob(@RequestBody TaskInfo taskInfo) {
         taskService.addJob(taskInfo);
         return R.success();
+    }
+
+    /**
+     * 测试一下国际化
+     * 通过 lang=zh_CN  /   en_US 切换结果
+     * @return
+     */
+    @GetMapping("/test2")
+    public R i18nTest2() {
+        throw new ServiceException("4002", new Object[]{"张三", 1233444}, "default value");
     }
 }

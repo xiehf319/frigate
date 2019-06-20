@@ -49,5 +49,11 @@
             <groupId>cn.cici.frigate</groupId>
             <artifactId>component-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cn.cici.frigate</groupId>
+            <artifactId>i18n-starter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>
