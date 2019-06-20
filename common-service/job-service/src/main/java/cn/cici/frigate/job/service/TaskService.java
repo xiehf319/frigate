@@ -1,13 +1,15 @@
 package cn.cici.frigate.job.service;
 
 import cn.cici.frigate.component.exception.ServiceException;
+import cn.cici.frigate.job.dao.TaskDao;
 import cn.cici.frigate.job.pojo.TaskInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.quartz.*;
-import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,43 +26,45 @@ public class TaskService {
     @Autowired
     private Scheduler scheduler;
 
+    @Autowired
+    private TaskDao taskDao;
 
-    public List<TaskInfo> getList() {
-
-        final List<TaskInfo> list = new ArrayList<>();
-        try {
-            for (String jobGroupName : scheduler.getJobGroupNames()) {
-                for (final JobKey jobKey : scheduler.getJobKeys(GroupMatcher.groupEquals(jobGroupName))) {
-                    final List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
-                    for (final Trigger trigger : triggers) {
-                        final Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-                        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-
-                        String cronExpression = "";
-                        Date createTime = null;
-                        if (trigger instanceof CronTrigger) {
-                            final CronTrigger cronTrigger = (CronTrigger) trigger;
-                            cronExpression = cronTrigger.getCronExpression();
-                            createTime = cronTrigger.getStartTime();
-                        }
-                        final TaskInfo taskInfo = new TaskInfo();
-                        taskInfo.setJobDataMap(new JobDataMap());
-                        taskInfo.setJobName(jobKey.getName());
-                        taskInfo.setJobGroup(jobGroupName);
-                        taskInfo.setJobDescription(trigger.getDescription());
-                        taskInfo.setJobStatus(triggerState.name());
-                        taskInfo.setCronExpression(cronExpression);
-                        taskInfo.setCreateTime(createTime);
-                        taskInfo.setJobDataMap(jobDetail.getJobDataMap());
-
-                        list.add(taskInfo);
-                    }
-                }
-            }
-        } catch (SchedulerException e) {
-            log.error("获取任务列表异常", e);
-        }
-        return list;
+    public Page<TaskInfo> getList(Pageable page, String jobGroup) {
+        return taskDao.findPageList(page, jobGroup);
+//        final List<TaskInfo> list = new ArrayList<>();
+//        try {
+//            for (String jobGroupName : scheduler.getJobGroupNames()) {
+//                for (final JobKey jobKey : scheduler.getJobKeys(GroupMatcher.groupEquals(jobGroupName))) {
+//                    final List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+//                    for (final Trigger trigger : triggers) {
+//                        final Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+//                        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+//
+//                        String cronExpression = "";
+//                        Date createTime = null;
+//                        if (trigger instanceof CronTrigger) {
+//                            final CronTrigger cronTrigger = (CronTrigger) trigger;
+//                            cronExpression = cronTrigger.getCronExpression();
+//                            createTime = cronTrigger.getStartTime();
+//                        }
+//                        final TaskInfo taskInfo = new TaskInfo();
+//                        taskInfo.setJobDataMap(new JobDataMap());
+//                        taskInfo.setJobName(jobKey.getName());
+//                        taskInfo.setJobGroup(jobGroupName);
+//                        taskInfo.setJobDescription(trigger.getDescription());
+//                        taskInfo.setJobStatus(triggerState.name());
+//                        taskInfo.setCronExpression(cronExpression);
+//                        taskInfo.setCreateTime(createTime);
+//                        taskInfo.setJobDataMap(jobDetail.getJobDataMap());
+//
+//                        list.add(taskInfo);
+//                    }
+//                }
+//            }
+//        } catch (SchedulerException e) {
+//            log.error("获取任务列表异常", e);
+//        }
+//        return list;
     }
 
 
@@ -91,8 +95,10 @@ public class TaskService {
                     .usingJobData(taskInfo.getJobDataMap())
                     .build();
             scheduler.scheduleJob(jobDetail, cronTrigger);
-        } catch (SchedulerException | ClassNotFoundException e) {
-            throw new ServiceException("4001", "类名不存在或执行表达式错误");
+        } catch (SchedulerException e) {
+            throw new ServiceException("4001", "已经存在或者，执行表达式错误", e);
+        } catch (ClassNotFoundException e) {
+            throw new ServiceException("4005", "类名不存在", e);
         }
     }
 

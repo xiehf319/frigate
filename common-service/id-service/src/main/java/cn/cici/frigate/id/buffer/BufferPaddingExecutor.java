@@ -54,14 +54,14 @@ public class BufferPaddingExecutor {
 
     /** Padding immediately by the thread pool */
     private final ExecutorService bufferPadExecutors;
-    /** Padding schedule thread */
+    /** Padding task thread */
     private final ScheduledExecutorService bufferPadSchedule;
     
     /** Schedule interval Unit as seconds */
     private long scheduleInterval = DEFAULT_SCHEDULE_INTERVAL;
 
     /**
-     * Constructor with {@link RingBuffer} and {@link BufferedUidProvider}, default use schedule
+     * Constructor with {@link RingBuffer} and {@link BufferedUidProvider}, default use task
      *
      * @param ringBuffer {@link RingBuffer}
      * @param uidProvider {@link BufferedUidProvider}
@@ -71,7 +71,7 @@ public class BufferPaddingExecutor {
     }
 
     /**
-     * Constructor with {@link RingBuffer}, {@link BufferedUidProvider}, and whether use schedule padding
+     * Constructor with {@link RingBuffer}, {@link BufferedUidProvider}, and whether use task padding
      *
      * @param ringBuffer {@link RingBuffer}
      * @param uidProvider {@link BufferedUidProvider}
@@ -87,7 +87,7 @@ public class BufferPaddingExecutor {
         int cores = Runtime.getRuntime().availableProcessors();
         bufferPadExecutors = Executors.newFixedThreadPool(cores * 2, new NamingThreadFactory(WORKER_NAME));
 
-        // initialize schedule thread
+        // initialize task thread
         if (usingSchedule) {
             bufferPadSchedule = Executors.newSingleThreadScheduledExecutor(new NamingThreadFactory(SCHEDULE_NAME));
         } else {
@@ -96,7 +96,7 @@ public class BufferPaddingExecutor {
     }
 
     /**
-     * Start executors such as schedule
+     * Start executors such as task
      */
     public void start() {
         if (bufferPadSchedule != null) {

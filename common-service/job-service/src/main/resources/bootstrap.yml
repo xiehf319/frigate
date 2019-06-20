@@ -1,0 +1,14 @@
+server:
+  port: 9004
+spring:
+  application:
+    name: job-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://114.115.131.208:3306/quartz_job?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: 123456
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/

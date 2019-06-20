@@ -26,3 +26,8 @@
 ```
 
 [参考项目](https://github.com/rench/scio)
+
+
+
+> docker run -p 3306:3306 --privileged=true -v /usr/local/docker/mysql/logs:/logs -v /data/docker/mysql/data:/var/lib/mysql -v /data/docker/mysql/conf/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+> docker外部连接mysql8: https://blog.csdn.net/qq_26462567/article/details/86713638
