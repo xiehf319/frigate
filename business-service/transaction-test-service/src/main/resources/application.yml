@@ -36,4 +36,4 @@ swagger:
   enable: true
   title: ${spring.application.name}接口文档
   description: 测试一下
-  version: 2.0.0
+  version: 2.0.1
