@@ -36,7 +36,6 @@ security:
       oauth-token-uri: http://auth-service/oauth/login
       ignore-patterns:
         - /oauth/login
-        - /test1111
     resource:
       user-info-uri: http://auth-service/oauth/user/current
       prefer-token-info: false
