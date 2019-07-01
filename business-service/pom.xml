@@ -14,10 +14,5 @@
     <modules>
         <module>transaction-test-service</module>
         <module>logistics-service</module>
-        <module>netty-mqtt-client</module>
-        <module>netty-mqtt-server</module>
-        <module>netty-mqtt-route</module>
-        <module>netty-mqtt-center</module>
-        <module>spring-boot-mqtt-push</module>
     </modules>
 </project>
