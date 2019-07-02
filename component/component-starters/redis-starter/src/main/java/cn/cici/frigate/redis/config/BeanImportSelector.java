@@ -11,6 +11,6 @@ import org.springframework.core.type.AnnotationMetadata;
 public class BeanImportSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-        return new String[] {"cn.cici.frigate.redis.config.Bean2"};
+        return new String[]{"cn.cici.frigate.redis.config.Bean2"};
     }
 }
