@@ -9,10 +9,12 @@ import java.text.MessageFormat;
  */
 public interface BusinessExceptionAssert extends ResponseEnum, Assert {
 
+
     @Override
     default BaseException newException() {
         return new BusinessException(this, this.getMessage());
     }
+
     @Override
     default BaseException newException(Object... args) {
         String msg = MessageFormat.format(this.getMessage(), args);
