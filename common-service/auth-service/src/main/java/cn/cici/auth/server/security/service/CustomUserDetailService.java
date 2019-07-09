@@ -4,10 +4,13 @@ import cn.cici.auth.server.client.UserClient;
 import cn.cici.auth.server.client.vo.UserVo;
 import cn.cici.frigate.component.vo.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 /**
  * @description:
@@ -27,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
     public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException  {
-        return null;
+        return new User("admin", "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
     public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException  {
