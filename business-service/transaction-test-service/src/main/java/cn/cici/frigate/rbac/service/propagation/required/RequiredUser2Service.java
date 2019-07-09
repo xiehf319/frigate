@@ -1,6 +1,5 @@
 package cn.cici.frigate.rbac.service.propagation.required;
 
-import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.dao.entity.User2;
 import cn.cici.frigate.rbac.jpa.User2Repository;
 import org.springframework.beans.factory.annotation.Autowired;

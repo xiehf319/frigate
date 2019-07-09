@@ -1,6 +1,5 @@
 package cn.cici.frigate.rbac.service.propagation.requirednew;
 
-import cn.cici.frigate.rbac.service.propagation.required.RequiredUser2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

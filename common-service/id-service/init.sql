@@ -1,4 +1,4 @@
-create database workd_node default charset utf8mb4;
+create database work_node default charset utf8mb4;
 
 DROP TABLE IF EXISTS WORKER_NODE;
 CREATE TABLE WORKER_NODE

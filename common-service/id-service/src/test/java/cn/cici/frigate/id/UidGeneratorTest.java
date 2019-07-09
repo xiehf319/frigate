@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @date 2019/5/14 23:26
  * @concat 370693739@qq.com
  **/
-@SpringBootTest(classes = IdServiceApplication.class)
+@SpringBootTest(classes = IdProviderApplication.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UidGeneratorTest {
 

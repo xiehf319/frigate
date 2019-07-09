@@ -4,7 +4,6 @@ import cn.cici.frigate.rbac.dao.entity.Role;
 import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.jpa.RoleRepository;
 import cn.cici.frigate.rbac.jpa.User1Repository;
-import cn.cici.frigate.rbac.jpa.User2Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

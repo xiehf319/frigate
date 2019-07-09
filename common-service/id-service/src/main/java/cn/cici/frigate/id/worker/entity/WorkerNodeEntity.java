@@ -16,8 +16,8 @@
 package cn.cici.frigate.id.worker.entity;
 
 import cn.cici.frigate.id.worker.WorkerNodeType;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 

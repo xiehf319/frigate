@@ -1,6 +1,5 @@
 package cn.cici.frigate.rbac.jpa;
 
-import cn.cici.frigate.rbac.dao.entity.User1;
 import cn.cici.frigate.rbac.dao.entity.User2;
 import org.springframework.data.jpa.repository.JpaRepository;
 

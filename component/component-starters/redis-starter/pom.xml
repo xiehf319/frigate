@@ -26,9 +26,5 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId></groupId>
-            <artifactId>swagger</artifactId>
-        </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,5 @@
 package cn.cici.frigate.rbac.service.propagation.required;
 
-import cn.cici.frigate.rbac.service.propagation.mandatory.MandatoryService;
 import cn.cici.frigate.rbac.service.propagation.support.SupportService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

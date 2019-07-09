@@ -19,7 +19,7 @@ public class IdGeneratorConfiguration {
         return new DisposableWorkerIdAssigner();
     }
 
-    @Bean("cachedUidGenerator")
+    @Bean("uidGenerator")
     public UidGenerator cachedUidGenerator(DisposableWorkerIdAssigner disposableWorkerIdAssigner) {
         CachedUidGenerator cachedUidGenerator = new CachedUidGenerator();
         cachedUidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);

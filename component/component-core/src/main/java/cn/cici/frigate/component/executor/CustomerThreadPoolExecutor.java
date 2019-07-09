@@ -48,10 +48,14 @@ public class CustomerThreadPoolExecutor {
     @Value("${thread.pool.queueCapacity: 90}")
     private int queueCapacity;
 
-    private BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>(queueCapacity);
+    private BlockingQueue<Runnable> queue;
+
+    public CustomerThreadPoolExecutor() {
+    }
 
     @PostConstruct
     public void init() {
+        queue = new LinkedBlockingQueue<>(queueCapacity);
         poolExecutor = new ThreadPoolExecutor(
                 corePoolSize,
                 maxPoolSize,

@@ -1,8 +1,6 @@
 package cn.cici.frigate.rbac.service.propagation.nested;
 
-import cn.cici.frigate.rbac.dao.entity.User2;
 import cn.cici.frigate.rbac.jpa.User2JdbcTemplate;
-import cn.cici.frigate.rbac.jpa.User2Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

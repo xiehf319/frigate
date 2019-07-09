@@ -1,11 +1,11 @@
-package cn.cici.frigate.logistics.service.propagation.required;
+package cn.cici.frigate.rbac.service.propagation.required;
 
+import cn.cici.frigate.logistics.service.propagation.nested.NestedService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import cn.cici.frigate.logistics.service.propagation.nested.NestedService;
 
 /**
  * @description:

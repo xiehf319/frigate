@@ -19,19 +19,16 @@ import cn.cici.frigate.id.utils.DockerUtils;
 import cn.cici.frigate.id.utils.NetUtils;
 import cn.cici.frigate.id.worker.dao.WorkerNodeMapper;
 import cn.cici.frigate.id.worker.entity.WorkerNodeEntity;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-
 /**
- * Represents an implementation of {@link WorkerIdAssigner}, 
+ * Represents an implementation of {@link WorkerIdAssigner},
  * the worker id will be discarded after assigned to the UidGenerator
- * 
+ *
  * @author yutianbao
  */
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
@@ -44,7 +41,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
      * Assign worker id base on database.<p>
      * If there is host name & port in the environment, we considered that the node runs in Docker container<br>
      * Otherwise, the node runs on an actual machine.
-     * 
+     *
      * @return assigned worker id
      */
     @Transactional
@@ -72,7 +69,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
         } else {
             workerNodeEntity.setType(WorkerNodeType.ACTUAL.value());
             workerNodeEntity.setHostName(NetUtils.getLocalAddress());
-            workerNodeEntity.setPort(System.currentTimeMillis() + "-" + RandomUtils.nextInt(100000));
+            workerNodeEntity.setPort(System.currentTimeMillis() + "-" + RandomUtils.nextInt(0, 100000));
         }
 
         return workerNodeEntity;

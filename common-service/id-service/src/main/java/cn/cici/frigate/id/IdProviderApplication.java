@@ -13,10 +13,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(basePackages = {"cn.cici.frigate.id.worker.dao"})
-public class IdServiceApplication {
+public class IdProviderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(IdServiceApplication.class, args);
+        SpringApplication.run(IdProviderApplication.class, args);
     }
 
 }

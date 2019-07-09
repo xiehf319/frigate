@@ -5,9 +5,9 @@ spring:
     name: id-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/work_node?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://114.115.131.208:3306/work_node?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
-    password: aaaaaa
+    password: 123456
 eureka:
   client:
     service-url:

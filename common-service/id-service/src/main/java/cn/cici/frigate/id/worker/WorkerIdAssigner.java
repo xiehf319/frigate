@@ -15,15 +15,17 @@
  */
 package cn.cici.frigate.id.worker;
 
+import cn.cici.frigate.id.impl.DefaultUidGenerator;
+
 /**
- * Represents a worker id assigner for {@link cn.cici.frigate.id.impl.DefaultUidGenerator}
+ * Represents a worker id assigner for {@link DefaultUidGenerator}
  * 
  * @author yutianbao
  */
 public interface WorkerIdAssigner {
 
     /**
-     * Assign worker id for {@link cn.cici.frigate.id.impl.DefaultUidGenerator}
+     * Assign worker id for {@link DefaultUidGenerator}
      * 
      * @return assigned worker id
      */
