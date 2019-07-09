@@ -14,5 +14,6 @@
     <modules>
         <module>transaction-test-service</module>
         <module>logistics-service</module>
+        <module>rbac-service</module>
     </modules>
 </project>

@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: api-gateway
+  profiles:
+    active: dev
 eureka:
   client:
     service-url:
@@ -15,10 +17,6 @@ zuul:
     socket-timeout-millis: 10000
   ignored-services: '*'
   routes:
-    frigate-admin:
-      path: /admin/**
-      service-id: frigate-admin
-      strip-prefix: false
     auth-service:
       path: /oauth/**
       service-id: auth-service

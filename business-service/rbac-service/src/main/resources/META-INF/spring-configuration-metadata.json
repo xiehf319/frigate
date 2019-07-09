@@ -1,0 +1,31 @@
+{
+  "groups": [
+    {
+      "name": "security",
+      "description": "token configuration.",
+      "sourceType": "cn.cici.frigate.rbac.properties.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "security.access.expires",
+      "description": "access token expires in, unit is second.",
+      "defaultValue": 3600,
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "security.access.enable-refresh",
+      "description": "Is enable support refresh token.",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "security.refresh.expires",
+      "description": "refresh token expires in, unit is second.",
+      "defaultValue": 7200,
+      "type": "java.lang.Integer"
+    }
+  ],
+  "hints": [
+  ]
+}
