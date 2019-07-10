@@ -33,6 +33,7 @@
         <lombok.version>1.16.10</lombok.version>
         <lang3.common.version>3.8.1</lang3.common.version>
         <mybatis.spring.version>1.3.2</mybatis.spring.version>
+        <collections4.common.version>4.4</collections4.common.version>
     </properties>
 
     <dependencies>
@@ -90,11 +91,11 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${lang3.common.version}</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${collections4.common.version}</version>
             </dependency>
 
             <dependency>

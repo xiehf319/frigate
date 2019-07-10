@@ -1,6 +1,6 @@
 package cn.cici.frigate.rbac.service.propagation.required;
 
-import cn.cici.frigate.rbac.service.propagation.never.NeverService;
+import cn.cici.frigate.trans.service.propagation.never.NeverService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
