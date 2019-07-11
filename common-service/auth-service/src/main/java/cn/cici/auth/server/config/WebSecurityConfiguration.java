@@ -1,7 +1,6 @@
 package cn.cici.auth.server.config;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
-import cn.cici.auth.server.security.sms.SmsCodeSecurityConfig;
 import cn.cici.auth.server.security.sms.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+//import cn.cici.auth.server.security.sms.SmsCodeSecurityConfig;
 
 /**
  * 支持表单登陆的方式
@@ -33,9 +33,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailService userServiceDetail;
-
-    @Autowired
-    private SmsCodeSecurityConfig smsCodeSecurityConfig;
+//
+//    @Autowired
+//    private SmsCodeSecurityConfig smsCodeSecurityConfig;
 
     @Autowired
     private ValidateCodeFilter validateCodeFilter;
@@ -68,11 +68,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.apply(smsCodeSecurityConfig)
-
-                // 设置验证码过滤器到过滤器链中
-                .and().addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-
+        http
+//                .apply(smsCodeSecurityConfig)
+//
+//                // 设置验证码过滤器到过滤器链中
+//                .and().addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+//
                 // 设置自定义表单登陆页面
                 .formLogin().loginPage("/login.html")
 

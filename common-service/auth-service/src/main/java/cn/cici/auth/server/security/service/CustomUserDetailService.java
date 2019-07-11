@@ -26,11 +26,11 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         R<UserVo> result = userClient.findByUsername(s);
-        return null;
+        return new User(s, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
     public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException  {
-        return new User("admin", "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
+        return new User(mobile, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
     public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException  {

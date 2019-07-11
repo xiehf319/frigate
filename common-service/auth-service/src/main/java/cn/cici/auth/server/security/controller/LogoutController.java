@@ -18,9 +18,7 @@ public class LogoutController {
 
     @RequestMapping("/oauth/user/invoke")
     public void exit(HttpServletRequest request, HttpServletResponse response) {
-
         new SecurityContextLogoutHandler().logout(request, null, null);
-
         try {
             response.sendRedirect(request.getHeader("referer"));
         } catch (IOException e) {

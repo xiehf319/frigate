@@ -1,5 +1,6 @@
 package cn.cici.auth.server.security.sms;
 
+import cn.cici.auth.server.security.controller.ValidateCodeController;
 import cn.cici.frigate.component.exception.BusinessException;
 import cn.cici.frigate.component.exception.CommonResponseEnum;
 import org.apache.commons.lang.StringUtils;

@@ -1,5 +1,8 @@
-package cn.cici.auth.server.security.sms;
+package cn.cici.auth.server.security.controller;
 
+import cn.cici.auth.server.security.sms.CodeGenerator;
+import cn.cici.auth.server.security.sms.ValidateCode;
+import cn.cici.auth.server.security.sms.ValidateCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

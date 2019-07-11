@@ -22,8 +22,8 @@ public class TokenStoreConfig {
      */
     @Bean
     public RedisTokenStore redisTokenStore(@Autowired RedisConnectionFactory redisConnectionFactory) {
-        RedisTokenStore customRedisTokenStore = new RedisTokenStore(redisConnectionFactory);
-        customRedisTokenStore.setPrefix("FRIGATE-AUTH:");
-        return customRedisTokenStore;
+        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
+        redisTokenStore.setPrefix("FRIGATE-AUTH:");
+        return redisTokenStore;
     }
 }
