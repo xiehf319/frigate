@@ -60,6 +60,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
+    /**
+     * 配置内置页面登陆的逻辑
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.apply(smsCodeSecurityConfig)

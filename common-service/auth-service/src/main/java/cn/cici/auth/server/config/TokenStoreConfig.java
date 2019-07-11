@@ -1,11 +1,10 @@
 package cn.cici.auth.server.config;
 
-import cn.cici.auth.server.support.CustomRedisTokenStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * @description: 类介绍：
@@ -22,8 +21,8 @@ public class TokenStoreConfig {
      * @return
      */
     @Bean
-    public TokenStore tokenStore(@Autowired RedisConnectionFactory redisConnectionFactory) {
-        CustomRedisTokenStore customRedisTokenStore = new CustomRedisTokenStore(redisConnectionFactory);
+    public RedisTokenStore redisTokenStore(@Autowired RedisConnectionFactory redisConnectionFactory) {
+        RedisTokenStore customRedisTokenStore = new RedisTokenStore(redisConnectionFactory);
         customRedisTokenStore.setPrefix("FRIGATE-AUTH:");
         return customRedisTokenStore;
     }

@@ -21,5 +21,4 @@ public interface SecurityConstants {
 
     String MOBILE_TOKEN_URL = "/mobile/token";
 
-
 }

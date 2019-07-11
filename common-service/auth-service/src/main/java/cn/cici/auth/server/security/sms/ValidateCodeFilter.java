@@ -1,6 +1,7 @@
 package cn.cici.auth.server.security.sms;
 
-import cn.cici.frigate.component.exception.ServiceException;
+import cn.cici.frigate.component.exception.BusinessException;
+import cn.cici.frigate.component.exception.CommonResponseEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -55,18 +56,18 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      */
     private boolean smsCodeValid(HttpServletRequest request, HttpServletResponse response) throws ServletRequestBindingException {
         String smsCode = ServletRequestUtils.getStringParameter(request, "smsCode");
-        ValidateCode validateCode = (ValidateCode)request.getSession().getAttribute(ValidateCodeController.SESSION_CODE_KEY);
+        ValidateCode validateCode = (ValidateCode) request.getSession().getAttribute(ValidateCodeController.SESSION_CODE_KEY);
         if (StringUtils.isEmpty(smsCode)) {
-            throw new ServiceException("验证码不能为空");
+            throw new BusinessException(CommonResponseEnum.SERVER_ERROR, "验证码不能为空");
         }
         if (null == validateCode) {
-            throw new ServiceException("验证码不存在");
+            throw new BusinessException(CommonResponseEnum.SERVER_ERROR, "验证码不存在");
         }
         if (LocalDateTime.now().isAfter(validateCode.getExpireTime())) {
-            throw new ServiceException("验证码已过期");
+            throw new BusinessException(CommonResponseEnum.SERVER_ERROR, "验证码已过期");
         }
         if (!StringUtils.equals(smsCode, validateCode.getCode())) {
-            throw new ServiceException("验证码不正确");
+            throw new BusinessException(CommonResponseEnum.SERVER_ERROR, "验证码不正确");
         }
         // 移除
         request.getSession().removeAttribute(ValidateCodeController.SESSION_CODE_KEY);

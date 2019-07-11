@@ -36,6 +36,8 @@ public class SmsCodeLoginSuccessHandler extends SavedRequestAwareAuthenticationS
     @Autowired
     private ObjectMapper objectMapper;
 
+    private static final String INNER_PAGE_TYPE = "text/html";
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         log.info("登陆成功");
@@ -43,12 +45,13 @@ public class SmsCodeLoginSuccessHandler extends SavedRequestAwareAuthenticationS
         log.info("Accept: {}", type);
 
         // 不通过内置登陆页面请求的
-        if (!type.contains("text/html")) {
+        if (!type.contains(INNER_PAGE_TYPE)) {
             String clientId = request.getParameter("clientId");
             log.info("clientId: {}", clientId);
             ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
+            // todo 此处校验client是否有效
 
-            TokenRequest tokenRequest = new TokenRequest(new HashMap<>(), clientId, clientDetails.getScope(), "mobile");
+            TokenRequest tokenRequest = new TokenRequest(new HashMap<>(16), clientId, clientDetails.getScope(), "mobile");
             OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
 
             OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
