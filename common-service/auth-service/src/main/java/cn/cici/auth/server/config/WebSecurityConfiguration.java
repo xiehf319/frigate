@@ -54,23 +54,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     /**
-     * 配置内置页面登陆的逻辑
-     *
+     * 配置oauth2自带的接口访问
+     * 如果需要配置其他登陆的页面也在这里配置
      * @param http
      * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .requestMatchers().anyRequest()
+        http.csrf().disable();
+        // 只处理 /oauth/** 的接口，也就是该filterChain只会处理符合该规则的接口
+        http.requestMatchers().antMatchers("/oauth/**")
                 .and()
                 .authorizeRequests()
-
-                // 可以访问
-                .antMatchers("/oauth/*").permitAll()
-                .anyRequest().authenticated()
-                // 暂时停用csrf
-                .and().csrf().disable();
+                .antMatchers("/oauth/**").permitAll();
     }
 
 }

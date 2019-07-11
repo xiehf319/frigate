@@ -2,31 +2,32 @@ package cn.cici.auth.server.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 /**
- *
- * @description:
- *  资源服务配置
- * @date
  * @author heyfan.xie
+ * @description: 资源服务配置,
+ * @date
  */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+    /**
+     * 配置需要拦截的自定义的接口
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                // 只处理 /user/**的接口，也就是该filterChain只会处理符合该规则的接口
+                .requestMatchers().antMatchers("/user/**")
                 .and()
-                .requestMatchers().anyRequest()
-                .and()
-                .anonymous()
-                .and()
+                // 再上面的基础上，做更细的权限控制，比如 hasRole 等操作
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .antMatchers("/user/**").authenticated();
     }
 }
