@@ -6,6 +6,7 @@ import cn.cici.auth.server.security.sms.ValidateCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author: Heyfan Xie
  */
 @RestController
-@RequestMapping("/code")
+@RequestMapping("/oauth/code")
 public class ValidateCodeController {
 
     /**
@@ -38,11 +39,9 @@ public class ValidateCodeController {
     private ValidateCodeSender validateCodeSender;
 
     @GetMapping("/sms")
-    public void createSmsCode(HttpServletRequest request, String mobile) {
+    public void createSmsCode(@RequestParam("mobile") String mobile) {
         ValidateCode validateCode = CodeGenerator.generate(length, validityMinutes);
-        // 存储验证码到session中
-        request.getSession().setAttribute(SESSION_CODE_KEY, validateCode);
         // 调用发送器发送验证码
-        validateCodeSender.sendSmsCode(mobile, validateCode.getCode());
+        validateCodeSender.sendSmsCode(mobile, validateCode);
     }
 }

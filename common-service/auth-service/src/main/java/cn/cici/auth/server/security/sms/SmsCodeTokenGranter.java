@@ -1,6 +1,8 @@
 package cn.cici.auth.server.security.sms;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,6 +13,7 @@ import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,10 +59,17 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
 
         HashOperations<String, String, String> hashOptions = redisTemplate.opsForHash();
         String smsCodeCached = hashOptions.get("SMS_CODE", mobile);
+
         if (StringUtils.isBlank(smsCodeCached)) {
             throw new InvalidGrantException("用户没有发送验证码");
         }
-        if (!StringUtils.equals(smsCode, smsCodeCached)) {
+        ValidateCode validateCode = JSON.parseObject(smsCodeCached, ValidateCode.class);
+
+        if (LocalDateTime.now().isAfter(validateCode.getExpireTime())) {
+            throw new InvalidGrantException("验证码已失效");
+        }
+
+        if (!StringUtils.equals(smsCode, validateCode.getCode())) {
             throw new InvalidGrantException("验证码错误");
         }
         // 移除
