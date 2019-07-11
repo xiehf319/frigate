@@ -1,7 +1,5 @@
 package cn.cici.auth.server.security.filter;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;

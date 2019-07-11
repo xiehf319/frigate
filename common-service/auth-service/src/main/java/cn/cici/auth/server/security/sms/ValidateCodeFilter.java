@@ -3,6 +3,7 @@ package cn.cici.auth.server.security.sms;
 import cn.cici.frigate.component.exception.BusinessException;
 import cn.cici.frigate.component.exception.CommonResponseEnum;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,12 +24,12 @@ import java.util.List;
  * @author: Heyfan Xie
  */
 @Component
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     /**
      * 需要校验短信验证码的请求
      */
-    private List<String> smsCodeUrls = new ArrayList<>();
+    private List<String> smsCodeUrls = Collections.singletonList("/login/mobile");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,11 +41,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         } else {
             filterChain.doFilter(request, response);
         }
-    }
-
-    @Override
-    protected void initFilterBean() throws ServletException {
-        smsCodeUrls.add("/login/mobile");
     }
 
     /**
