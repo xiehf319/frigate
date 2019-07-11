@@ -1,8 +1,8 @@
 package cn.cici.auth.server.config;
 
-import cn.cici.auth.server.security.handler.LoginFailureHandler;
-import cn.cici.auth.server.security.handler.LoginSuccessHandler;
 import cn.cici.auth.server.security.service.CustomUserDetailService;
+import cn.cici.auth.server.security.sms.SmsCodeSecurityConfig;
+import cn.cici.auth.server.security.sms.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +13,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 支持表单登陆的方式
@@ -34,9 +34,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailService userServiceDetail;
 
+    @Autowired
+    private SmsCodeSecurityConfig smsCodeSecurityConfig;
+
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -56,19 +62,34 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .requestMatchers()
-                .antMatchers("/login", "/oauth/authorize")
-                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin()
-                .permitAll()
-                .failureHandler(new LoginFailureHandler())
-                .successHandler(new LoginSuccessHandler());
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+        http.apply(smsCodeSecurityConfig)
+
+                // 设置验证码过滤器到过滤器链中
+                .and().addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // 设置自定义表单登陆页面
+                .formLogin().loginPage("/login.html")
+
+                // 设置登陆验证请求地址为自定义登陆页配置
+                .loginProcessingUrl("/login/form")
+
+                // 设置默认登陆成功跳转页面
+                .defaultSuccessUrl("/main.html")
+
+                // 授权请求设置
+                .and().authorizeRequests()
+
+                // 设置不需要授权的请求
+                .antMatchers("/js/**", "/code/**", "/login.html").permitAll()
+
+                // 其他请求需要验证权限
+                .anyRequest().authenticated()
+
+                // 设置userDetailsService
+                .and().userDetailsService(userServiceDetail)
+
+                // 暂时停用csrf
+                .csrf().disable();
     }
 
 }

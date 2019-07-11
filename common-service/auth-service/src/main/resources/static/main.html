@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>首页</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script>
+        function getHostMessage() {
+            $.ajax({
+                type: "get",
+                url: "/host-message",
+                async: true,
+                success: function(data) {
+                    $("#msg").val(JSON.stringify(data));
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+<div>
+    <h2>首页</h2>
+    <table>
+        <tr>
+            <td><button onclick="getHostMessage()">获取主机信息</button></td>
+        </tr>
+    </table>
+
+</div>
+
+<!--响应内容-->
+<div>
+    <textarea id="msg" style="width: 800px;height: 800px;"></textarea>
+</div>
+
+</body>
+
+</html>

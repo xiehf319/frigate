@@ -1,7 +1,6 @@
-package cn.cici.auth.server.security.mobile;
+package cn.cici.auth.server.security.sms;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
-import cn.cici.auth.server.security.mobile.MobileAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -13,25 +12,28 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @createDate:2019/7/9$16:09$
  * @author: Heyfan Xie
  */
-public class MobileAuthenticationProvider implements AuthenticationProvider {
+public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
     private CustomUserDetailService userDetailService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        MobileAuthenticationToken mobileAuthenticationToken = (MobileAuthenticationToken) authentication;
-        UserDetails userDetails = userDetailService.loadUserByMobile((String) mobileAuthenticationToken.getPrincipal());
+        SmsCodeAuthenticationToken smsCodeAuthenticationToken = (SmsCodeAuthenticationToken) authentication;
+        UserDetails userDetails = userDetailService.loadUserByMobile((String) smsCodeAuthenticationToken.getPrincipal());
         if (userDetails == null) {
-            throw new InternalAuthenticationServiceException("手机号不存在: " + mobileAuthenticationToken.getPrincipal());
+            throw new InternalAuthenticationServiceException("手机号不存在: " + smsCodeAuthenticationToken.getPrincipal());
         }
-        MobileAuthenticationToken authenticationToken = new MobileAuthenticationToken(userDetails, userDetails.getAuthorities());
-        authenticationToken.setDetails(userDetails);
-        return mobileAuthenticationToken;
+        // 已认证的token
+        SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(userDetails, userDetails.getAuthorities());
+
+        // 复制之前的请求信息到认证后的token中
+        authenticationToken.setDetails(smsCodeAuthenticationToken.getDetails());
+        return smsCodeAuthenticationToken;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return MobileAuthenticationToken.class.isAssignableFrom(authentication);
+        return SmsCodeAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
     public CustomUserDetailService getUserDetailService() {

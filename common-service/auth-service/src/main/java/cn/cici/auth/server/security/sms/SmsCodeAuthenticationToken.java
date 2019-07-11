@@ -1,4 +1,4 @@
-package cn.cici.auth.server.security.mobile;
+package cn.cici.auth.server.security.sms;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,18 +7,17 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import java.util.Collection;
 
 /**
- * @description:
- *  手机号登陆令牌
- * @createDate: 2019/7/9$16:16$
+ * @description: 类介绍：
+ * @createDate: 2019/7/11 10:02
  * @author: Heyfan Xie
  */
-public class MobileAuthenticationToken extends AbstractAuthenticationToken {
+public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final Object principal;
 
-    public MobileAuthenticationToken(String mobile) {
+    public SmsCodeAuthenticationToken(String mobile) {
         super(null);
         this.principal = mobile;
         setAuthenticated(false);
@@ -31,7 +30,7 @@ public class MobileAuthenticationToken extends AbstractAuthenticationToken {
      * @param authorities the collection of <tt>GrantedAuthority</tt>s for the principal
      *                    represented by this authentication object.
      */
-    public MobileAuthenticationToken(Object principal,
+    public SmsCodeAuthenticationToken(Object principal,
                                      Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;

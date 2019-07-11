@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>登录</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script>
+        function sendSmsCode() {
+            var mobile = $("#mobile").val().trim();
+
+            // 简单校验由11位数字组成
+            var reg = /^\d{11}$/;
+            if(reg.test(mobile)) {
+                $.ajax({
+                    type: "get",
+                    url: "/code/sms?mobile=" + mobile,
+                    async: true,
+                    success: function(data) {
+                        alert(data);
+                    }
+                });
+            } else {
+                alert("手机号输入格式错误");
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+<!--登录框-->
+<div align="center">
+    <h2>用户自定义登录页面</h2>
+    <fieldset style="width: 390px;">
+        <legend>表单登录框</legend>
+        <form action="/login/form" method="post">
+            <table>
+                <tr>
+                    <th>用户名：</th>
+                    <td><input name="username" /> </td>
+                </tr>
+                <tr>
+                    <th>密码：</th>
+                    <td><input type="password" name="password" /> </td>
+                </tr>
+                <tr>
+                    <th>记住我：</th>
+                    <td><input type="checkbox" name="remember-me" value="true" checked="checked" /></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><button type="submit">登录</button></td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset style="width: 390px;margin-top: 30px;">
+        <legend>手机验证码登录框</legend>
+        <form action="/login/mobile" method="post">
+            <table>
+                <tr>
+                    <th>手机号：</th>
+                    <td><input id="mobile" name="mobile" value="13166668888" /></td>
+                </tr>
+                <tr>
+                    <th>验证码：</th>
+                    <td>
+                        <input id="smsCode" name="smsCode" />
+                        <button type="button" onclick="sendSmsCode()">发送手机验证码</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><button type="submit">登录</button></td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+
+</div>
+
+</body>
+
+</html>
