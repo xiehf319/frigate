@@ -56,6 +56,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     /**
      * 配置oauth2自带的接口访问
      * 如果需要配置其他登陆的页面也在这里配置
+     *
      * @param http
      * @throws Exception
      */
@@ -64,6 +65,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // 只处理 /oauth/** 的接口，也就是该filterChain只会处理符合该规则的接口
         http.requestMatchers().antMatchers("/oauth/**")
+//                .and()
+//                .logout().logoutUrl("/oauth/logout").addLogoutHandler((request, response, authentication) -> {
+//                    try {
+//                        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+//                        response.getWriter().write("成功");
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                })
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**").permitAll();

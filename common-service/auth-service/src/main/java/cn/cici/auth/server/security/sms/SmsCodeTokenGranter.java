@@ -2,7 +2,6 @@ package cn.cici.auth.server.security.sms;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
