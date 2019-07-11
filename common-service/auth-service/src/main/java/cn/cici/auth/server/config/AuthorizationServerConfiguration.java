@@ -5,9 +5,11 @@ import cn.cici.auth.server.support.CustomRedisTokenStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -54,17 +56,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private DataSource dataSource;
 
     @Autowired
-    private RedisConnectionFactory factory;
-
-    @Autowired
     private CustomUserDetailService userServiceDetail;
 
-    @Bean
-    public TokenStore tokenStore() {
-        CustomRedisTokenStore customRedisTokenStore = new CustomRedisTokenStore(factory);
-        customRedisTokenStore.setPrefix("FRIGATE-AUTH:");
-        return customRedisTokenStore;
-    }
+    @Autowired
+    private TokenStore tokenStore;
+
 
     /**
      * 配置客户端的详情信息 也就是 oauth_client_details 表存储的信息
@@ -87,7 +83,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.pathMapping("/oauth/token", "/oauth/login");
-        endpoints.tokenStore(tokenStore())
+        endpoints.tokenStore(tokenStore)
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
                 .userDetailsService(userServiceDetail)
                 .authenticationManager(authenticationManager);

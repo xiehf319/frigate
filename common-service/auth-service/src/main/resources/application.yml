@@ -16,6 +16,12 @@ spring:
     port: 6379
     database: 0
     host: localhost
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1ms
   profiles:
     active: dev
 eureka:
