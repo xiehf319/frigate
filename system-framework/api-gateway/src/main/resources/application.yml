@@ -6,18 +6,29 @@ spring:
   profiles:
     active: dev
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:9000/eureka/
 zuul:
+  ribbon:
+    eager-load:
+      enabled: true
   # 忽略所有服务，只路由以下配置的服务
   host:
     connect-timeout-millis: 20000
     connection-request-timeout-millis: -1
     socket-timeout-millis: 10000
+    max-per-route-connections: 20
+    max-total-connections: 200
   ignored-services: '*'
   routes:
     auth-service:
+      path: /auth/**
+      service-id: auth-service
+      strip-prefix: false
+    auth-service-two:
       path: /oauth/**
       service-id: auth-service
       strip-prefix: false
@@ -26,16 +37,27 @@ zuul:
       service-id: rbac-service
       strip-prefix: false
   sensitive-headers: '*'
+  add-proxy-headers: true
+ribbon:
+  ReadTimeout: 1000
 security:
   oauth2:
-    client:
-      client-id: password
-      client-secret: 123456
-      oauth-token-uri: http://auth-service/oauth/login
-      ignore-patterns:
-        - /oauth/login
     resource:
-      user-info-uri: http://auth-service/oauth/user/current
+      user-info-uri: /auth/current
       prefer-token-info: false
-      token-info-uri: http://auth-service/oauth/check_token
+      token-info-uri: /oauth/check_token
+    client:
+      access-token-uri: /oauth/token
+      client-id: clientId
+      client-secret: 123456
+    permit-all:
+      - pattern: /oauth/**
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 10000
 spring.main.allow-bean-definition-overriding: true

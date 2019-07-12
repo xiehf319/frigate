@@ -34,6 +34,7 @@
         <lang3.common.version>3.8.1</lang3.common.version>
         <mybatis.spring.version>1.3.2</mybatis.spring.version>
         <collections4.common.version>4.4</collections4.common.version>
+        <fastjson.version>1.2.55</fastjson.version>
     </properties>
 
     <dependencies>
@@ -96,6 +97,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${collections4.common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <dependency>

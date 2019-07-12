@@ -17,7 +17,7 @@ import java.security.Principal;
 @Slf4j
 public class UserController {
 
-    @RequestMapping(value = "/user/current", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/current", method = RequestMethod.GET)
     public R<Principal> getUser(Principal principal) {
         log.info(">>>>>>>>>>>>>>>>>>>>>>>>>");
         log.info(principal.toString());

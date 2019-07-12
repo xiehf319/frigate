@@ -24,10 +24,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 // 只处理 /user/**的接口，也就是该filterChain只会处理符合该规则的接口
-                .requestMatchers().antMatchers("/user/**")
+                .requestMatchers().antMatchers("/auth/**")
                 .and()
                 // 再上面的基础上，做更细的权限控制，比如 hasRole 等操作
                 .authorizeRequests()
-                .antMatchers("/user/**").authenticated();
+                .antMatchers("/auth/**").authenticated();
     }
 }

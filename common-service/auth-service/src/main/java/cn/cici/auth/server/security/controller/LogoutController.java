@@ -27,7 +27,7 @@ public class LogoutController {
 
     private TokenExtractor tokenExtractor = new BearerTokenExtractor();
 
-    @PostMapping("/user/invoke")
+    @PostMapping("/auth/invoke")
     public R exit(HttpServletRequest request, HttpServletResponse response) {
         Authentication extract = tokenExtractor.extract(request);
         log.info("token: {}", extract.getPrincipal());

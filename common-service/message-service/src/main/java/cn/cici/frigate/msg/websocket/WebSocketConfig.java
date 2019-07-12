@@ -1,6 +1,8 @@
-package cn.cici.frigate.msg.config;
+package cn.cici.frigate.msg.websocket;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -15,6 +17,15 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Autowired
+    private AuthHandshakeInterceptor authHandshakeInterceptor;
+
+    @Autowired
+    private WsHandshakeHandler wsHandshakeHandler;
+
+    @Autowired
+    private WsChannelInterceptor wsChannelInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -37,12 +48,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins("*")
                 // 设置服务端websocket的类型
                 .withSockJS();
-        registry
-                // 客户端连接服务端的端点  点对点
-                .addEndpoint("/queueServer")
-                // 允许的请求源
-                .setAllowedOrigins("*")
-                // 设置服务端websocket的类型
-                .withSockJS();
+//        registry
+//                // 客户端连接服务端的端点  点对点
+//                .addEndpoint("/queueServer")
+//                // 允许的请求源
+//                .setAllowedOrigins("*")
+//                .addInterceptors(authHandshakeInterceptor)
+//                .setHandshakeHandler(wsHandshakeHandler)
+//                // 设置服务端websocket的类型
+//                .withSockJS();
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.interceptors(wsChannelInterceptor);
     }
 }

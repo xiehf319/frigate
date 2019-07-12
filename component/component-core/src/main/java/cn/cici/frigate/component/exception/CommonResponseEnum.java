@@ -15,7 +15,12 @@ public enum  CommonResponseEnum implements BusinessExceptionAssert{
     /**
      * 服务异常
      */
-    SERVER_ERROR(500, "SERVER ERROR.")
+    SERVER_ERROR(500, "SERVER ERROR."),
+
+    /**
+     * 无权限访问
+     */
+    UN_AUTHORIZED(401, "SERVER ERROR."),
     ;
 
     private int code;
