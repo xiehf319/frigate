@@ -29,7 +29,7 @@ import java.util.Set;
 @Slf4j
 public class HeaderEnhancerFilter implements Filter {
 
-    private final String ANONYMOUS_USER_ID = "XXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    public static final String ANONYMOUS_USER_ID = "XXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
     @Autowired
     private PermitAllProperties permitAllProperties;

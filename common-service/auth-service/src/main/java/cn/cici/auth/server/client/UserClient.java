@@ -1,7 +1,7 @@
 package cn.cici.auth.server.client;
 
-import cn.cici.auth.server.client.vo.UserVo;
 import cn.cici.frigate.component.vo.R;
+import cn.cici.frigate.component.vo.UserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,5 +16,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserClient {
 
     @RequestMapping(value = "/inner/api/rbac/user/find-by-name", method = RequestMethod.GET)
-    R<UserVo> findByUsername(@RequestParam("username") String username);
+    R<UserInfo> findByUsername(@RequestParam("username") String username);
 }
