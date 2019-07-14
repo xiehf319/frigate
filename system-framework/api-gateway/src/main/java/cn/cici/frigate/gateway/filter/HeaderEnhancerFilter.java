@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -34,6 +36,9 @@ public class HeaderEnhancerFilter implements Filter {
     @Autowired
     private PermitAllProperties permitAllProperties;
 
+    @Autowired
+    private UserInfoTokenServices userInfoTokenServices;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -57,6 +62,10 @@ public class HeaderEnhancerFilter implements Filter {
         if (!StringUtils.isEmpty(authorization)) {
             if (isBearToken(authorization)) {
                 try {
+                    // todo token 检验token
+                    OAuth2Authentication authentication = userInfoTokenServices.loadAuthentication(authorization.substring("Bearer ".length()));
+                    Object principal = authentication.getPrincipal();
+                    log.info("用户信息: " + principal.toString());
                     authorization = StringUtils.substringBetween(authorization, ".");
                     String decoded = new String(Base64.decodeBase64(authorization));
 
@@ -106,7 +115,7 @@ public class HeaderEnhancerFilter implements Filter {
                     while (headerNames.hasMoreElements()) {
                         String headerName = headerNames.nextElement();
 //                        if (!HttpHeaders.AUTHORIZATION.equalsIgnoreCase(headerName)) {
-                            headerNameSet.add(headerName);
+                        headerNameSet.add(headerName);
 //                        }
                     }
                     headerNameSet.add(SecurityConstants.USER_ID_IN_HEADER);
