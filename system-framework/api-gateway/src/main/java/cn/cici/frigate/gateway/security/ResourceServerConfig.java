@@ -46,6 +46,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+//        CustomCheckTokenServices customCheckTokenServices = new CustomCheckTokenServices(restTemplate);
+//        customCheckTokenServices.setCheckTokenEndpointUrl(resourceServerProperties.getTokenInfoUri());
+//        customCheckTokenServices.setClientId(resourceServerProperties.getClientId());
+//        customCheckTokenServices.setClientSecret(resourceServerProperties.getClientSecret());
+//        resources.tokenServices(customCheckTokenServices);
         CustomUserInfoServices customUserInfoServices = new CustomUserInfoServices(restTemplate);
         // 获取token用户信息的uri
         customUserInfoServices.setUserInfoEndpointUrl(resourceServerProperties.getUserInfoUri());
