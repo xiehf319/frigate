@@ -21,6 +21,7 @@
         <module>business-service</module>
         <module>common-service</module>
         <module>system-framework</module>
+        <module>test-samples</module>
         <module>component</module>
     </modules>
 

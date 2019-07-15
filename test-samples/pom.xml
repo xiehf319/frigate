@@ -9,9 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-    <artifactId>business-service</artifactId>
+    <artifactId>test-samples</artifactId>
 
     <modules>
-        <module>rbac-service</module>
+        <module>transaction-test-service</module>
+        <module>logistics-service</module>
     </modules>
 </project>
