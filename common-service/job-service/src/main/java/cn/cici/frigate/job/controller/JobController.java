@@ -38,6 +38,7 @@ public class JobController {
     /**
      * 测试一下国际化
      * 通过 lang=zh_CN  /   en_US 切换结果
+     *
      * @return
      */
     @GetMapping("/test2")

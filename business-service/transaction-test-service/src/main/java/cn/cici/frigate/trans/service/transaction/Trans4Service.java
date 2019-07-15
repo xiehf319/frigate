@@ -53,7 +53,7 @@ public class Trans4Service implements ITrans4Service {
         role2.setName("role2");
         roleRepository.save(role2);
 
-        Role role3= new Role();
+        Role role3 = new Role();
         role2.setName("role3");
         roleRepository.save(role3);
         throw new RuntimeException("抛出异常");

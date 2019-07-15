@@ -2,6 +2,7 @@ package cn.cici.auth.server.config;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
 import cn.cici.auth.server.security.sms.SmsCodeTokenGranter;
+import cn.cici.frigate.sms.api.SmsCodeClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,6 +78,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private SmsCodeClient smsCodeClient;
 
     /**
      * 配置客户端的详情信息 也就是 oauth_client_details 表存储的信息
@@ -182,8 +186,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                     authenticationManager, tokenServices, clientDetailsService, requestFactory
             ));
             // 手机验证码
-            tokenGranters.add(new SmsCodeTokenGranter(
-                    redisTemplate, userServiceDetail, tokenServices, clientDetailsService, requestFactory
+            tokenGranters.add(new SmsCodeTokenGranter(userServiceDetail, smsCodeClient, tokenServices,
+                    clientDetailsService, requestFactory
             ));
         }
         return tokenGranters;

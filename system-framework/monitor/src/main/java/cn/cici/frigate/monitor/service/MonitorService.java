@@ -22,6 +22,32 @@ public class MonitorService {
 
     private static final int FAULTLENGTH = 10;
 
+    /**
+     * 测试方法.
+     *
+     * @param args
+     * @throws Exception
+     * @author amg     * Creation date: 2008-4-30 - 下午04:47:29
+     */
+    public static void main(String[] args) throws Exception {
+        MonitorService service = new MonitorService();
+        MonitorInfo monitorInfo = service.getMonitorInfo();
+        System.out.println("cpu占有率=" + monitorInfo.getCpuRatio());
+
+        System.out.println("可使用内存=" + monitorInfo.getTotalMemory());
+        System.out.println("剩余内存=" + monitorInfo.getFreeMemory());
+        System.out.println("最大可使用内存=" + monitorInfo.getMaxMemory());
+
+        System.out.println("操作系统=" + monitorInfo.getOsName());
+        System.out.println("总的物理内存=" + monitorInfo.getTotalMemorySize() + "kb");
+        System.out.println("剩余的物理内存=" + monitorInfo.getFreePhysicalMemorySize() + "kb");
+        System.out.println("已使用的物理内存=" + monitorInfo.getUsedMemory() + "kb");
+        System.out.println("线程总数=" + monitorInfo.getTotalThread());
+    }
+
+
+    /** */
+
     public MonitorInfo getMonitorInfo() {
         final int kb = 1024;
         long totalMemory = Runtime.getRuntime().totalMemory() / kb;
@@ -31,12 +57,13 @@ public class MonitorService {
         OperatingSystemMXBean osmxb = ManagementFactory.getOperatingSystemMXBean();
         String osName = System.getProperty("os.name");
         ThreadGroup parentThread;
-        for (parentThread = Thread.currentThread().getThreadGroup(); parentThread.getParent() != null; parentThread = parentThread.getParent()) { }
+        for (parentThread = Thread.currentThread().getThreadGroup(); parentThread.getParent() != null; parentThread = parentThread.getParent()) {
+        }
 
         int totalThread = parentThread.activeCount();
 
         double cpuRatio = 0;
-        if(osName.toLowerCase().startsWith("windows")) {
+        if (osName.toLowerCase().startsWith("windows")) {
             cpuRatio = this.getCpuRatioForWindows();
         }
 
@@ -53,9 +80,11 @@ public class MonitorService {
         return monitorInfo;
     }
 
+    /** */
 
-    /** *//**
+    /**
      * 获得CPU使用率.
+     *
      * @return 返回cpu使用率
      * @author amg     * Creation date: 2008-4-25 - 下午06:05:11
      */
@@ -83,8 +112,11 @@ public class MonitorService {
         }
     }
 
-    /** *//**
+    /** */
+
+    /**
      * 读取CPU信息.
+     *
      * @param proc
      * @return
      * @author amg     * Creation date: 2008-4-25 - 下午06:10:14
@@ -152,28 +184,6 @@ public class MonitorService {
             }
         }
         return null;
-    }
-
-    /** *//**
-     * 测试方法.
-     * @param args
-     * @throws Exception
-     * @author amg     * Creation date: 2008-4-30 - 下午04:47:29
-     */
-    public static void main(String[] args) throws Exception {
-        MonitorService service = new MonitorService();
-        MonitorInfo monitorInfo = service.getMonitorInfo();
-        System.out.println("cpu占有率=" + monitorInfo.getCpuRatio());
-
-        System.out.println("可使用内存=" + monitorInfo.getTotalMemory());
-        System.out.println("剩余内存=" + monitorInfo.getFreeMemory());
-        System.out.println("最大可使用内存=" + monitorInfo.getMaxMemory());
-
-        System.out.println("操作系统=" + monitorInfo.getOsName());
-        System.out.println("总的物理内存=" + monitorInfo.getTotalMemorySize() + "kb");
-        System.out.println("剩余的物理内存=" + monitorInfo.getFreePhysicalMemorySize() + "kb");
-        System.out.println("已使用的物理内存=" + monitorInfo.getUsedMemory() + "kb");
-        System.out.println("线程总数=" + monitorInfo.getTotalThread());
     }
 
 }

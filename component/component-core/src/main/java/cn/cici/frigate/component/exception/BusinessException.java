@@ -5,7 +5,7 @@ package cn.cici.frigate.component.exception;
  * @createDate:2019/7/3$12:01$
  * @author: Heyfan Xie
  */
-public class BusinessException extends BaseException{
+public class BusinessException extends BaseException {
 
     private static final long serialVersionUID = 1;
 

@@ -46,7 +46,8 @@ public class JwtUtil {
 
     /**
      * 使用指定密钥生成规则，生成JWT加解密密钥
-     * @param slg 加解密类型
+     *
+     * @param slg  加解密类型
      * @param rule 密钥生成规则
      * @return
      */
@@ -59,13 +60,14 @@ public class JwtUtil {
 
     /**
      * 构建JWT
-     * @param alg jwt加密算法
-     * @param key jwt加密密钥
-     * @param sub jwt面向的用户
-     * @param aud jwt接收方
-     * @param jti 唯一身份标识
-     * @param iss jwt签发者
-     * @param nbf jwt生效日期时间
+     *
+     * @param alg      jwt加密算法
+     * @param key      jwt加密密钥
+     * @param sub      jwt面向的用户
+     * @param aud      jwt接收方
+     * @param jti      唯一身份标识
+     * @param iss      jwt签发者
+     * @param nbf      jwt生效日期时间
      * @param duration jwt有效时间单位秒
      * @return jwt字符串
      */
@@ -94,6 +96,7 @@ public class JwtUtil {
                 .compact();
         return compact;
     }
+
     /**
      * 构建JWT
      *

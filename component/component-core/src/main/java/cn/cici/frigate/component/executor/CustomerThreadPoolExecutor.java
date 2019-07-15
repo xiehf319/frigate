@@ -21,7 +21,7 @@ public class CustomerThreadPoolExecutor {
      * 假设预估任务每秒并发为500-1000
      * 每个任务耗时0.1s
      * 系统允许最大响应时间为1s
-     *
+     * <p>
      * threadCount = (500-1000) * 0.1 = 50-100个线程并发，8020原则那么取 50 + 50 * 0.8 = 90
      */
     @Value("${thread.pool.corePoolSize: 90}")
@@ -42,8 +42,8 @@ public class CustomerThreadPoolExecutor {
 
     /**
      * （corePoolSize/任务耗时）* 响应时间
-     *  (90 / 0.1) * 10 = 90
-     *  todo
+     * (90 / 0.1) * 10 = 90
+     * todo
      */
     @Value("${thread.pool.queueCapacity: 90}")
     private int queueCapacity;

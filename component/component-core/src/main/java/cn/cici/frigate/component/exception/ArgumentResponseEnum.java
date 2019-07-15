@@ -10,12 +10,13 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ArgumentResponseEnum implements BusinessExceptionAssert{
+public enum ArgumentResponseEnum implements BusinessExceptionAssert {
 
     /**
      * 参数校验错误
      */
-    VALID_ERROR(400, "parameter valid error"),;
+    VALID_ERROR(400, "parameter valid error"),
+    ;
 
     private int code;
 

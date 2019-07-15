@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @description: 类介绍：
- *  https://dzone.com/articles/build-a-chat-application-using-spring-boot-websock
+ * https://dzone.com/articles/build-a-chat-application-using-spring-boot-websock
  * @createDate: 2019/7/11 17:32
  * @author: Heyfan Xie
  */

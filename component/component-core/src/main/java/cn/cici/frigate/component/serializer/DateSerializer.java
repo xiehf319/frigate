@@ -9,13 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
  * 返回指定格式的日期
- *
+ * <p>
  * 使用方法
+ *
  * @JsonSerialize(using = DateSerializer.class)
  * private Date date;
- *
  * @description:
  * @createDate:2019/5/7$14:56$
  * @author: Heyfan Xie

@@ -1,8 +1,8 @@
 package cn.cici.auth.server.security.controller;
 
-import cn.cici.auth.server.security.sms.CodeGenerator;
-import cn.cici.auth.server.security.sms.ValidateCode;
 import cn.cici.auth.server.security.sms.ValidateCodeSender;
+import cn.cici.frigate.component.sms.CodeGenerator;
+import cn.cici.frigate.component.sms.ValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/oauth/code")
 public class ValidateCodeController {
-
-    /**
-     * 验证码存放session的key
-     */
-    public static final String SESSION_CODE_KEY = "code";
 
     /**
      * 验证码长度

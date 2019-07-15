@@ -24,28 +24,16 @@ public class PermitAllProperties {
 
     private List<Url> permitAll;
 
+    public static List<Pattern> getPermitallUrlPattern() {
+        return permitUrlPattern;
+    }
+
     public String[] getPermitAllPatterns() {
         List<String> urls = new ArrayList<>();
         for (Url aPermitAll : permitAll) {
             urls.add(aPermitAll.getPattern());
         }
         return urls.toArray(new String[0]);
-    }
-
-    public static List<Pattern> getPermitallUrlPattern() {
-        return permitUrlPattern;
-    }
-
-    public static class Url {
-        private String pattern;
-
-        public String getPattern() {
-            return pattern;
-        }
-
-        public void setPattern(String pattern) {
-            this.pattern = pattern;
-        }
     }
 
     @PostConstruct
@@ -68,5 +56,17 @@ public class PermitAllProperties {
             }
         }
         return false;
+    }
+
+    public static class Url {
+        private String pattern;
+
+        public String getPattern() {
+            return pattern;
+        }
+
+        public void setPattern(String pattern) {
+            this.pattern = pattern;
+        }
     }
 }

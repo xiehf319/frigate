@@ -46,7 +46,7 @@ public class Trans0Service {
         role1.setName("role1");
         roleRepository.save(role1);
 
-        Role role2= new Role();
+        Role role2 = new Role();
         role2.setName("role2");
         roleRepository.save(role2);
         throw new RuntimeException("抛出异常");

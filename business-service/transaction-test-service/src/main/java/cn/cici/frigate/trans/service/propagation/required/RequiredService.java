@@ -6,12 +6,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
  * 在外围方法未开启事务的情况下
  * Propagation.REQUIRED修饰的内部方法会新开启自己的事务，
  * 且开启的事务相互独立，互不干扰。
- *
- *
+ * <p>
+ * <p>
  * 外围方法开启事务的情况下
  * Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，
  * 所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，
@@ -34,8 +33,8 @@ public class RequiredService {
 
     /**
      * 外围方法没有事务
-     *      调用有事务的方法1
-     *      调用有事务的方法2
+     * 调用有事务的方法1
+     * 调用有事务的方法2
      * 外围方法抛出异常
      * ------------------
      * 结果:
@@ -51,9 +50,9 @@ public class RequiredService {
 
     /**
      * 外围方法没有事务
-     *      调用有事务的方法1
-     *      调用有事务的方法2
-     *          方法2抛出异常
+     * 调用有事务的方法1
+     * 调用有事务的方法2
+     * 方法2抛出异常
      * ------------------
      * 方法1执行成功
      * 方法2执行回滚
@@ -65,15 +64,15 @@ public class RequiredService {
 
     /**
      * 外围方法有事务
-     *      调用有事务的方法1
-     *      调用有事务的方法2
+     * 调用有事务的方法1
+     * 调用有事务的方法2
      * 外围方法抛出异常
      * ------------------
      * 方法1执行回滚
      * 方法2执行回滚
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionExceptionRequiredRequired(){
+    public void transactionExceptionRequiredRequired() {
         user1Service.addRequried(TYPE + 3);
         user2Service.addRequried(TYPE + 3);
         throw new RuntimeException();
@@ -81,15 +80,15 @@ public class RequiredService {
 
     /**
      * 外围方法有事务
-     *      调用有事务的方法1
-     *      调用有事务的方法2
-     *          方法2抛出异常
+     * 调用有事务的方法1
+     * 调用有事务的方法2
+     * 方法2抛出异常
      * ------------------
      * 方法1执行回滚
      * 方法2执行回滚
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionRequiredRequiredException(){
+    public void transactionRequiredRequiredException() {
         user1Service.addRequried(TYPE + 4);
         user2Service.addRequriedException(TYPE + 4);
     }
@@ -97,17 +96,17 @@ public class RequiredService {
 
     /**
      * 外围方法有事务
-     *      调用有事务的方法1
+     * 调用有事务的方法1
      * try
-     *      调用有事务的方法2
-     *          方法2抛出异常
+     * 调用有事务的方法2
+     * 方法2抛出异常
      * catch
      * ------------------
      * 方法1执行回滚
      * 方法2执行回滚
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionRequiredRequiredExceptionTry(){
+    public void transactionRequiredRequiredExceptionTry() {
         user1Service.addRequried(TYPE + 5);
         try {
             user2Service.addRequriedException(TYPE + 5);

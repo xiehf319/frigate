@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * @description: 类介绍：
- *  实现需要登陆了才能连接的功能
+ * 实现需要登陆了才能连接的功能
  * @createDate: 2019/7/12 9:56
  * @author: Heyfan Xie
  */
@@ -28,7 +28,7 @@ public class AuthHandshakeInterceptor implements HandshakeInterceptor {
 
         log.info("客户端连接服务器");
         HttpSession session = SpringContextUtils.getSession();
-        User user = (User)session.getAttribute(WsConstants.SESSION_USER);
+        User user = (User) session.getAttribute(WsConstants.SESSION_USER);
         log.info("连接成功 {}", JSONObject.toJSONString(user));
         return true;
     }

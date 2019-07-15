@@ -7,10 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @description:
- *
- * https://juejin.im/entry/5a8fe57e5188255de201062b
- *
+ * @description: https://juejin.im/entry/5a8fe57e5188255de201062b
  * @createDate:2019/6/14$14:02$
  * @author: Heyfan Xie
  */
@@ -49,12 +46,11 @@ public class NestedService {
         user2Service.addNestedException(TYPE + 2);
 
 
-
     }
 
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionExceptionNotSupportNotSupport(){
+    public void transactionExceptionNotSupportNotSupport() {
 
         String name = TYPE + "3王五";
         jdbcTemplate.execute("insert into user3(name) values('" + name + "')");
@@ -70,7 +66,7 @@ public class NestedService {
      * 外围方法开启事务
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionNotSupportNotSupportException(){
+    public void transactionNotSupportNotSupportException() {
 
         String name = TYPE + "4王五";
         jdbcTemplate.execute("insert into user3(name) values('" + name + "')");
@@ -81,7 +77,7 @@ public class NestedService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionNotSupportNotSupportExceptionTry(){
+    public void transactionNotSupportNotSupportExceptionTry() {
 
         String name = TYPE + "5王五";
         jdbcTemplate.execute("insert into user3(name) values('" + name + "')");

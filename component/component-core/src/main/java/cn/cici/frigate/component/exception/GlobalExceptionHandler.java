@@ -40,11 +40,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    private final static String ENV_PROD = "prod";
     @Autowired
     private MessageUtils messageUtils;
-
-    private final static String ENV_PROD = "prod";
-
     @Value("${spring.profiles.active}")
     private String profile;
 
@@ -128,7 +126,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     public R handleValidException(MethodArgumentNotValidException e) {
@@ -142,7 +139,7 @@ public class GlobalExceptionHandler {
         for (ObjectError error : bindingResult.getAllErrors()) {
             msg.append(", ");
             if (error instanceof FieldError) {
-                msg.append(((FieldError)error).getField()).append(": ");
+                msg.append(((FieldError) error).getField()).append(": ");
             }
             msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
         }

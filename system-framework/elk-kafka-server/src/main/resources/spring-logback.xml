@@ -2,14 +2,14 @@
 <configuration debug="false" scan="true"
                scanPeriod="1 seconds">
     <include
-            resource="org/springframework/boot/logging/logback/base.xml" />
+            resource="org/springframework/boot/logging/logback/base.xml"/>
     <!-- <jmxConfigurator/> -->
     <contextName>logback</contextName>
 
-    <property name="log.path" value="\logs\logback.log" />
+    <property name="log.path" value="\logs\logback.log"/>
 
     <property name="log.pattern"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID} --- traceId:[%X{mdc_trace_id}] [%15.15t] %-40.40logger{39} : %m%n" />
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID} --- traceId:[%X{mdc_trace_id}] [%15.15t] %-40.40logger{39} : %m%n"/>
 
     <appender name="file"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -44,16 +44,16 @@
                 <includeCallerData>true</includeCallerData>
                 <customFields>{"system":"kafka"}</customFields>
                 <fieldNames
-                        class="net.logstash.logback.fieldnames.ShortenedFieldNames" />
+                        class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
             </layout>
             <charset>UTF-8</charset>
         </encoder>
         <!--kafka topic 需要与配置文件里面的topic一致 否则kafka会沉默并鄙视你 -->
         <topic>applog</topic>
         <keyingStrategy
-                class="com.github.danielwegener.logback.kafka.keying.HostNameKeyingStrategy" />
+                class="com.github.danielwegener.logback.kafka.keying.HostNameKeyingStrategy"/>
         <deliveryStrategy
-                class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+                class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
         <producerConfig>bootstrap.servers=114.115.131.208:9092</producerConfig>
     </appender>
 
@@ -62,7 +62,7 @@
     </logger> -->
 
     <root level="info">
-        <appender-ref ref="KafkaAppender" />
+        <appender-ref ref="KafkaAppender"/>
     </root>
 
 </configuration>

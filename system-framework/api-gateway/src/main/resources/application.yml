@@ -51,7 +51,7 @@ security:
       client-id: clientId
       client-secret: 123456
     permit-all:
-      - pattern: /oauth/**
+    - pattern: /oauth/**
 hystrix:
   command:
     default:

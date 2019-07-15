@@ -1,5 +1,7 @@
 package cn.cici.frigate.component.exception;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @description:
  * @createDate:2019/7/3$11:57$
@@ -9,12 +11,14 @@ public interface Assert {
 
     /**
      * 创建异常
+     *
      * @return
      */
     BaseException newException();
 
     /**
      * 创建异常
+     *
      * @param args
      * @return
      */
@@ -22,6 +26,7 @@ public interface Assert {
 
     /**
      * 创建异常
+     *
      * @param t
      * @param args
      * @return
@@ -31,20 +36,70 @@ public interface Assert {
 
     /**
      * 断言对象，如果为空抛出异常
+     *
      * @param obj
      */
     default void assertNotNull(Object obj) {
-        if(obj == null) {
+        if (obj == null) {
             throw newException();
         }
     }
 
     /**
      * 断言对象，如果为空抛出异常
+     *
      * @param obj
      */
     default void assertNotNull(Object obj, Object... args) {
-        if(obj == null) {
+        if (obj == null) {
+            throw newException(args);
+        }
+    }
+
+    /**
+     * 如果是false抛出异常
+     *
+     * @param bool
+     * @param args
+     */
+    default void assertTrue(boolean bool, Object... args) {
+        if (!bool) {
+            throw newException(args);
+        }
+    }
+
+    /**
+     * 如果是true抛出异常
+     *
+     * @param bool
+     * @param args
+     */
+    default void assertFalse(boolean bool, Object... args) {
+        if (bool) {
+            throw newException(args);
+        }
+    }
+
+    /**
+     * 如果是空抛出异常
+     *
+     * @param str
+     * @param args
+     */
+    default void assertNotEmpty(String str, Object... args) {
+        if (StringUtils.isEmpty(str)) {
+            throw newException(args);
+        }
+    }
+
+    /**
+     * 如果不是空抛出异常
+     *
+     * @param str
+     * @param args
+     */
+    default void assertEmpty(String str, Object... args) {
+        if (StringUtils.isNotEmpty(str)) {
             throw newException(args);
         }
     }

@@ -39,7 +39,7 @@ public class LogCollectorScannerRegistrar implements ImportBeanDefinitionRegistr
             scanner.setResourceLoader(resourceLoader);
         }
         List<String> basePackages = new ArrayList<>();
-        for (String pkg: attributes.getStringArray("basePackages")) {
+        for (String pkg : attributes.getStringArray("basePackages")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
             }

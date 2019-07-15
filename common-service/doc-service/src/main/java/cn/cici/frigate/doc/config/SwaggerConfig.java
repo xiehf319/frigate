@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .apiInfo(groupApiInfo());
     }
 
-    private ApiInfo groupApiInfo(){
+    private ApiInfo groupApiInfo() {
         return new ApiInfoBuilder()
                 .title("swagger-bootstrap-ui zuul")
                 .description("<div style='font-size:14px;color:red;'>swagger-bootstrap-ui-demo RESTful APIs</div>")

@@ -1,10 +1,7 @@
 package cn.cici.auth.server.security.sms;
 
 import cn.cici.auth.server.security.service.CustomUserDetailService;
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import cn.cici.frigate.sms.api.SmsCodeClient;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -12,7 +9,6 @@ import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,12 +24,14 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
 
     private CustomUserDetailService userDetailService;
 
-    private RedisTemplate<String, String> redisTemplate;
+    private SmsCodeClient smsCodeClient;
 
-    public SmsCodeTokenGranter(RedisTemplate<String, String> redisTemplate, CustomUserDetailService userDetailService, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
+    public SmsCodeTokenGranter(CustomUserDetailService userDetailService,
+                               SmsCodeClient smsCodeClient,
+                               AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
         super(tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
         this.userDetailService = userDetailService;
-        this.redisTemplate = redisTemplate;
+        this.smsCodeClient = smsCodeClient;
     }
 
     protected SmsCodeTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory, String grantType) {
@@ -55,27 +53,11 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
         if (userDetails == null) {
             throw new InvalidGrantException("用户不存在");
         }
+        // 调用短信服务校验验证码
+        smsCodeClient.verify(mobile, smsCode);
 
-        HashOperations<String, String, String> hashOptions = redisTemplate.opsForHash();
-        String smsCodeCached = hashOptions.get("SMS_CODE", mobile);
-
-        if (StringUtils.isBlank(smsCodeCached)) {
-            throw new InvalidGrantException("用户没有发送验证码");
-        }
-        ValidateCode validateCode = JSON.parseObject(smsCodeCached, ValidateCode.class);
-
-        if (LocalDateTime.now().isAfter(validateCode.getExpireTime())) {
-            throw new InvalidGrantException("验证码已失效");
-        }
-
-        if (!StringUtils.equals(smsCode, validateCode.getCode())) {
-            throw new InvalidGrantException("验证码错误");
-        }
-        // 移除
-        hashOptions.delete("SMS_CODE", smsCode);
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         auth.setDetails(parameters);
-
         OAuth2Request oAuth2Request = getRequestFactory().createOAuth2Request(client, tokenRequest);
         return new OAuth2Authentication(oAuth2Request, auth);
     }

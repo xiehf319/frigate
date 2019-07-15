@@ -8,13 +8,12 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- *
  * 返回时间戳
- *
+ * <p>
  * 使用方法
+ *
  * @JsonSerialize(using = TimeStampSerializer.class)
  * private Date timestamp;
- *
  * @description:
  * @createDate:2019/5/7$15:07$
  * @author: Heyfan Xie

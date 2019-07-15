@@ -17,6 +17,7 @@ public class TokenStoreConfig {
     /**
      * tokenStore 单独一个配置类注入bean，
      * 防止放到AuthorizationServerConfiguration 之中，endpoint.setTokenStore的时候，由于redisConnectionFactory未能创建bean造成空指针
+     *
      * @param redisConnectionFactory
      * @return
      */

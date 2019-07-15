@@ -1,9 +1,7 @@
 package cn.cici.frigate.gateway.security;
 
 import cn.cici.frigate.gateway.properties.SecurityConstants;
-import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.context.RequestContext;
-import jdk.nashorn.internal.scripts.JO;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

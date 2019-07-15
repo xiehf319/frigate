@@ -28,6 +28,7 @@ public class LocaleConfig {
 
     /**
      * 默认拦截器 lang 为切换语言的参数
+     *
      * @return
      */
     @Bean

@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author: Heyfan Xie
  */
 @Getter
-public class BaseException extends RuntimeException{
+public class BaseException extends RuntimeException {
 
     private ResponseEnum responseEnum;
     private Object[] args;

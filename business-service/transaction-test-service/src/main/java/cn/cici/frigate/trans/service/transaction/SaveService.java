@@ -42,7 +42,7 @@ public class SaveService {
         role7.setName("role7");
         roleRepository.save(role7);
 
-        Role role8= new Role();
+        Role role8 = new Role();
         role8.setName("role8");
         roleRepository.save(role8);
         throw new RuntimeException("抛出异常");

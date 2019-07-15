@@ -6,10 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @description:
- *
- * https://juejin.im/entry/5a8fe57e5188255de201062b
- *
+ * @description: https://juejin.im/entry/5a8fe57e5188255de201062b
  * @createDate:2019/6/14$14:02$
  * @author: Heyfan Xie
  */
@@ -39,7 +36,7 @@ public class NotSupportService {
 
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionExceptionNotSupportNotSupport(){
+    public void transactionExceptionNotSupportNotSupport() {
         user1Service.addNotSupport(TYPE + 3);
         user2Service.addNotSupport(TYPE + 3);
         throw new RuntimeException();
@@ -49,13 +46,13 @@ public class NotSupportService {
      * 外围方法开启事务
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionNotSupportNotSupportException(){
+    public void transactionNotSupportNotSupportException() {
         user1Service.addNotSupport(TYPE + 4);
         user2Service.addNotSupportException(TYPE + 4);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void transactionNotSupportNotSupportExceptionTry(){
+    public void transactionNotSupportNotSupportExceptionTry() {
         user1Service.addNotSupport(TYPE + 5);
         try {
             user2Service.addNotSupportException(TYPE + 5);

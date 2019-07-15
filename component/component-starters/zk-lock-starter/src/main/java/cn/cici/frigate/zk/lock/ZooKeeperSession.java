@@ -35,6 +35,22 @@ public class ZooKeeperSession {
     }
 
     /**
+     * 获取单例
+     *
+     * @return
+     */
+    public static ZooKeeperSession getInstance() {
+        return Singleton.getInstance();
+    }
+
+    /**
+     * 初始化单例的便捷方法
+     */
+    public static void init() {
+        getInstance();
+    }
+
+    /**
      * 获取分布式锁
      *
      * @param productId
@@ -82,35 +98,10 @@ public class ZooKeeperSession {
     }
 
     /**
-     * 建立zk session的watcher
-     *
-     * @author bingo
-     * @since 2018/11/29
-     *
-     */
-    private class ZooKeeperWatcher implements Watcher {
-
-        @Override
-        public void process(WatchedEvent event) {
-            System.out.println("Receive watched event: " + event.getState());
-
-            if (Event.KeeperState.SyncConnected == event.getState()) {
-                connectedSemaphore.countDown();
-            }
-
-            if (latch != null) {
-                latch.countDown();
-            }
-        }
-
-    }
-
-    /**
      * 封装单例的静态内部类
      *
      * @author bingo
      * @since 2018/11/29
-     *
      */
     private static class Singleton {
 
@@ -127,19 +118,26 @@ public class ZooKeeperSession {
     }
 
     /**
-     * 获取单例
+     * 建立zk session的watcher
      *
-     * @return
+     * @author bingo
+     * @since 2018/11/29
      */
-    public static ZooKeeperSession getInstance() {
-        return Singleton.getInstance();
-    }
+    private class ZooKeeperWatcher implements Watcher {
 
-    /**
-     * 初始化单例的便捷方法
-     */
-    public static void init() {
-        getInstance();
+        @Override
+        public void process(WatchedEvent event) {
+            System.out.println("Receive watched event: " + event.getState());
+
+            if (Event.KeeperState.SyncConnected == event.getState()) {
+                connectedSemaphore.countDown();
+            }
+
+            if (latch != null) {
+                latch.countDown();
+            }
+        }
+
     }
 
 }

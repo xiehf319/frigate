@@ -12,7 +12,6 @@ public class ServiceException extends RuntimeException {
     private Object[] params;
 
     /**
-     *
      * @param code 异常码对应国际化属性文件的key
      */
     public ServiceException(String code) {
@@ -21,9 +20,8 @@ public class ServiceException extends RuntimeException {
     }
 
     /**
-     *
-     * @param code  异常码对应国际化属性文件的key
-     * @param params  占位符参数
+     * @param code   异常码对应国际化属性文件的key
+     * @param params 占位符参数
      */
     public ServiceException(String code, Object[] params) {
         super();
@@ -33,9 +31,8 @@ public class ServiceException extends RuntimeException {
 
 
     /**
-     *
-     * @param code  异常码对应国际化属性文件的key
-     * @param defaultMessage  国际化不存在时，使用默认值
+     * @param code           异常码对应国际化属性文件的key
+     * @param defaultMessage 国际化不存在时，使用默认值
      */
     public ServiceException(String code, String defaultMessage) {
         super(defaultMessage);
@@ -44,10 +41,9 @@ public class ServiceException extends RuntimeException {
 
 
     /**
-     *
-     * @param code  异常码对应国际化属性文件的key
-     * @param params  占位符参数
-     * @param defaultMessage  国际化不存在时，使用默认值
+     * @param code           异常码对应国际化属性文件的key
+     * @param params         占位符参数
+     * @param defaultMessage 国际化不存在时，使用默认值
      */
     public ServiceException(String code, Object[] params, String defaultMessage) {
         super(defaultMessage);
@@ -56,11 +52,10 @@ public class ServiceException extends RuntimeException {
     }
 
     /**
-     *
-     * @param code  异常码对应国际化属性文件的key
-     * @param params  占位符参数
-     * @param defaultMessage  国际化不存在时，使用默认值
-     * @param cause 具体抛出的异常，可以作为日志记录
+     * @param code           异常码对应国际化属性文件的key
+     * @param params         占位符参数
+     * @param defaultMessage 国际化不存在时，使用默认值
+     * @param cause          具体抛出的异常，可以作为日志记录
      */
     public ServiceException(String code, Object[] params, String defaultMessage, Throwable cause) {
         super(defaultMessage, cause);
@@ -69,10 +64,9 @@ public class ServiceException extends RuntimeException {
     }
 
     /**
-     *
-     * @param code  异常码对应国际化属性文件的key
-     * @param params  占位符参数
-     * @param cause 具体抛出的异常，可以作为日志记录
+     * @param code   异常码对应国际化属性文件的key
+     * @param params 占位符参数
+     * @param cause  具体抛出的异常，可以作为日志记录
      */
     public ServiceException(String code, Object[] params, Throwable cause) {
         super(cause);

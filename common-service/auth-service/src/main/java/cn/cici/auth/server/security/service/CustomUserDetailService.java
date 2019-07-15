@@ -28,11 +28,11 @@ public class CustomUserDetailService implements UserDetailsService {
         return new CustomUserDetail(1L, username, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
-    public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException  {
+    public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException {
         return new CustomUserDetail(2L, mobile, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
-    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException  {
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
         return null;
     }
 }

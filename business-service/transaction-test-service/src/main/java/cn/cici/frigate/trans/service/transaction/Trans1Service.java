@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author: Heyfan Xie
  */
 @Service
-public class Trans1Service{
+public class Trans1Service {
 
     @Autowired
     private Trans1Service trans1Service;
@@ -50,7 +50,7 @@ public class Trans1Service{
         role2.setName("role2");
         roleRepository.save(role2);
 
-        Role role3= new Role();
+        Role role3 = new Role();
         role2.setName("role3");
         roleRepository.save(role3);
         throw new RuntimeException("抛出异常");

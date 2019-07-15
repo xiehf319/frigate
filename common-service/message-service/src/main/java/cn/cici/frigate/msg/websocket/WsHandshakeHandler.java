@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * @description: 类介绍：
- *  生成自定义的Principal
+ * 生成自定义的Principal
  * @createDate: 2019/7/12 10:13
  * @author: Heyfan Xie
  */
@@ -27,7 +27,7 @@ public class WsHandshakeHandler extends DefaultHandshakeHandler {
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
 
         HttpSession session = SpringContextUtils.getSession();
-        User user = (User)session.getAttribute(WsConstants.SESSION_USER);
+        User user = (User) session.getAttribute(WsConstants.SESSION_USER);
         if (user != null) {
             log.info("websocket连接开始创建Principal, 用户： {}", user.getUsername());
             return new WsPrincipal(user.getUsername());

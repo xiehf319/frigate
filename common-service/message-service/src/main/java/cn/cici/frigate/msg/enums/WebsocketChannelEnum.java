@@ -6,7 +6,7 @@ package cn.cici.frigate.msg.enums;
  * @date 2019/7/11 23:40
  * @concat 370693739@qq.com
  **/
-public enum  WebsocketChannelEnum {
+public enum WebsocketChannelEnum {
 
     /**
      * 点对点聊天
@@ -16,20 +16,19 @@ public enum  WebsocketChannelEnum {
     ;
 
 
-    WebsocketChannelEnum(String descrition, String subscribeUrl) {
-        this.descrition = descrition;
-        this.subscribeUrl = subscribeUrl;
-    }
-
     /**
      * 描述
      */
     private String descrition;
-
     /**
      * 客户端订阅的URL
      */
     private String subscribeUrl;
+
+    WebsocketChannelEnum(String descrition, String subscribeUrl) {
+        this.descrition = descrition;
+        this.subscribeUrl = subscribeUrl;
+    }
 
     public String getDescrition() {
         return descrition;

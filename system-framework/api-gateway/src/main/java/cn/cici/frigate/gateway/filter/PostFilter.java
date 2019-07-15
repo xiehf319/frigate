@@ -1,10 +1,12 @@
 package cn.cici.frigate.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * @description: 类介绍：
@@ -12,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  * @author: Heyfan Xie
  */
 @Component
+@Slf4j
 public class PostFilter extends ZuulFilter {
     @Override
     public String filterType() {
@@ -31,8 +34,12 @@ public class PostFilter extends ZuulFilter {
     @Override
     public Object run() throws ZuulException {
 
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-
+        RequestContext ctx = RequestContext.getCurrentContext();
+        String contentType = ctx.getResponse().getContentType();
+        log.info("contentType: {}", contentType);
+        if (StringUtils.isEmpty(contentType)) {
+            ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        }
         return null;
     }
 }

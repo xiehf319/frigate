@@ -31,13 +31,10 @@ import java.util.stream.Collectors;
 public class ProxyFilter extends ZuulFilter {
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String TOKEN_TYPE = "TOKEN_TYPE";
-
-    private List<String> zuulRoutes = new ArrayList<>();
-
-    private OAuth2RestOperations restTemplate;
-
     @Autowired
     RouteLocator locator;
+    private List<String> zuulRoutes = new ArrayList<>();
+    private OAuth2RestOperations restTemplate;
 
     @Autowired
     public void setRestTemplate(OAuth2RestOperations restTemplate) {

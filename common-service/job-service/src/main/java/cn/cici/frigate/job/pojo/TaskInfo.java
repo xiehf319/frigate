@@ -23,7 +23,7 @@ public class TaskInfo {
 
     private String jobStatus;
 
-    private String  cronExpression;
+    private String cronExpression;
 
     private Date createTime;
 

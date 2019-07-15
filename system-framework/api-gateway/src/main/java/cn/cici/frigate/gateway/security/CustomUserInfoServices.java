@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrin
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,22 +19,20 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.util.Assert;
-import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @description: 类介绍：
- *      自定义用户信息token解析器
+ * 自定义用户信息token解析器
  * @createDate: 2019/7/15 12:13
  * @author: Heyfan Xie
  */
 @Slf4j
-public class CustomUserInfoServices  implements ResourceServerTokenServices {
+public class CustomUserInfoServices implements ResourceServerTokenServices {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
@@ -55,26 +52,18 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
 
     public CustomUserInfoServices(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
-            @Override
-            public void handleError(ClientHttpResponse response) throws IOException {
-                if (response.getRawStatusCode() != 400) {
-                    super.handleError(response);
-                }
-            }
-        });
     }
 
     public String getUserInfoEndpointUrl() {
         return userInfoEndpointUrl;
     }
 
-    public void setHeaderEnhancer(HeaderEnhancer headerEnhancer) {
-        this.headerEnhancer = headerEnhancer;
-    }
-
     public void setUserInfoEndpointUrl(String userInfoEndpointUrl) {
         this.userInfoEndpointUrl = userInfoEndpointUrl;
+    }
+
+    public void setHeaderEnhancer(HeaderEnhancer headerEnhancer) {
+        this.headerEnhancer = headerEnhancer;
     }
 
     public String getClientId() {
@@ -85,15 +74,9 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
         this.clientId = clientId;
     }
 
-    public CustomUserInfoServices(String userInfoEndpointUrl, String clientId) {
-        this.userInfoEndpointUrl = userInfoEndpointUrl;
-        this.clientId = clientId;
-    }
-
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
     }
-
 
     public void setAuthoritiesExtractor(AuthoritiesExtractor authoritiesExtractor) {
         Assert.notNull(authoritiesExtractor, "AuthoritiesExtractor must not be null");
@@ -117,7 +100,7 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
         }
         log.info("将校验通过的用户信息放入header");
         OAuth2Authentication oAuth2Authentication = extractAuthentication(map);
-        headerEnhancer.enhancer((Map<String, Object>)map.get("principal"));
+        headerEnhancer.enhancer((Map<String, Object>) map.get("principal"));
         return oAuth2Authentication;
     }
 
@@ -136,6 +119,7 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
     /**
      * Return the principal that should be used for the token. The default implementation
      * delegates to the {@link PrincipalExtractor}.
+     *
      * @param map the source map
      * @return the principal or {@literal "unknown"}
      */
@@ -149,7 +133,7 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
         throw new UnsupportedOperationException("Not supported: read access token");
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     private Map<String, Object> getMap(String path, String accessToken) {
         if (this.logger.isDebugEnabled()) {
             this.logger.debug("Getting user info from: " + path);
@@ -158,8 +142,7 @@ public class CustomUserInfoServices  implements ResourceServerTokenServices {
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.AUTHORIZATION, tokenType + " " + accessToken);
             return restTemplate.postForEntity(path, new HttpEntity(headers), Map.class).getBody();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             this.logger.warn("Could not fetch user details: " + ex.getClass() + ", "
                     + ex.getMessage());
             return Collections.<String, Object>singletonMap("error",

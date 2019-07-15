@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @description:
- * @createDate:2019/7/3$13:51$
+ * @description: web请求的xi相关异常
+ * @createDate: 2019/7/3$13:51$
  * @author: Heyfan Xie
  */
 @Getter

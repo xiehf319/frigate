@@ -31,4 +31,4 @@ public class ConfigGroupApi {
         repository.save(group);
         return ResponseEntity.ok().build();
     }
- }
+}

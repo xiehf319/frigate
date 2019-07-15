@@ -22,13 +22,13 @@ public class SpringContextUtils implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringContextUtils.applicationContext = applicationContext;
-    }
-
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     /**
@@ -114,6 +114,7 @@ public class SpringContextUtils implements ApplicationContextAware {
 
     /**
      * 获取请求的客户端IP
+     *
      * @param request
      * @return
      */
@@ -121,7 +122,7 @@ public class SpringContextUtils implements ApplicationContextAware {
         String ip = request.getHeader("X-Forwarded-For");
         if (!StringUtils.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
             int index = ip.indexOf(",");
-            if (index != -1)  {
+            if (index != -1) {
                 return ip.substring(0, index);
             } else {
                 return ip;
