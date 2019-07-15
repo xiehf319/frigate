@@ -8,5 +8,6 @@ package cn.cici.frigate.gateway.properties;
 public class SecurityConstants {
 
     public static final String USER_ID_IN_HEADER = "X-USER-ID";
+    public static final String USERNAME_IN_HEADER = "X-USER-NAME";
     public static final String AUTH_SERVICE = "auth-service";
 }

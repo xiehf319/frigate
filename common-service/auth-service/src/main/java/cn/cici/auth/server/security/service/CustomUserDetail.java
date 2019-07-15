@@ -1,6 +1,7 @@
 package cn.cici.auth.server.security.service;
 
 import cn.cici.frigate.component.vo.RoleInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ public class CustomUserDetail implements UserDetails {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private List<RoleInfo> roleList;
@@ -40,7 +42,7 @@ public class CustomUserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override

@@ -5,6 +5,10 @@ spring:
     name: api-gateway
   profiles:
     active: dev
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
 eureka:
   instance:
     prefer-ip-address: true
@@ -15,20 +19,16 @@ zuul:
   ribbon:
     eager-load:
       enabled: true
-  # 忽略所有服务，只路由以下配置的服务
   host:
     connect-timeout-millis: 20000
     connection-request-timeout-millis: -1
     socket-timeout-millis: 10000
     max-per-route-connections: 20
     max-total-connections: 200
+  # 忽略所有服务，只路由以下配置的服务
   ignored-services: '*'
   routes:
     auth-service:
-      path: /auth/**
-      service-id: auth-service
-      strip-prefix: false
-    auth-service-two:
       path: /oauth/**
       service-id: auth-service
       strip-prefix: false
@@ -43,9 +43,9 @@ ribbon:
 security:
   oauth2:
     resource:
-      user-info-uri: /auth/current
+      user-info-uri: http://auth-service/auth/current
       prefer-token-info: false
-      token-info-uri: /oauth/check_token
+      token-info-uri: http://auth-service/oauth/check_token
     client:
       access-token-uri: /oauth/token
       client-id: clientId

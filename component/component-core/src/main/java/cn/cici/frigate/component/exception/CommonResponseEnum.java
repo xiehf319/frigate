@@ -2,6 +2,7 @@ package cn.cici.frigate.component.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 /**
  * @description:

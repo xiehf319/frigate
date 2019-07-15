@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,10 +23,10 @@ public class MenuController {
 
     @ApiOperation("测试查询一下")
     @GetMapping("/rbac/menu")
-    public R<String> getMenu() {
+    public R<String> getMenu(@RequestHeader("X-USER-ID") String id, @RequestHeader("X-USER-NAME") String username) {
         for (int i = 0; i < 100; i++) {
             System.out.println(uidProvider.getId());
         }
-        return R.success("test");
+        return R.success("test " + id + " " + username);
     }
 }

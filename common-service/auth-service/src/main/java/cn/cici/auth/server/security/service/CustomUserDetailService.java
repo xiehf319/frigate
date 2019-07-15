@@ -23,9 +23,9 @@ public class CustomUserDetailService implements UserDetailsService {
     private UserClient userClient;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        R<UserInfo> result = userClient.findByUsername(s);
-        return new CustomUserDetail(1L, s, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        R<UserInfo> result = userClient.findByUsername(username);
+        return new CustomUserDetail(1L, username, "$2a$10$ZgrZfBjHIr4JCEj0vIK1EuQFZYUKRxvsdsk5NdNDRAHkbJtmFec9m", new ArrayList<>());
     }
 
     public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException  {

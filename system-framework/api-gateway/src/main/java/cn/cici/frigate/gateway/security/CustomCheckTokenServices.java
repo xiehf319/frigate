@@ -1,13 +1,9 @@
-package cn.cici.frigate.gateway.filter;
+package cn.cici.frigate.gateway.security;
 
-import cn.cici.frigate.gateway.properties.SecurityConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -21,7 +17,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -34,11 +29,9 @@ import java.util.Map;
  * @author: Heyfan Xie
  */
 @Slf4j
-public class CustomRemoteTokenServices implements ResourceServerTokenServices {
+public class CustomCheckTokenServices implements ResourceServerTokenServices {
 
-    private LoadBalancerClient loadBalancerClient;
-
-    private RestOperations restTemplate;
+    private RestTemplate restTemplate;
 
     private String checkTokenEndpointUrl;
 
@@ -50,9 +43,9 @@ public class CustomRemoteTokenServices implements ResourceServerTokenServices {
 
     private AccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
 
-    public CustomRemoteTokenServices() {
-        restTemplate = new RestTemplate();
-        ((RestTemplate) restTemplate).setErrorHandler(new DefaultResponseErrorHandler() {
+    public CustomCheckTokenServices(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
             public void handleError(ClientHttpResponse response) throws IOException {
                 if (response.getRawStatusCode() != 400) {
@@ -60,10 +53,6 @@ public class CustomRemoteTokenServices implements ResourceServerTokenServices {
                 }
             }
         });
-    }
-
-    public void setRestTemplate(RestOperations restTemplate) {
-        this.restTemplate = restTemplate;
     }
 
     public void setCheckTokenEndpointUrl(String checkTokenEndpointUrl) {
@@ -76,10 +65,6 @@ public class CustomRemoteTokenServices implements ResourceServerTokenServices {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public void setLoadBalancerClient(LoadBalancerClient loadBalancerClient) {
-        this.loadBalancerClient = loadBalancerClient;
     }
 
     public void setAccessTokenConverter(AccessTokenConverter accessTokenConverter) {
@@ -97,14 +82,8 @@ public class CustomRemoteTokenServices implements ResourceServerTokenServices {
         formData.add(tokenName, accessToken);
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, getAuthorizationHeader(clientId, clientSecret));
-        headers.set("Authorization", getAuthorizationHeader(clientId, clientSecret));
-
-        ServiceInstance serviceInstance = loadBalancerClient.choose(SecurityConstants.AUTH_SERVICE);
-        if (serviceInstance == null) {
-            throw new RuntimeException("Failed to choose an auth instance.");
-        }
-
-        Map<String, Object> map = postForMap(serviceInstance.getUri().toString() + checkTokenEndpointUrl, formData, headers);
+        Map<String, Object> map = postForMap(checkTokenEndpointUrl, formData, headers);
+        log.info("check token result {}", map);
         if (map.containsKey("error")) {
             log.debug("check_token returned error: " + map.get("error"));
             throw new InvalidTokenException(accessToken);
@@ -129,7 +108,7 @@ public class CustomRemoteTokenServices implements ResourceServerTokenServices {
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         }
         @SuppressWarnings("rawtypes")
-        Map map = restTemplate.exchange(path, HttpMethod.POST, new HttpEntity<>(formData, headers), Map.class).getBody();
+        Map map = restTemplate.postForObject(path, new HttpEntity<>(formData, headers), Map.class);
         @SuppressWarnings("unckecked")
         Map<String, Object> result = map;
         return result;
