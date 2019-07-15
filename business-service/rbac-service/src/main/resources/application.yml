@@ -14,6 +14,10 @@ spring:
     url: jdbc:mysql://114.115.131.208:3306/rbac?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
+  boot:
+    admin:
+      client:
+        url: http://localhost:9999
 eureka:
   client:
     service-url:
@@ -30,3 +34,8 @@ swagger:
   title: ${spring.application.name}接口文档
   description: 测试一下
   version: 2.0.1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

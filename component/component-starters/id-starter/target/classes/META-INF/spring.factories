@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cici.frigate.id.client.UidProvider, \
-  cn.cici.frigate.id.client.RestConfig
