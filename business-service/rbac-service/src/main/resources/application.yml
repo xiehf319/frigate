@@ -39,3 +39,15 @@ management:
     web:
       exposure:
         include: '*'
+tx-lcn:
+  logger:
+    allow-pool-suspension:
+    enabled: true
+    driver-class-name: ${spring.datasource.driver-class-name}
+    jdbc-url: jdbc:mysql://114.115.131.208:3306/tx-manager?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true
