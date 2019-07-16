@@ -14,6 +14,7 @@
     <modules>
         <module>swagger-starter</module>
         <module>redis-starter</module>
+        <module>fescar-starter</module>
         <module>zk-lock-starter</module>
     </modules>
 </project>

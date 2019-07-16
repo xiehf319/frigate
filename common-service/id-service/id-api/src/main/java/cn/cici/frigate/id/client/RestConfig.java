@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
  * @author: Heyfan Xie
  */
 @Configuration
-@ConditionalOnMissingBean(RestTemplate.class)
 public class RestConfig {
 
     @Bean
@@ -20,5 +19,10 @@ public class RestConfig {
     @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public UidProvider uidProvider() {
+        return new UidProvider();
     }
 }

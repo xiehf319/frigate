@@ -4,7 +4,6 @@ import cn.cici.frigate.component.exception.BusinessException;
 import cn.cici.frigate.component.exception.CommonResponseEnum;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
  * @createDate:2019/7/9$10:45$
  * @author: Heyfan Xie
  */
-@Component
 public class UidProvider {
 
     @Autowired

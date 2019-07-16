@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cici.frigate.id.client.RestConfig
+    cn.cici.frigate.fescar.config.FescarAutoConfiguration

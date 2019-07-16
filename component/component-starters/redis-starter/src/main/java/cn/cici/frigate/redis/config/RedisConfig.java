@@ -1,7 +1,11 @@
 package cn.cici.frigate.redis.config;
 
+import cn.cici.frigate.redis.services.RedisBitServices;
+import cn.cici.frigate.redis.services.RedisHashServices;
+import cn.cici.frigate.redis.services.RedisHyperLogLogServices;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -32,6 +36,8 @@ public class RedisConfig {
     public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper objectMapper = new ObjectMapper();
+        // 忽略不存在的字段报错
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         serializer.setObjectMapper(objectMapper);
@@ -57,4 +63,28 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private RedisTemplate<String, String> stringRedisTemplate;
+
+    @Bean
+    public RedisHyperLogLogServices redisHyperLogLogServices() {
+        return new RedisHyperLogLogServices(redisTemplate);
+    }
+
+
+    @Bean
+    public RedisBitServices redisBitMapServices() {
+        return new RedisBitServices(stringRedisTemplate);
+    }
+
+
+    @Bean
+    public RedisHashServices redisHashServices() {
+        return new RedisHashServices(stringRedisTemplate);
+    }
+
 }

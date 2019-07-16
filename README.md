@@ -38,3 +38,7 @@
 > docker外部连接mysql8: https://blog.csdn.net/qq_26462567/article/details/86713638
 ------------------------
 > docker run -d -p 80:80 --name nginx -v $PWD/www:/usr/share/nginx/html -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf -v $PWD/logs:/var/log/nginx nginx
+
+
+- SPI技术
+- http://boot.jeecg.org
