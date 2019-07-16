@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.cici.frigate.sms.api.SmsCodeClient, \
+  cn.cici.frigate.sms.api.RestConfig

@@ -16,9 +16,11 @@
     |   |-- job-service             // 任务调度服务
     |   |-- oss-service             // 存储服务
     |-- component               // 公共模块
-    |   |-- component-core          // 工具类
+    |   |-- component-core          // (工具类,公共对象等)
     |   |-- component-starters      // 自动配置jar
     |   |   |-- swagger-starter         // 支持swagger的jar
+    |   |   |-- redis-starter         // redis封装配置的jar
+    |   |   |-- zk-lock-starter         // redis封装配置的jar
     |-- system-framework        // 基础服务
         |-- eureka-server[9000]         // 注册中心
         |-- config-server[9001]         // 配置中心

@@ -13,7 +13,7 @@
     <artifactId>sms-service</artifactId>
 
     <modules>
-        <module>sms-producer</module>
+        <module>sms-sender</module>
         <module>sms-api</module>
     </modules>
 
