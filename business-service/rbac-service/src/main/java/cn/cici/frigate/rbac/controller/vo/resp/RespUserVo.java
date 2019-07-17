@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel("用户")
-public class UserVo {
+public class RespUserVo {
 
     @ApiModelProperty("用户id")
     private long id;

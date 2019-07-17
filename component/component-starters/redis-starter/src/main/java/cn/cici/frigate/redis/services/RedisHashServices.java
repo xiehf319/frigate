@@ -1,5 +1,6 @@
 package cn.cici.frigate.redis.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -14,17 +15,11 @@ import java.util.Map;
  * @createDate: 2019/7/16 14:20
  * @author: Heyfan Xie
  */
-public class RedisHashServices {
+public class RedisHashServices implements RedisServices {
 
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
-    public RedisHashServices(RedisTemplate<String, String> redisTemplate) {
-        if (redisTemplate == null) {
-            throw new RuntimeException("redis initialized failed.");
-        }
-        this.redisTemplate = redisTemplate;
-    }
-
+    
     /**
      * 获取值
      *
@@ -100,6 +95,7 @@ public class RedisHashServices {
 
     /**
      * 自增的可以作为内部单号的生成
+     *
      * @param key
      * @param field
      * @param value
@@ -108,5 +104,4 @@ public class RedisHashServices {
     public long hincr(String key, String field, long value) {
         return redisTemplate.opsForHash().increment(key, field, value);
     }
-
 }

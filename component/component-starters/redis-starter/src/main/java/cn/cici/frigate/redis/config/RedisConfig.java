@@ -1,17 +1,12 @@
 package cn.cici.frigate.redis.config;
 
-import cn.cici.frigate.redis.services.RedisBitServices;
-import cn.cici.frigate.redis.services.RedisHashServices;
-import cn.cici.frigate.redis.services.RedisHyperLogLogServices;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -23,14 +18,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author: Heyfan Xie
  */
 @Configuration
-@ConditionalOnBean(RedisConnectionFactory.class)
 public class RedisConfig {
 
-    @Bean(name = "stringRedisTemplate")
-    @Primary
-    RedisTemplate<String, String> stringRedisTemplate(@Autowired RedisConnectionFactory factory) {
-        return new RedisTemplate<>();
-    }
 
     @Bean
     public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
@@ -47,7 +36,7 @@ public class RedisConfig {
     @Bean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(
             RedisConnectionFactory factory,
-            Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer) {
+            @Autowired Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
 
@@ -62,29 +51,6 @@ public class RedisConfig {
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
-    }
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
-    @Autowired
-    private RedisTemplate<String, String> stringRedisTemplate;
-
-    @Bean
-    public RedisHyperLogLogServices redisHyperLogLogServices() {
-        return new RedisHyperLogLogServices(redisTemplate);
-    }
-
-
-    @Bean
-    public RedisBitServices redisBitMapServices() {
-        return new RedisBitServices(stringRedisTemplate);
-    }
-
-
-    @Bean
-    public RedisHashServices redisHashServices() {
-        return new RedisHashServices(stringRedisTemplate);
     }
 
 }

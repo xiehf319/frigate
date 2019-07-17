@@ -44,6 +44,11 @@
             <artifactId>swagger-starter</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>cn.cici.frigate</groupId>
+            <artifactId>redis-starter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>cn.cici.frigate</groupId>

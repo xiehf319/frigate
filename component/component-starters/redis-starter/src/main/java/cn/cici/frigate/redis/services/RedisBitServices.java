@@ -1,5 +1,6 @@
 package cn.cici.frigate.redis.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -9,16 +10,10 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @createDate: 2019/7/16 14:20
  * @author: Heyfan Xie
  */
-public class RedisBitServices {
+public class RedisBitServices implements RedisServices {
 
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
-    public RedisBitServices(RedisTemplate<String, String> redisTemplate) {
-        if (redisTemplate == null) {
-            throw new RuntimeException("redis initialized failed.");
-        }
-        this.redisTemplate = redisTemplate;
-    }
 
     /**
      * 添加值
@@ -51,4 +46,6 @@ public class RedisBitServices {
     public Boolean getBit(String key, long field) {
         return redisTemplate.execute((RedisCallback<Boolean>) connection -> connection.getBit(key.getBytes(), field));
     }
+
+
 }
