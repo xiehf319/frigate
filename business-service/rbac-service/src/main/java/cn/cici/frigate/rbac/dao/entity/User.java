@@ -1,9 +1,11 @@
 package cn.cici.frigate.rbac.dao.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -16,6 +18,9 @@ import javax.persistence.Table;
 @Table(name = "s_user")
 public class User {
 
+    @Id
+    @GeneratedValue(generator = "tableIdGenerator")
+    @GenericGenerator(name="tableIdGenerator", strategy = "cn.cici.frigate.rbac.jpa.TableIdGenerator")
     private Long id;
 
     private String username;
@@ -30,4 +35,18 @@ public class User {
 
     private String rank;
 
+    private Date lastLogin;
+
+    private String loginIp;
+
+    private String avatarUrl;
+
+    private Date createTime;
+
+    private Boolean locked;
+
+    private Boolean enabled;
+
+    @ManyToMany(targetEntity = Role.class)
+    private List<Role> roleList;
 }

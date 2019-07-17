@@ -5,8 +5,7 @@
 ```
 |-- frigate
     |-- business-service        // 业务服务
-    |   |-- cn.cici.frigate.logistics-service       // 统计
-    |   |-- user-center             // 用户中心
+    |   |-- rbac-servic            // 用户中心
     |-- common-service          // 公共服务
     |   |-- auth-service            // 统一鉴权服务
     |   |-- logging-service         // 日志服务
