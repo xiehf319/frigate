@@ -7,20 +7,15 @@ import javax.persistence.Table;
 
 /**
  * @description: 类介绍：
- * @createDate: 2019/7/15 17:32
+ * @createDate: 2019/7/17 18:07
  * @author: Heyfan Xie
  */
 @Data
 @Entity
-@Table(name = "permission")
-public class Permission {
+@Table(name = "role_permission_rel")
+public class RolePermission {
 
-    private Long id;
+    private Long roleId;
 
-    private String permissionDesc;
-
-    private String permissionName;
-
-    private Long menuId;
-
+    private Long permissionId;
 }
