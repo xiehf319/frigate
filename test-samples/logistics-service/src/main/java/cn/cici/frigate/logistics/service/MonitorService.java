@@ -1,6 +1,6 @@
-package cn.cici.frigate.monitor.service;
+package cn.cici.frigate.logistics.service;
 
-import cn.cici.frigate.monitor.pojo.MonitorInfo;
+import cn.cici.frigate.logistics.pojo.MonitorInfo;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStreamReader;

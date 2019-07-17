@@ -1,4 +1,4 @@
-package cn.cici.frigate.monitor.pojo;
+package cn.cici.frigate.logistics.pojo;
 
 import lombok.Data;
 

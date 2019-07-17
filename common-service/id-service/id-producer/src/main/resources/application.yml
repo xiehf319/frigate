@@ -9,6 +9,8 @@ spring:
     username: root
     password: 123456
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:9000/eureka/

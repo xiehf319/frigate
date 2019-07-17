@@ -3,6 +3,7 @@ package cn.cici.frigate.monitor;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @description:
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author: Heyfan Xie
  */
 @SpringBootApplication
+@EnableDiscoveryClient
 @EnableAdminServer
 public class MonitorApplication {
 

@@ -1,4 +1,4 @@
-package cn.cici.frigate.monitor.controller;
+package cn.cici.frigate.logistics.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
