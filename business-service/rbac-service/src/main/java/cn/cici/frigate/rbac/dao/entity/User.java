@@ -2,6 +2,9 @@ package cn.cici.frigate.rbac.dao.entity;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @description:
  *  https://juejin.im/entry/5a40594b6fb9a04503104f4e
@@ -9,6 +12,8 @@ import lombok.Data;
  * @author: Heyfan Xie
  */
 @Data
+@Entity
+@Table(name = "s_user")
 public class User {
 
     private Long id;
