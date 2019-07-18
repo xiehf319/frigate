@@ -46,7 +46,7 @@ public class RegisterController {
      * @param registerVo
      * @return
      */
-    @PostMapping("/rbac/register/mobile")
+    @PostMapping("/mobile")
     @ApiOperation("手机验证码注册")
     public R mobileRegister(@RequestBody ReqMobileRegisterVo registerVo) {
         registerService.mobileRegister(registerVo.getMobile(), registerVo.getSmsCode(), registerVo.getPassword());
@@ -59,7 +59,7 @@ public class RegisterController {
      * @param registerVo
      * @return
      */
-    @PostMapping("/rbac/register/mobile")
+    @PostMapping("/email")
     @ApiOperation("邮箱注册")
     public R mobileRegister(@RequestBody ReqEmailRegisterVo registerVo) {
         registerService.emailRegister(registerVo.getEmail(), registerVo.getSmsCode(), registerVo.getPassword());
