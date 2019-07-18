@@ -35,7 +35,7 @@ public class SmsController {
      * @param smsCodeInfo
      * @return
      */
-    @PostMapping("/sms/code")
+    @PostMapping("/api/sms/code")
     public R sendCode(@RequestBody SmsCodeInfo smsCodeInfo) {
         log.info("send sms code： {} of mobile: {}, type: {}",
                 smsCodeInfo.getCode(), smsCodeInfo.getMobile(), smsCodeInfo.getType());
@@ -51,7 +51,7 @@ public class SmsController {
      * @param smsCodeInfo
      * @return
      */
-    @PostMapping("/sms/verify")
+    @PostMapping("/api/sms/verify")
     public R verifyCode(@RequestBody SmsCodeInfo smsCodeInfo) {
         String mobile = smsCodeInfo.getMobile();
         String code = smsCodeInfo.getCode();
@@ -63,6 +63,10 @@ public class SmsController {
                 .assertNotEmpty(smsCodeCached);
 
         ValidateCode validateCode = JSON.parseObject(smsCodeCached, ValidateCode.class);
+
+        // 验证验证码是否格式有效
+        ValidateCodeRespnseCodeEnum.VALIDATE_CODE_ERROR
+                .assertNotNull(validateCode);
 
         // 验证验证码已失效
         ValidateCodeRespnseCodeEnum.VALIDATE_CODE_EXPIRED

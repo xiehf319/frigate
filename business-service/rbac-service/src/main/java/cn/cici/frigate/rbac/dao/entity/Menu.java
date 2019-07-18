@@ -19,8 +19,6 @@ import javax.persistence.Table;
 public class Menu {
 
     @Id
-    @GeneratedValue(generator = "tableIdGenerator")
-    @GenericGenerator(name="tableIdGenerator", strategy = "cn.cici.frigate.rbac.jpa.TableIdGenerator")
     private Long id;
 
     private Long pid;

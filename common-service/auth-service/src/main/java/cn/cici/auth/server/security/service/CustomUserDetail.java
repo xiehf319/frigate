@@ -26,6 +26,7 @@ public class CustomUserDetail implements UserDetails {
     @JsonIgnore
     private String password;
 
+
     private List<RoleInfo> roleList;
 
     public CustomUserDetail(long id, String username, String password, List<RoleInfo> roleList) {
@@ -37,7 +38,7 @@ public class CustomUserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleList.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
     }
 
     @Override

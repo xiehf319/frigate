@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: sms-service
+  profiles:
+    active: dev
   redis:
     host: localhost
     port: 6379

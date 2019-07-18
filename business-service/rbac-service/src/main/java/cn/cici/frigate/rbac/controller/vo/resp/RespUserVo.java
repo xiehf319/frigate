@@ -22,8 +22,8 @@ public class RespUserVo {
     @ApiModelProperty("密码")
     private String password;
 
-    @ApiModelProperty("加盐")
-    private String salt;
+    @ApiModelProperty("是否锁定")
+    private boolean locked;
 
     @ApiModelProperty("是否可用")
     private boolean enable;

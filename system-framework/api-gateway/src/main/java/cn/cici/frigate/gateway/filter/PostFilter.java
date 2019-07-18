@@ -40,6 +40,8 @@ public class PostFilter extends ZuulFilter {
         if (StringUtils.isEmpty(contentType)) {
             ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         }
+        String responseBody = ctx.getResponseBody();
+        log.info(responseBody);
         return null;
     }
 }

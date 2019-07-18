@@ -11,5 +11,6 @@ import lombok.Data;
 public class RoleInfo {
 
     private long id;
-    private String name;
+
+    private String roleName;
 }

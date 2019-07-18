@@ -8,6 +8,10 @@ spring:
     url: jdbc:mysql://114.115.131.208:3306/oauth2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
+  session:
+    store-type: redis
+  thymeleaf:
+    suffix: .html
   jpa:
     hibernate:
       ddl-auto: update

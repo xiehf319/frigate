@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("rbac-service")
 public interface UserClient {
 
-    @RequestMapping(value = "/inner/api/rbac/user/find-by-name", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/rbac/user/find-by-name", method = RequestMethod.GET)
     R<UserInfo> findByUsername(@RequestParam("username") String username);
 }

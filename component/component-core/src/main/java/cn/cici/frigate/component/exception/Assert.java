@@ -57,6 +57,28 @@ public interface Assert {
     }
 
     /**
+     * 断言对象，如果不为空抛出异常
+     *
+     * @param obj
+     */
+    default void assertNull(Object obj) {
+        if (obj != null) {
+            throw newException();
+        }
+    }
+
+    /**
+     * 断言对象，如果不为空抛出异常
+     *
+     * @param obj
+     */
+    default void assertNull(Object obj, Object... args) {
+        if (obj != null) {
+            throw newException(args);
+        }
+    }
+
+    /**
      * 如果是false抛出异常
      *
      * @param bool

@@ -1,5 +1,6 @@
-package cn.cici.frigate.component.exception;
+package cn.cici.auth.server.constant;
 
+import cn.cici.frigate.component.exception.BusinessExceptionAssert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

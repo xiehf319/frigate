@@ -21,13 +21,7 @@ public class Permission {
     @GenericGenerator(name="tableIdGenerator", strategy = "cn.cici.frigate.rbac.jpa.TableIdGenerator")
     private Long id;
 
-    private String permissionDesc;
-
-    private String permissionName;
-
-    @OneToOne
-    private Menu menu;
-
-    private List<Operation> operationList;
+    @Column(columnDefinition = "TINYINT(1) comment '权限类型(1 菜单 2操作 3资源)'")
+    private Integer permissionType;
 
 }

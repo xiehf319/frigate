@@ -36,7 +36,7 @@ public class SmsCodeClient {
         smsCodeInfo.setMobile(mobile);
         smsCodeInfo.setCode(code);
         smsCodeInfo.setType(type);
-        ResponseEntity<R> result = restTemplate.postForEntity("http://SMS-SERVICE/sms/code/send", new HttpEntity<>(smsCodeInfo, map), R.class);
+        ResponseEntity<R> result = restTemplate.postForEntity("http://SMS-SERVICE/api/sms/code", new HttpEntity<>(smsCodeInfo, map), R.class);
         CommonResponseEnum.SERVER_ERROR.assertTrue(result.getStatusCode() == HttpStatus.OK);
     }
 
@@ -53,8 +53,9 @@ public class SmsCodeClient {
         SmsCodeInfo smCodeInfo = new SmsCodeInfo();
         smCodeInfo.setMobile(mobile);
         smCodeInfo.setCode(code);
-        ResponseEntity<R> result = restTemplate.postForEntity("http://SMS-SERVICE/sms/code/verify", new HttpEntity<>(smCodeInfo, map), R.class);
-        CommonResponseEnum.SERVER_ERROR.assertTrue(result.getStatusCode() == HttpStatus.OK);
+        ResponseEntity<R> result = restTemplate.postForEntity("http://SMS-SERVICE/api/sms/verify", new HttpEntity<>(smCodeInfo, map), R.class);
+        CommonResponseEnum.SERVER_ERROR.assertTrue(result.getStatusCode() == HttpStatus.OK,
+                result.getBody() == null ? "" : result.getBody().getMessage());
     }
 
 
