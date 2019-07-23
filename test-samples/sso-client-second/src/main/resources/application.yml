@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: sso-client-second
+server:
+  port: 9902
+  servlet:
+    context-path: /second
+security:
+  oauth2:
+    client:
+      client-id: second
+      client-secret: 123456
+      access-token-uri: http://localhost:4000/oauth/token
+      user-authorization-uri: http://localhost:4000/oauth/authorize
+    resource:
+      jwt:
+        key-uri: http://localhost:4000/oauth/token_key
+        key-value: 123456

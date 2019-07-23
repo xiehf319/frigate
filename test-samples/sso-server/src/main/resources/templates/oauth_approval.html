@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>授权</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/assets/bootstrap-4.3.1-dist/css/bootstrap.min.css}" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>你是否授权client_id=<span th:text="${#ctx.httpServletRequest.getParameter('client_id')}"></span>访问你的受保护资源?</h2>
+    <div style="height: 20px;"></div>
+    <form id="confirmationForm" name="confirmationForm"
+          th:action="@{/oauth/authorize}" method="post">
+
+        <input name="user_oauth_approval" value="true" type="hidden"/>
+        <button class="btn btn-primary" type="submit">Approve</button>
+    </form>
+    <div style="height: 20px;"></div>
+    <form id="denyForm" name="confirmationForm"
+          th:action="@{/oauth/authorize}" method="post">
+        <input name="user_oauth_approval" value="false" type="hidden"/>
+        <button class="btn btn-primary" type="submit">Deny</button>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/assets/js/jquery-2.1.4.min.js}" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/assets/bootstrap-4.3.1-dist/js/bootstrap.min.js}" crossorigin="anonymous"></script>
+</body>
+</html>
