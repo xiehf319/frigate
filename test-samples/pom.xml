@@ -14,8 +14,10 @@
     <modules>
         <module>transaction-test-service</module>
         <module>logistics-service</module>
-        <module>sso-client</module>
-        <module>sso-client-second</module>
+        <module>sso-client-1</module>
+        <module>sso-client-2</module>
+        <module>sso-client-3</module>
+        <module>sso-client-4</module>
         <module>sso-server</module>
     </modules>
 </project>
