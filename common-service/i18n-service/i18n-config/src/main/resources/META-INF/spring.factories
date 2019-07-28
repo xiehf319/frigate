@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+
+
+
+org.springframework.context.ApplicationContextInitializer=\
+  cn.cici.frigate.i18n.config.I18nCodeInitializer
