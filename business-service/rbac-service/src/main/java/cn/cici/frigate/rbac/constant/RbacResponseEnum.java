@@ -1,6 +1,6 @@
 package cn.cici.frigate.rbac.constant;
 
-import cn.cici.frigate.component.exception.BusinessExceptionAssert;
+import cn.cici.frigate.exception.BusinessExceptionAssert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +17,8 @@ public enum  RbacResponseEnum implements BusinessExceptionAssert {
      * 用户已经存在
      */
     USERNAME_IS_EXISTS(502001, "用户已经存在."),
+    TEST1(400001, "TEST1."),
+    TEST2(400002, "TEST2."),
 
     ;
 

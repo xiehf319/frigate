@@ -15,6 +15,8 @@ import javax.persistence.Id;
 public class Resources {
 
     @Id
+    @GeneratedValue(generator = "tableIdGenerator")
+    @GenericGenerator(name = "tableIdGenerator", strategy = "cn.cici.frigate.rbac.jpa.TableIdGenerator")
     private Long id;
 
     private String serviceId;

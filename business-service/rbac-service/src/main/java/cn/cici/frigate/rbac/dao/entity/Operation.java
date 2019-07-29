@@ -16,6 +16,8 @@ import javax.persistence.*;
 public class Operation {
 
     @Id
+    @GeneratedValue(generator = "tableIdGenerator")
+    @GenericGenerator(name = "tableIdGenerator", strategy = "cn.cici.frigate.rbac.jpa.TableIdGenerator")
     private Long id;
 
     @Column(columnDefinition = "VARCHAR(20) comment '操作名字'")

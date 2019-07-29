@@ -1,6 +1,5 @@
 package cn.cici.frigate.i18n.config;
 
-import javafx.application.Application;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 

@@ -1,6 +1,5 @@
 package cn.cici.frigate.i18n.config;
 
-import javafx.application.Application;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -12,8 +11,9 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @concat 370693739@qq.com
  **/
 public class I18nCodeInitializer implements ApplicationContextInitializer {
+
     @Override
     public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-
+        System.out.println("初始化");
     }
 }

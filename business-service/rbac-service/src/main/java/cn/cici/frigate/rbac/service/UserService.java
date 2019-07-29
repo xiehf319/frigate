@@ -1,11 +1,9 @@
 package cn.cici.frigate.rbac.service;
 
-import cn.cici.frigate.rbac.constant.RbacResponseEnum;
 import cn.cici.frigate.rbac.dao.entity.User;
 import cn.cici.frigate.rbac.dao.entity.UserAuth;
 import cn.cici.frigate.rbac.dao.repo.UserAuthRepository;
 import cn.cici.frigate.rbac.dao.repo.UserRepository;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

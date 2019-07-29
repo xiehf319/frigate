@@ -1,7 +1,8 @@
 package cn.cici.frigate.id.client;
 
-import cn.cici.frigate.component.exception.BusinessException;
-import cn.cici.frigate.component.exception.CommonResponseEnum;
+
+import cn.cici.frigate.exception.BusinessException;
+import cn.cici.frigate.exception.CommonResponseEnum;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;

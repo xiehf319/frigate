@@ -1,9 +1,9 @@
 package cn.cici.frigate.sms.api;
 
-import cn.cici.frigate.component.exception.BusinessException;
-import cn.cici.frigate.component.exception.CommonResponseEnum;
 import cn.cici.frigate.component.sms.SmsCodeInfo;
 import cn.cici.frigate.component.vo.R;
+import cn.cici.frigate.exception.BusinessException;
+import cn.cici.frigate.exception.CommonResponseEnum;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

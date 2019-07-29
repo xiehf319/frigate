@@ -1,6 +1,10 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-
-
+    cn.cici.frigate.i18n.config.I18nConfiguration,\
+    cn.cici.frigate.i18n.config.LocaleConfiguration,\
+    cn.cici.frigate.i18n.config.I18nCodeRunner
 
 org.springframework.context.ApplicationContextInitializer=\
   cn.cici.frigate.i18n.config.I18nCodeInitializer
+
+org.springframework.context.ApplicationListener=\
+  cn.cici.frigate.i18n.config.I18nApplicationListener

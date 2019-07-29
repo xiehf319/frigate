@@ -1,6 +1,5 @@
 package cn.cici.auth.server.config;
 
-import cn.cici.auth.server.security.provider.UsernamePasswordAuthenticationProvider;
 import cn.cici.auth.server.security.service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

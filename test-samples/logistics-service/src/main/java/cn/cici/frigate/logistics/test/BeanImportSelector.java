@@ -1,6 +1,5 @@
 package cn.cici.frigate.logistics.test;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
