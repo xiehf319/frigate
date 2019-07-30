@@ -2,7 +2,6 @@ package cn.cici.frigate.i18n.manager.controller;
 
 import cn.cici.frigate.component.vo.R;
 import cn.cici.frigate.i18n.manager.controller.vo.req.ReqServiceLangVo;
-import cn.cici.frigate.i18n.manager.jpa.entity.CodeMessage;
 import cn.cici.frigate.i18n.manager.service.StatusCodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
