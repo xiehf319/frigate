@@ -40,6 +40,11 @@ zuul:
   add-proxy-headers: true
 ribbon:
   ReadTimeout: 1000
+  okhttp:
+    enabled: true
+  http:
+    client:
+      enabled: false
 security:
   oauth2:
     resource:
