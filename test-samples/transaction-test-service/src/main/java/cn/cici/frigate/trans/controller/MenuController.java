@@ -28,4 +28,10 @@ public class MenuController {
         }
         return R.success("test");
     }
+
+    @GetMapping("/rbac/xml")
+    public R<String> pst(UserXml userXml) {
+        System.out.println(userXml.toString());
+        return R.success();
+    }
 }
