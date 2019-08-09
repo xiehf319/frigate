@@ -53,3 +53,4 @@ tx-lcn:
     loadbalancer:
       dtx:
         enabled: true
+logging.level.*: debug

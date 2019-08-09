@@ -1,6 +1,6 @@
 package cn.cici.frigate.sms.producer.exception;
 
-import cn.cici.frigate.component.exception.BusinessExceptionAssert;
+import cn.cici.frigate.exception.BusinessExceptionAssert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

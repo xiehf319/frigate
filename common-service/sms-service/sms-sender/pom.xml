@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>cn.cici.frigate</groupId>
-            <artifactId>component-core</artifactId>
+            <artifactId>exception-starter</artifactId>
             <version>1.0.0</version>
         </dependency>
 

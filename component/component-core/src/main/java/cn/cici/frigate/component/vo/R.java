@@ -16,31 +16,34 @@ public class R<T> implements Serializable {
 
     private String message;
 
+    private boolean success;
+
     private T data;
 
     private R() {
     }
 
-    private R(int code, String message, T data) {
+    private R(int code, String message, boolean success, T data) {
         this.code = code;
         this.message = message;
+        this.success = success;
         this.data = data;
     }
 
     public static <T> R<T> success() {
-        return new R<>(200, "", null);
+        return new R<>(200, "", true, null);
     }
 
     public static <T> R<T> success(T data) {
-        return new R<>(200, "", data);
+        return new R<>(200, "", true, data);
     }
 
     public static <T> R<T> error(int code, String message) {
-        return new R<>(code, message, null);
+        return new R<>(code, message, false, null);
     }
 
     public static <T> R<T> error(int code) {
-        return new R<>(code, null, null);
+        return new R<>(code, null, false, null);
     }
 
 }
