@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+<head th:include="fragment/head::headFragment">
+    <title id="pageTitle">Page Title</title>
+</head>
+<body>
+<form method="post" action="#" th:action="@{/login}">
+    <input type="text" name="username" value="admin"/>
+    <input type="password" name="password" value="123456"/>
+    <button type="submit">提交</button>
+</form>
+<div th:replace="fragment/foot::copy"></div>
+</body>
+</html>
