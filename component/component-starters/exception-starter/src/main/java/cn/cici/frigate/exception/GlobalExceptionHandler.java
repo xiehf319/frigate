@@ -146,7 +146,7 @@ public class GlobalExceptionHandler {
             }
             msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
         }
-        return R.error(ArgumentResponseEnum.VALID_ERROR.getCode(), msg.substring(2));
+        return R.error(CommonResponseEnum.VALID_ERROR.getCode(), msg.substring(2));
     }
 
     @ExceptionHandler(value = Exception.class)

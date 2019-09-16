@@ -5,17 +5,14 @@ import lombok.Getter;
 
 /**
  * @description:
+ *  自定义异常写法
  * @createDate:2019/7/3$14:01$
  * @author: Heyfan Xie
  */
 @Getter
 @AllArgsConstructor
-public enum ArgumentResponseEnum implements BusinessExceptionAssert {
+public enum CustomResponseEnum implements BusinessExceptionAssert {
 
-    /**
-     * 参数校验错误
-     */
-    VALID_ERROR(400, "parameter valid error"),
     ;
 
     private int code;

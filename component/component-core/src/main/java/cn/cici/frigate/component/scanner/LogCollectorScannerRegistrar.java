@@ -2,6 +2,7 @@ package cn.cici.frigate.component.scanner;
 
 import cn.cici.frigate.component.annotation.EnableLogCollector;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
@@ -14,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author xiehf
@@ -44,7 +46,7 @@ public class LogCollectorScannerRegistrar implements ImportBeanDefinitionRegistr
                 basePackages.add(pkg);
             }
         }
-        scanner.doScan(StringUtils.toStringArray(basePackages));
+        Set<BeanDefinitionHolder> beanDefinitionHolders = scanner.doScan(StringUtils.toStringArray(basePackages));
     }
 
 

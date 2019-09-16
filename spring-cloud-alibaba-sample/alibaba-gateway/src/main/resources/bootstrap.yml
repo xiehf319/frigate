@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.32.2:8848
+      config:
+        server-addr: 192.168.32.2:8848
+        shared-dataids: alibaba-gateway.yml
+  application:
+    name: alibaba-gateway
+server:
+  port: 8881
