@@ -11,13 +11,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2019/7/27 20:26
  * @concat 370693739@qq.com
  **/
-public class SpeedCache<K, V> {
+public class SpeedCache implements ICache{
 
     // 基于软引用实现的缓存，当内存不够会自动释放缓存内容，以避免OOM
-    private ConcurrentHashMap<K, InnerSoftReference<V>> cache;
+    private ConcurrentHashMap<String, InnerSoftReference> cache;
 
     // 引用队列，当GC执行后被回收的缓存对象的软引用将被入队，以方便从缓存池中清除失效的软引用
-    private ReferenceQueue<V> referenceQueue;
+    private ReferenceQueue<String> referenceQueue;
+
+    private static class SpeedCacheHolder {
+        private static SpeedCache INSTANCE = new SpeedCache();
+    }
+
+    public static SpeedCache getInstance() {
+        return SpeedCacheHolder.INSTANCE;
+    }
 
     public SpeedCache() {
         cache = new ConcurrentHashMap<>();
@@ -29,8 +37,9 @@ public class SpeedCache<K, V> {
      * @param key
      * @param value
      */
-    public void put(K key, V value) {
-        cache.put(key, new InnerSoftReference<>(key, value, referenceQueue));
+    @Override
+    public void put(String key, String value) {
+        cache.put(key, new InnerSoftReference(key, value, referenceQueue));
         // 清除垃圾引用
         clearInvalidReference();
     }
@@ -40,9 +49,10 @@ public class SpeedCache<K, V> {
      * @param key
      * @return
      */
-    public V get(K key) {
+    @Override
+    public String get(String key) {
         synchronized (SpeedCache.class) {
-            InnerSoftReference<V> ref = cache.get(key);
+            InnerSoftReference ref = cache.get(key);
             if (ref != null) {
                 return ref.get();
             }
@@ -50,12 +60,18 @@ public class SpeedCache<K, V> {
         return null;
     }
 
+    @Override
+    public void remove(String key) {
+        cache.remove(key);
+    }
+
     /**
      * 判断是否存在key
      * @param key
      * @return
      */
-    public boolean contain(K key) {
+    @Override
+    public boolean contain(String key) {
         return cache.contains(key);
     }
 
@@ -63,38 +79,43 @@ public class SpeedCache<K, V> {
      * 获取缓存大小
      * @return
      */
+    @Override
     public int size() {
         return cache.size();
     }
 
     /**
-     * 清除失效的软引用
-     */
-    private void clearInvalidReference() {
-        InnerSoftReference<V> innerSoftReference;
-        while ((innerSoftReference = (InnerSoftReference<V>) referenceQueue.poll()) != null) {
-            cache.remove(innerSoftReference.get());
-        }
-    }
-
-    /**
      * 清空缓存
      */
+    @Override
     public void clear() {
         cache.clear();
     }
 
 
-    private class InnerSoftReference<V> extends SoftReference<V> {
+    /**
+     * 清除失效的软引用
+     */
+    private void clearInvalidReference() {
+        InnerSoftReference innerSoftReference;
+        while ((innerSoftReference = (InnerSoftReference) referenceQueue.poll()) != null) {
+            if (innerSoftReference.get() != null) {
+                cache.remove(innerSoftReference.get());
+            }
+        }
+    }
 
-        private K key;
 
-        public InnerSoftReference(K key, V value, ReferenceQueue<? super V> referenceQueue) {
+    private class InnerSoftReference extends SoftReference<String> {
+
+        private String key;
+
+        public InnerSoftReference(String key, String value, ReferenceQueue<? super String> referenceQueue) {
             super(value, referenceQueue);
             this.key = key;
         }
 
-        public K getKey() {
+        public String getKey() {
             return key;
         }
     }

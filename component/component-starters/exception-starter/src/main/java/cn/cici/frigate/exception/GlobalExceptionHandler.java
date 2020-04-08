@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public R handleBusinessException(BaseException e) {
         log.error(e.getMessage(), e);
-        return R.error(Integer.valueOf(e.getResponseEnum().getCode()), getMessage(e));
+        return R.error(e.getResponseEnum().getCode(), getMessage(e));
     }
 
     /**
