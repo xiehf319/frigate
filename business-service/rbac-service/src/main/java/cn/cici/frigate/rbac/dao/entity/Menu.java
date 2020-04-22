@@ -37,4 +37,9 @@ public class Menu {
 
     private String menuStatus;
 
+    public Menu(Long pid, Long id, String menuName) {
+        this.id = id;
+        this.pid = pid;
+        this.menuName = menuName;
+    }
 }
