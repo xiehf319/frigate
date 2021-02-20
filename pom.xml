@@ -23,6 +23,7 @@
         <module>system-framework</module>
         <module>test-samples</module>
         <module>component</module>
+        <module>time-wheel</module>
     </modules>
 
     <properties>
