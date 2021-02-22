@@ -1,7 +1,5 @@
 # FRIGATE 项目结构
 
-![架构图](http://assets.processon.com/chart_image/5d2c92cce4b02086110487cc.png)
-
 ```
 |-- frigate
     |-- business-service        // 业务服务
