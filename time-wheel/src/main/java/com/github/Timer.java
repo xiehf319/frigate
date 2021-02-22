@@ -35,11 +35,11 @@ class SystemTimer implements Timer {
 
     String executorName;
 
-    long tickMs;
+    long tickSec;
 
     int wheelSize;
 
-    long startMs;
+    long startSec;
 
     DelayQueue<TimerTaskList> delayQueue = new DelayQueue<>();
 
@@ -58,15 +58,15 @@ class SystemTimer implements Timer {
     ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
     ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
-    public SystemTimer(String executorName, long tickMs, int wheelSize, long startMs) {
+    public SystemTimer(String executorName, long tickSec, int wheelSize, long startSec) {
         this.executorName = executorName;
-        this.tickMs = tickMs;
+        this.tickSec = tickSec;
         this.wheelSize = wheelSize;
-        this.startMs = startMs;
+        this.startSec = startSec;
         timingWheel = new TimingWheel(
-                tickMs,
+                tickSec,
                 wheelSize,
-                startMs,
+                startSec,
                 taskCounter,
                 delayQueue
         );
@@ -76,7 +76,8 @@ class SystemTimer implements Timer {
     public void add(TimerTask timerTask) {
         readLock.lock();
         try {
-            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delayMs + System.nanoTime() / 1000));
+            logger.info("加入任务时间: {}", System.currentTimeMillis() / 1000);
+            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delaySec + System.currentTimeMillis() / 1000));
         } finally {
             readLock.unlock();
         }
@@ -96,14 +97,17 @@ class SystemTimer implements Timer {
     @Override
     public Boolean advanceClock(Long timeoutMs) {
         try {
-            TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.MILLISECONDS);
+            TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.SECONDS);
+            logger.info("阻塞获取一批次");
             if (bucket != null) {
                 writeLock.lock();
                 try {
                     while (bucket != null) {
                         timingWheel.advanceClock(bucket.getExpiration());
+                        logger.info("size: {}", delayQueue.size());
                         bucket.flush(reinsert);
                         bucket = delayQueue.poll();
+                        logger.info("再获取一次: {}", bucket == null);
                     }
                 } finally {
                     writeLock.unlock();

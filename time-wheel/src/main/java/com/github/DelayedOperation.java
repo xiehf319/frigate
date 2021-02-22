@@ -82,17 +82,16 @@ public abstract class DelayedOperation extends TimerTask {
 
 final class DelayedOperationPurgatory<T extends DelayedOperation> {
 
-    private ExpiredOperationReaper expirationReaper = new ExpiredOperationReaper("ExpirationReaper", false);
-
     Timer timeoutTimer;
 
     public DelayedOperationPurgatory(Timer timeoutTimer) {
         this.timeoutTimer = timeoutTimer;
+        ExpiredOperationReaper expirationReaper = new ExpiredOperationReaper("ExpirationReaper", false);
         expirationReaper.start();
     }
 
-    void advanceClock(long timeoutMs) {
-        timeoutTimer.advanceClock(timeoutMs);
+    void advanceClock(long timeoutSec) {
+        timeoutTimer.advanceClock(timeoutSec);
     }
 
     private class ExpiredOperationReaper extends ShutdownableThread {
@@ -103,7 +102,7 @@ final class DelayedOperationPurgatory<T extends DelayedOperation> {
 
         @Override
         public void doWork() {
-            advanceClock(200L);
+            advanceClock(30L);
         }
     }
 }
