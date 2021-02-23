@@ -119,7 +119,7 @@ public class TimerTaskList implements Delayed {
 }
 
 
-class TimerTaskEntry implements Comparable<TimerTaskEntry>{
+class TimerTaskEntry implements Comparable<TimerTaskEntry> {
 
     TimerTask timeTask;
 
