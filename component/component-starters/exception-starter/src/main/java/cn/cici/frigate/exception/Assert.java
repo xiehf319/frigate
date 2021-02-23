@@ -1,6 +1,6 @@
 package cn.cici.frigate.exception;
 
-import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * @description:
