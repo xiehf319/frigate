@@ -103,7 +103,6 @@ public class TimingWheel {
         logger.info("timeSec {} -> currentTime {}", timeSec, currentTime);
         if (timeSec >= currentTime + tickSec) {
             currentTime = timeSec - (timeSec % tickSec);
-            logger.info("currentTime {}", currentTime);
             if (overflowWheel != null) {
                 overflowWheel.advanceClock(currentTime);
             }
