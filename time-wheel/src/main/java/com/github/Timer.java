@@ -105,7 +105,6 @@ class SystemTimer implements Timer {
                 try {
                     while (bucket != null) {
                         timingWheel.advanceClock(bucket.getExpiration());
-                        logger.info("size: {}", delayQueue.size());
                         bucket.flush(reinsert);
                         bucket = delayQueue.poll();
                         logger.info("再获取一次: {}", bucket == null);

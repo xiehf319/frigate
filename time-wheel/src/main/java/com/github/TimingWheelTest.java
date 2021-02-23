@@ -16,7 +16,7 @@ public class TimingWheelTest {
 
     public static void main(String[] args) {
         SystemTimer systemTimer = new SystemTimer("timing-wheel", 1, 20, System.currentTimeMillis() / 1000);
-        new DelayedOperationPurgatory<>(systemTimer);
+        new DelayedOperationPurgatory(systemTimer);
 //        TimerTask timerTask0 = new TimerTask(12, "0--12");
 //        systemTimer.add(timerTask0);
 //
