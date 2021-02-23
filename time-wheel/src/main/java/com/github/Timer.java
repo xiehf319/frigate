@@ -84,6 +84,7 @@ class SystemTimer implements Timer {
     }
 
     private void addTimerTaskEntry(TimerTaskEntry timerTaskEntry) {
+        logger.info("任务执行时间: {}", timerTaskEntry.expirationSec);
         if (!timingWheel.add(timerTaskEntry)) {
             if (!timerTaskEntry.cancelled()) {
                 logger.info("执行一个任务 {}", timerTaskEntry.timeTask.name);

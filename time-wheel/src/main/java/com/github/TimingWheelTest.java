@@ -28,7 +28,7 @@ public class TimingWheelTest {
 //
 //        TimerTask timerTask3 = new TimerTask(621, "3--620");
 //        systemTimer.add(timerTask3);
-        TimerTask timerTask4 = new TimerTask(10, "4--10");
+        TimerTask timerTask4 = new TimerTask(140, "4--10");
         systemTimer.add(timerTask4);
     }
 }

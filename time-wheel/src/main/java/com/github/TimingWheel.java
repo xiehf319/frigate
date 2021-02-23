@@ -98,9 +98,11 @@ public class TimingWheel {
         }
     }
 
-    public void advanceClock(Long timeMs) {
-        if (timeMs >= currentTime + tickSec) {
-            currentTime = timeMs - (timeMs % tickSec);
+
+    public void advanceClock(Long timeSec) {
+        logger.info("timeSec {} -> currentTime {}", timeSec, currentTime);
+        if (timeSec >= currentTime + tickSec) {
+            currentTime = timeSec - (timeSec % tickSec);
             logger.info("currentTime {}", currentTime);
             if (overflowWheel != null) {
                 overflowWheel.advanceClock(currentTime);
