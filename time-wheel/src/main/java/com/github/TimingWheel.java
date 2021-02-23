@@ -51,6 +51,9 @@ public class TimingWheel {
         interval = tickSec * wheelSize;
         currentTime = startMs - (startMs % tickSec);
         buckets = new TimerTaskList[wheelSize];
+        for (int i = 0; i < wheelSize; i++) {
+            buckets[i] = new TimerTaskList(taskCounter);
+        }
     }
 
     public synchronized void addOverflowWheel() {
@@ -76,15 +79,10 @@ public class TimingWheel {
             logger.info("任务过期了");
             return false;
         }
-//        logger.info("expiration: {} currentTime: {} interval: {}", expiration, currentTime, interval);
         if (expiration < currentTime + interval) {
             long virtualId = expiration / tickSec;
             int index = (int) (virtualId % wheelSize);
             TimerTaskList bucket = buckets[index];
-            if (bucket == null) {
-                bucket = new TimerTaskList(taskCounter);
-                buckets[index] = bucket;
-            }
             bucket.add(timerTaskEntry);
             if (bucket.setExpiration(virtualId * tickSec)) {
                 logger.info("加入一个任务:{}", timerTaskEntry.timeTask.name);
@@ -103,6 +101,7 @@ public class TimingWheel {
     public void advanceClock(Long timeMs) {
         if (timeMs >= currentTime + timeMs) {
             currentTime = timeMs - (timeMs % tickSec);
+            logger.info("currentTime {}", currentTime);
             if (overflowWheel != null) {
                 overflowWheel.advanceClock(currentTime);
             }

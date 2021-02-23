@@ -21,15 +21,16 @@ import java.util.function.Consumer;
  */
 public class TimerTaskList implements Delayed {
 
-    private TimerTaskEntry root = new TimerTaskEntry(null, -1);
+    private final TimerTaskEntry root;
 
     AtomicLong expiration = new AtomicLong(-1);
 
-    private AtomicInteger taskCounter;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final AtomicInteger taskCounter;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public TimerTaskList(AtomicInteger taskCounter) {
         this.taskCounter = taskCounter;
+        this.root = new TimerTaskEntry(null, -1);
         this.root.next = root;
         this.root.prev = root;
     }
@@ -42,16 +43,16 @@ public class TimerTaskList implements Delayed {
         return expiration.get();
     }
 
-//    public synchronized void foreach(Consumer<TimerTask> taskConsumer) {
-//        TimerTaskEntry entry = root.next;
-//        while (entry.compareTo(root) != 0) {
-//            TimerTaskEntry nextEntry = entry.next;
-//            if (!entry.cancelled()) {
-//                taskConsumer.accept(entry.timeTask);
-//            }
-//            entry = nextEntry;
-//        }
-//    }
+    public synchronized void foreach(Consumer<TimerTask> taskConsumer) {
+        TimerTaskEntry entry = root.next;
+        while (!entry.equals(root)) {
+            TimerTaskEntry nextEntry = entry.next;
+            if (!entry.cancelled()) {
+                taskConsumer.accept(entry.timeTask);
+            }
+            entry = nextEntry;
+        }
+    }
 
 
     public synchronized void add(TimerTaskEntry timerTaskEntry) {
@@ -90,10 +91,9 @@ public class TimerTaskList implements Delayed {
     public synchronized void flush(Consumer<TimerTaskEntry> consumer) {
         TimerTaskEntry head = root.next;
         while (!head.equals(root)) {
-            logger.info("不相等移除");
             remove(head);
-            logger.info("==> {} {}", head.expirationSec, root.expirationSec);
             consumer.accept(head);
+            logger.info("==> {} {}", head.expirationSec, root.expirationSec);
             head = root.next;
             logger.info("==> {} {}", head.expirationSec, root.expirationSec);
         }
