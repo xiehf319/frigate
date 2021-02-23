@@ -1,5 +1,6 @@
 package com.github;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,20 +16,11 @@ import java.util.concurrent.TimeUnit;
 public class TimingWheelTest {
 
     public static void main(String[] args) {
-        SystemTimer systemTimer = new SystemTimer("timing-wheel", 1, 20, System.currentTimeMillis() / 1000);
+        SystemTimer systemTimer = new SystemTimer("timing-wheel", 1, 20, System.currentTimeMillis());
         new DelayedOperationPurgatory(systemTimer);
-//        TimerTask timerTask0 = new TimerTask(12, "0--12");
-//        systemTimer.add(timerTask0);
-//
-//        TimerTask timerTask1 = new TimerTask(58, "1--58");
-//        systemTimer.add(timerTask1);
-//
-//        TimerTask timerTask2 = new TimerTask(190, "2--190");
-//        systemTimer.add(timerTask2);
-//
-//        TimerTask timerTask3 = new TimerTask(621, "3--620");
-//        systemTimer.add(timerTask3);
-        TimerTask timerTask4 = new TimerTask(140, "4--10");
-        systemTimer.add(timerTask4);
+        for (int i = 0; i < 100; i++) {
+            TimerTask timerTask = new TimerTask((long)new Random().nextInt(5000), i + "");
+            systemTimer.add(timerTask);
+        }
     }
 }

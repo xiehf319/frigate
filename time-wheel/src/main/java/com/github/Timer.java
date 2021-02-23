@@ -35,11 +35,11 @@ class SystemTimer implements Timer {
 
     String executorName;
 
-    long tickSec;
+    long tickMs;
 
     int wheelSize;
 
-    long startSec;
+    long startMs;
 
     DelayQueue<TimerTaskList> delayQueue = new DelayQueue<>();
 
@@ -58,15 +58,15 @@ class SystemTimer implements Timer {
     ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
     ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
-    public SystemTimer(String executorName, long tickSec, int wheelSize, long startSec) {
+    public SystemTimer(String executorName, long tickMs, int wheelSize, long startMs) {
         this.executorName = executorName;
-        this.tickSec = tickSec;
+        this.tickMs = tickMs;
         this.wheelSize = wheelSize;
-        this.startSec = startSec;
+        this.startMs = startMs;
         timingWheel = new TimingWheel(
-                tickSec,
+                tickMs,
                 wheelSize,
-                startSec,
+                startMs,
                 taskCounter,
                 delayQueue
         );
@@ -76,18 +76,15 @@ class SystemTimer implements Timer {
     public void add(TimerTask timerTask) {
         readLock.lock();
         try {
-            logger.info("加入任务时间: {}", System.currentTimeMillis() / 1000);
-            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delaySec + System.currentTimeMillis() / 1000));
+            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delayMs + System.currentTimeMillis()));
         } finally {
             readLock.unlock();
         }
     }
 
     private void addTimerTaskEntry(TimerTaskEntry timerTaskEntry) {
-        logger.info("任务执行时间: {}", timerTaskEntry.expirationSec);
         if (!timingWheel.add(timerTaskEntry)) {
             if (!timerTaskEntry.cancelled()) {
-                logger.info("执行一个任务 {}", timerTaskEntry.timeTask.name);
                 taskExecutor.submit(timerTaskEntry.timeTask);
             }
         }
@@ -98,8 +95,7 @@ class SystemTimer implements Timer {
     @Override
     public Boolean advanceClock(Long timeoutMs) {
         try {
-            TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.SECONDS);
-            logger.info("阻塞获取一批次");
+            TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.MILLISECONDS);
             if (bucket != null) {
                 writeLock.lock();
                 try {
@@ -107,7 +103,6 @@ class SystemTimer implements Timer {
                         timingWheel.advanceClock(bucket.getExpiration());
                         bucket.flush(reinsert);
                         bucket = delayQueue.poll();
-                        logger.info("再获取一次: {}", bucket == null);
                     }
                 } finally {
                     writeLock.unlock();

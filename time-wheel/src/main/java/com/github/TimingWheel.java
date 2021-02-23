@@ -70,13 +70,12 @@ public class TimingWheel {
 
 
     public Boolean add(TimerTaskEntry timerTaskEntry) {
-        long expiration = timerTaskEntry.expirationSec;
+        long expiration = timerTaskEntry.expirationMs;
 
         if (timerTaskEntry.cancelled()) {
             return false;
         }
         if (expiration < currentTime + tickSec) {
-            logger.info("任务过期了");
             return false;
         }
         if (expiration < currentTime + interval) {
@@ -85,12 +84,10 @@ public class TimingWheel {
             TimerTaskList bucket = buckets[index];
             bucket.add(timerTaskEntry);
             if (bucket.setExpiration(virtualId * tickSec)) {
-                logger.info("加入一个任务:{}", timerTaskEntry.timeTask.name);
                 queue.offer(bucket);
             }
             return true;
         } else {
-            logger.info("升级");
             if (overflowWheel == null) {
                 addOverflowWheel();
             }
@@ -100,7 +97,6 @@ public class TimingWheel {
 
 
     public void advanceClock(Long timeSec) {
-        logger.info("timeSec {} -> currentTime {}", timeSec, currentTime);
         if (timeSec >= currentTime + tickSec) {
             currentTime = timeSec - (timeSec % tickSec);
             if (overflowWheel != null) {

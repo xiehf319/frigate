@@ -93,16 +93,14 @@ public class TimerTaskList implements Delayed {
         while (!head.equals(root)) {
             remove(head);
             consumer.accept(head);
-            logger.info("==> {} {}", head.expirationSec, root.expirationSec);
             head = root.next;
-            logger.info("==> {} {}", head.expirationSec, root.expirationSec);
         }
         expiration.set(-1L);
     }
 
     @Override
     public long getDelay(TimeUnit unit) {
-        return unit.convert(Math.max(getExpiration() - System.nanoTime() / 1000, 0), TimeUnit.MILLISECONDS);
+        return unit.convert(Math.max(getExpiration() - System.currentTimeMillis(), 0), TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -132,11 +130,11 @@ class TimerTaskEntry implements Comparable<TimerTaskEntry> {
     /**
      * 过期时间
      */
-    Long expirationSec;
+    Long expirationMs;
 
-    public TimerTaskEntry(TimerTask timeTask, long expirationSec) {
+    public TimerTaskEntry(TimerTask timeTask, long expirationMs) {
         this.timeTask = timeTask;
-        this.expirationSec = expirationSec;
+        this.expirationMs = expirationMs;
         if (timeTask != null) {
             timeTask.setTimerTaskEntry(this);
         }
@@ -157,7 +155,7 @@ class TimerTaskEntry implements Comparable<TimerTaskEntry> {
 
     @Override
     public int compareTo(TimerTaskEntry that) {
-        return this.expirationSec.compareTo(that.expirationSec);
+        return this.expirationMs.compareTo(that.expirationMs);
     }
 }
 
@@ -165,14 +163,14 @@ class TimerTask implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    long delaySec;
+    long delayMs;
 
     String name;
 
     TimerTaskEntry timerTaskEntry;
 
-    public TimerTask(long delaySec, String name) {
-        this.delaySec = delaySec;
+    public TimerTask(long delayMs, String name) {
+        this.delayMs = delayMs;
         this.name = name;
     }
 
@@ -200,6 +198,17 @@ class TimerTask implements Runnable {
 
     @Override
     public void run() {
-        logger.info("一个任务执行了");
+        long now = System.currentTimeMillis();
+        logger.info("" +
+                "指定时间: 【{}】 " +
+                "计划延迟ms: 【{}】 " +
+                "实际时间:【{}】, " +
+                "偏差ms: 【{}】 " +
+                "任务【{}】.",
+                timerTaskEntry.expirationMs,
+                delayMs,
+                now,
+                (timerTaskEntry.expirationMs - now),
+                name);
     }
 }
