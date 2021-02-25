@@ -26,7 +26,6 @@ public class TimerTaskList implements Delayed {
     AtomicLong expiration = new AtomicLong(-1);
 
     private final AtomicInteger taskCounter;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public TimerTaskList(AtomicInteger taskCounter) {
         this.taskCounter = taskCounter;
@@ -159,7 +158,7 @@ class TimerTaskEntry implements Comparable<TimerTaskEntry> {
     }
 }
 
-class TimerTask implements Runnable {
+abstract class TimerTask implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -194,21 +193,5 @@ class TimerTask implements Runnable {
 
     public TimerTaskEntry getTimerTaskEntry() {
         return timerTaskEntry;
-    }
-
-    @Override
-    public void run() {
-        long now = System.currentTimeMillis();
-        logger.info("" +
-                "指定时间: 【{}】 " +
-                "计划延迟ms: 【{}】 " +
-                "实际时间:【{}】, " +
-                "偏差ms: 【{}】 " +
-                "任务【{}】.",
-                timerTaskEntry.expirationMs,
-                delayMs,
-                now,
-                (timerTaskEntry.expirationMs - now),
-                name);
     }
 }
