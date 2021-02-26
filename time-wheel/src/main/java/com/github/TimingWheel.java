@@ -20,7 +20,7 @@ public class TimingWheel {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    Long tickSec;
+    Long tickMs;
 
     int wheelSize;
 
@@ -41,15 +41,15 @@ public class TimingWheel {
 
     TimerTaskList[] buckets;
 
-    public TimingWheel(Long tickSec, int wheelSize, Long startMs, AtomicInteger taskCounter, DelayQueue<TimerTaskList> queue) {
-        this.tickSec = tickSec;
+    public TimingWheel(Long tickMs, int wheelSize, Long startMs, AtomicInteger taskCounter, DelayQueue<TimerTaskList> queue) {
+        this.tickMs = tickMs;
         this.wheelSize = wheelSize;
         this.startMs = startMs;
         this.taskCounter = taskCounter;
         this.queue = queue;
 
-        interval = tickSec * wheelSize;
-        currentTime = startMs - (startMs % tickSec);
+        interval = tickMs * wheelSize;
+        currentTime = startMs - (startMs % tickMs);
         buckets = new TimerTaskList[wheelSize];
         for (int i = 0; i < wheelSize; i++) {
             buckets[i] = new TimerTaskList(taskCounter);
@@ -75,15 +75,15 @@ public class TimingWheel {
         if (timerTaskEntry.cancelled()) {
             return false;
         }
-        if (expiration < currentTime + tickSec) {
+        if (expiration < currentTime + tickMs) {
             return false;
         }
         if (expiration < currentTime + interval) {
-            long virtualId = expiration / tickSec;
+            long virtualId = expiration / tickMs;
             int index = (int) (virtualId % wheelSize);
             TimerTaskList bucket = buckets[index];
             bucket.add(timerTaskEntry);
-            if (bucket.setExpiration(virtualId * tickSec)) {
+            if (bucket.setExpiration(virtualId * tickMs)) {
                 queue.offer(bucket);
             }
             return true;
@@ -97,8 +97,8 @@ public class TimingWheel {
 
 
     public void advanceClock(Long timeSec) {
-        if (timeSec >= currentTime + tickSec) {
-            currentTime = timeSec - (timeSec % tickSec);
+        if (timeSec >= currentTime + tickMs) {
+            currentTime = timeSec - (timeSec % tickMs);
             if (overflowWheel != null) {
                 overflowWheel.advanceClock(currentTime);
             }

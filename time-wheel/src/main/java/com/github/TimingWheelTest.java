@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class TimingWheelTest {
 
     public static void main(String[] args) {
-        SystemTimer systemTimer = new SystemTimer("timing-wheel", 1, 20, System.currentTimeMillis());
+        Timer systemTimer = new SystemTimer("timing-wheel", 1, 20, System.currentTimeMillis());
         new DelayedOperationPurgatory(systemTimer);
         for (int i = 0; i < 20; i++) {
             TimerTask timerTask = new TimerTask(new Random().nextInt(5000), i + "") {

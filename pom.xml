@@ -25,6 +25,7 @@
         <module>component</module>
         <module>time-wheel</module>
         <module>time-wheel-sec</module>
+        <module>redis-listener</module>
     </modules>
 
     <properties>
