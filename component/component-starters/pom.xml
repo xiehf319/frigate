@@ -16,6 +16,7 @@
         <module>redis-starter</module>
         <module>fescar-starter</module>
         <module>zk-lock-starter</module>
+        <module>redis-lock-starter</module>
         <module>exception-starter</module>
     </modules>
 </project>

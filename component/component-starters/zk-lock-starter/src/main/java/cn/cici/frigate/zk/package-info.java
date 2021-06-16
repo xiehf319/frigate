@@ -4,4 +4,4 @@
  * @createDate:2019/7/2$15:39$
  * @author: Heyfan Xie
  */
-package cn.cici.frigate.zk.lock;
+package cn.cici.frigate.zk;
