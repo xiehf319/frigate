@@ -24,5 +24,6 @@
         <module>id-service</module>
         <module>tx-lcn</module>
         <module>i18n-service</module>
+        <module>delay-service</module>
     </modules>
 </project>
