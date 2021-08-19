@@ -35,11 +35,11 @@ class SystemTimer implements Timer {
 
     String executorName;
 
-    long tickMs;
+    long tickSec;
 
     int wheelSize;
 
-    long startMs;
+    long startSec;
 
     DelayQueue<TimerTaskList> delayQueue = new DelayQueue<>();
 
@@ -58,15 +58,15 @@ class SystemTimer implements Timer {
     ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
     ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
-    public SystemTimer(String executorName, long tickMs, int wheelSize, long startMs) {
+    public SystemTimer(String executorName, long tickSec, int wheelSize, long startSec) {
         this.executorName = executorName;
-        this.tickMs = tickMs;
+        this.tickSec = tickSec;
         this.wheelSize = wheelSize;
-        this.startMs = startMs;
+        this.startSec = startSec;
         timingWheel = new TimingWheel(
-                tickMs,
+                tickSec,
                 wheelSize,
-                startMs,
+                startSec,
                 taskCounter,
                 delayQueue
         );
@@ -76,7 +76,7 @@ class SystemTimer implements Timer {
     public void add(TimerTask timerTask) {
         readLock.lock();
         try {
-            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delayMs + System.currentTimeMillis() / 1000));
+            addTimerTaskEntry(new TimerTaskEntry(timerTask, timerTask.delaySec + System.currentTimeMillis() / 1000));
         } finally {
             readLock.unlock();
         }
@@ -93,9 +93,9 @@ class SystemTimer implements Timer {
     Consumer<TimerTaskEntry> reinsert = this::addTimerTaskEntry;
 
     @Override
-    public Boolean advanceClock(Long timeoutMs) {
+    public Boolean advanceClock(Long timeSec) {
         try {
-            TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.SECONDS);
+            TimerTaskList bucket = delayQueue.poll(timeSec, TimeUnit.SECONDS);
             if (bucket != null) {
                 writeLock.lock();
                 try {

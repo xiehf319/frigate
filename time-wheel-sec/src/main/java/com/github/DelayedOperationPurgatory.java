@@ -90,8 +90,8 @@ public class DelayedOperationPurgatory {
         expirationReaper.start();
     }
 
-    void advanceClock(long timeoutMs) {
-        timeoutTimer.advanceClock(timeoutMs);
+    void advanceClock(long timeSec) {
+        timeoutTimer.advanceClock(timeSec);
     }
 
     private class ExpiredOperationReaper extends ShutdownableThread {

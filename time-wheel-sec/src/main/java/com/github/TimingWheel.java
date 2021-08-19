@@ -69,7 +69,7 @@ public class TimingWheel {
     }
 
 
-    public Boolean add(TimerTaskEntry timerTaskEntry) {
+    public boolean add(TimerTaskEntry timerTaskEntry) {
         long expiration = timerTaskEntry.expirationMs;
 
         if (timerTaskEntry.cancelled()) {

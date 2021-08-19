@@ -141,7 +141,7 @@ class TimerTaskEntry implements Comparable<TimerTaskEntry> {
     }
 
 
-    public Boolean cancelled() {
+    public boolean cancelled() {
         return timeTask.getTimerTaskEntry() != this;
     }
 
@@ -163,14 +163,14 @@ class TimerTask implements Runnable {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    long delayMs;
+    long delaySec;
 
     String name;
 
     TimerTaskEntry timerTaskEntry;
 
-    public TimerTask(long delayMs, String name) {
-        this.delayMs = delayMs;
+    public TimerTask(long delaySec, String name) {
+        this.delaySec = delaySec;
         this.name = name;
     }
 
@@ -201,12 +201,12 @@ class TimerTask implements Runnable {
         long now = System.currentTimeMillis() / 1000;
         logger.info("" +
                 "指定时间: 【{}】 " +
-                "计划延迟ms: 【{}】 " +
+                "计划延迟s: 【{}】 " +
                 "实际时间:【{}】, " +
-                "偏差ms: 【{}】 " +
+                "偏差s: 【{}】 " +
                 "任务【{}】.",
                 timerTaskEntry.expirationMs,
-                delayMs,
+                delaySec,
                 now,
                 (timerTaskEntry.expirationMs - now),
                 name);
