@@ -6,16 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @Title: frigate
- * @Package com.github
- * @Description: (用一句话描述该文件做什么)
- * @Author: 003300
- * @Date: 2021/2/20
- * @Version V1.0
- * @Copyright: 2020 Shenzhen Hive Box Technology Co.,Ltd All rights reserved.
- * @Note: This content is limited to the internal circulation of Hive Box, and it is prohibited to leak or used for other commercial purposes.
- */
 public class TimingWheel {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

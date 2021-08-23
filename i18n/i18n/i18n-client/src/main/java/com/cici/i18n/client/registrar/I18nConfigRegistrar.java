@@ -8,7 +8,6 @@ import org.springframework.core.type.AnnotationMetadata;
  * 类描述:
  *  显示的bean注册
  *
- * @author 003300
  * @version 1.0
  * @date 2019/9/16 14:35
  */

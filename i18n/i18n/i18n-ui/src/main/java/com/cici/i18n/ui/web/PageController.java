@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * 类描述:
  *  页面跳转控制
- * @author 003300
  * @version 1.0
  * @date 2019/9/26 13:38
  */

@@ -1,12 +1,5 @@
 package cn.cici.frigate.component.util;
 
-/**
- * 类描述:
- *
- * @author 003300
- * @version 1.0
- * @date 2020/4/22 16:56
- */
 
 import java.util.Collection;
 import java.util.Optional;

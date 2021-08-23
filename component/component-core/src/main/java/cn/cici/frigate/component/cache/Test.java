@@ -1,12 +1,6 @@
 package cn.cici.frigate.component.cache;
 
-/**
- * 类描述:
- *
- * @author 003300
- * @version 1.0
- * @date 2020/4/8 17:48
- */
+
 public class Test {
 
     public static void main(String[] args) {

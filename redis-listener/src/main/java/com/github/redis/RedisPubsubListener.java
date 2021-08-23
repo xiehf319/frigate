@@ -9,16 +9,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPubSub;
 
-/**
- * @Title: frigate
- * @Package com.github.redis
- * @Description: (用一句话描述该文件做什么)
- * @Author: 003300
- * @Date: 2021/2/26
- * @Version V1.0
- * @Copyright: 2020 Shenzhen Hive Box Technology Co.,Ltd All rights reserved.
- * @Note: This content is limited to the internal circulation of Hive Box, and it is prohibited to leak or used for other commercial purposes.
- */
 @Slf4j
 @Component
 public class RedisPubsubListener extends JedisPubSub {

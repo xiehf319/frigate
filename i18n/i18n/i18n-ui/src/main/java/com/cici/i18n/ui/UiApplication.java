@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 类描述:
  *
- * @author 003300
  * @version 1.0
  * @date 2019/9/19 10:06
  */

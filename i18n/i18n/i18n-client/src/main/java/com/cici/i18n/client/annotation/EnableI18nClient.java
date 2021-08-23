@@ -10,7 +10,6 @@ import java.lang.annotation.*;
  * 类描述:
  *  注解启用i18n支持
  *
- * @author 003300
  * @version 1.0
  * @date 2019/9/16 14:33
  */

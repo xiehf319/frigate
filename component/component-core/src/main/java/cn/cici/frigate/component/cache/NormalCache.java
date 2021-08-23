@@ -2,13 +2,7 @@ package cn.cici.frigate.component.cache;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 类描述:
- *
- * @author 003300
- * @version 1.0
- * @date 2020/4/8 17:30
- */
+
 public class NormalCache implements ICache{
 
     private ConcurrentHashMap<String, String> cache;
